@@ -11,14 +11,15 @@ class DatabaseService {
 
   DatabaseService._internal();
 
-  Future<Database> get database async {
-    if (_database != null) return _database!;
+Future<Database> get database async {
+  if (_database != null) return _database!;
 
-    _database = await _initDatabase();
-    await seedTestPastoIfEmpty();
+  _database = await _initDatabase();
+  await seedTestPastoIfEmpty(); // 👈 QUESTA È LA CHIAVE
 
-    return _database!;
-  }
+  return _database!;
+}
+
 
   Future<Database> _initDatabase() async {
     final dbPath = await getDatabasesPath();
@@ -31,9 +32,9 @@ class DatabaseService {
     );
   }
 
-  Future<void> _onCreate(Database db, int version) async {
-    // Tabella PASTI (1 riga = 1 record pasto = 1 blocco export Excel)
-    await db.execute('''
+Future<void> _onCreate(Database db, int version) async {
+  // Tabella PASTI (1 riga = 1 record pasto = 1 blocco export Excel)
+  await db.execute('''
     CREATE TABLE pasti (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
 
@@ -95,39 +96,38 @@ class DatabaseService {
     );
   ''');
 
-    // (Opzionale ma utile) indice per ricerche e export
-    await db.execute('CREATE INDEX idx_pasti_data ON pasti (data);');
-  }
+  // (Opzionale ma utile) indice per ricerche e export
+  await db.execute('CREATE INDEX idx_pasti_data ON pasti (data);');
+}
+Future<void> seedTestPastoIfEmpty() async {
+  final db = await database;
 
-  Future<void> seedTestPastoIfEmpty() async {
-    final db = await database;
+  final count = Sqflite.firstIntValue(
+    await db.rawQuery('SELECT COUNT(*) FROM pasti'),
+  ) ?? 0;
 
-    final count = Sqflite.firstIntValue(
-      await db.rawQuery('SELECT COUNT(*) FROM pasti'),
-    ) ?? 0;
+  if (count == 0) {
+    final now = DateTime.now();
+    final data =
+        "${now.year.toString().padLeft(4, '0')}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}";
+    final ora =
+        "${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}";
 
-    if (count == 0) {
-      final now = DateTime.now();
-      final data =
-          "${now.year.toString().padLeft(4, '0')}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}";
-      final ora =
-          "${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}";
+    await db.insert('pasti', {
+      'data_record': data,
+      'ora_record': ora,
+      'tipo_pasto': 'Colazione',
+      'dove_sono': 'casa',
+      'con_chi_sono': 'famiglia',
+      'pensieri_prima': 'Test automatico',
+      'flag_contesto_prima_ok': 1,
+      'flag_pensieri_prima_ok': 1,
+      'flag_pasto_ok': 1,
+      'flag_dopo_pasto_ok': 1,
+      'esportato': 0,
+    });
 
-      await db.insert('pasti', {
-        'data': data,
-        'ora_record': ora,
-        'tipo_pasto': 'Colazione',
-        'dove_sono': 'casa',
-        'con_chi_sono': 'famiglia',
-        'pensieri_prima': 'Test automatico',
-        'flag_contesto_prima_ok': 1,
-        'flag_pensieri_prima_ok': 1,
-        'flag_pasto_ok': 1,
-        'flag_dopo_pasto_ok': 1,
-        'esportato': 0,
-      });
-
-      print("✅ TEST: pasto inserito");
-    }
+    print("✅ TEST: pasto inserito");
   }
 }
+
