@@ -1,224 +1,224 @@
-# Codebase Analysis Report
+# Report di Analisi del Codebase
 
-Date: 2026-02-17
-Branch: `new-setup-and-analysis` (based on `main` @ 7c45bd4)
+Data: 2026-02-17
+Branch: `new-setup-and-analysis` (basato su `main` @ 7c45bd4)
 
 ---
 
-## Step 1 — Code Analysis
+## Step 1 — Analisi del Codice
 
-### Project overview
+### Panoramica del progetto
 
-Flutter iOS app — a therapeutic food diary ("Diario Alimentare") that records meals, exercise, and therapy notes. Written in Dart, targets iOS only.
+App Flutter per iOS — un diario alimentare terapeutico ("Diario Alimentare") che registra pasti, esercizio fisico e note terapeutiche. Scritta in Dart, destinata esclusivamente a iOS.
 
-### File structure (13 Dart files)
+### Struttura dei file (13 file Dart)
 
 ```
 lib/
-  main.dart                          # App entry point + theme
+  main.dart                          # Entry point dell'app + tema
   models/
-    entry.dart                       # DiaryEntry model (flat, for "extra" meals)
-    timeline_event.dart              # TimelineEvent model (phase-based, unused)
+    entry.dart                       # Modello DiaryEntry (piatto, per pasti "extra")
+    timeline_event.dart              # Modello TimelineEvent (basato su fasi, inutilizzato)
   pages/
-    home_page.dart                   # Home screen — 4 circular buttons (2x2 grid)
-    add_meal_page.dart               # Main meal form (Before/Meal/After)
-    add_exercise_page.dart           # Exercise form (Before/During/After)
-    add_extra_page.dart              # "Extra meal" form (simpler, flat model)
-    therapy_note_page.dart           # Free-text note page
-    export_excel_page.dart           # Timeline export to .xlsx
+    home_page.dart                   # Schermata home — 4 pulsanti circolari (griglia 2x2)
+    add_meal_page.dart               # Form pasto principale (Prima/Pasto/Dopo)
+    add_exercise_page.dart           # Form esercizio (Prima/Durante/Dopo)
+    add_extra_page.dart              # Form "pasto extra" (piu semplice, modello piatto)
+    therapy_note_page.dart           # Pagina nota a testo libero
+    export_excel_page.dart           # Export timeline in .xlsx
   services/
-    database_service.dart            # SQLite DB (sqflite) — schema only, not used by UI
-    excel_service.dart               # CSV export from DiaryEntry list (not used by UI)
-    storage_service.dart             # SharedPreferences persistence for DiaryEntry
-    timeline_store.dart              # JSON file persistence for timeline events
+    database_service.dart            # DB SQLite (sqflite) — solo schema, non usato dalla UI
+    excel_service.dart               # Export CSV da lista DiaryEntry (non usato dalla UI)
+    storage_service.dart             # Persistenza SharedPreferences per DiaryEntry
+    timeline_store.dart              # Persistenza su file JSON per eventi timeline
 ```
 
-### Architecture & data flow
+### Architettura e flusso dati
 
-**There are three separate, unconnected persistence systems:**
+**Esistono tre sistemi di persistenza separati e non collegati tra loro:**
 
-| Service | Storage | Used by | Model |
-|---------|---------|---------|-------|
-| `TimelineStore` | JSON file (`timeline_events.json`) | `AddMealPage`, `AddExercisePage`, `ExportTimelinePage` | Raw `Map<String, dynamic>` |
+| Servizio | Storage | Usato da | Modello |
+|----------|---------|----------|---------|
+| `TimelineStore` | File JSON (`timeline_events.json`) | `AddMealPage`, `AddExercisePage`, `ExportTimelinePage` | `Map<String, dynamic>` grezzo |
 | `StorageService` | SharedPreferences | `AddExtraPage` | `DiaryEntry` |
-| `DatabaseService` | SQLite (`diario_alimentare.db`) | **Nothing** (dead code) | SQL schema |
+| `DatabaseService` | SQLite (`diario_alimentare.db`) | **Niente** (codice morto) | Schema SQL |
 
-The main meal and exercise pages save to `TimelineStore` (JSON file). The "extra meal" page saves to `StorageService` (SharedPreferences). The SQLite database is defined but never called from any UI. The `ExcelService` (CSV export) is also dead code — the actual export uses `ExportTimelinePage` which reads from `TimelineStore` and writes `.xlsx` via the `excel` package.
+Le pagine pasto principale e esercizio salvano su `TimelineStore` (file JSON). La pagina "pasto extra" salva su `StorageService` (SharedPreferences). Il database SQLite e definito ma mai chiamato da alcuna UI. Anche `ExcelService` (export CSV) e codice morto — l'export attivo usa `ExportTimelinePage` che legge da `TimelineStore` e scrive `.xlsx` tramite il pacchetto `excel`.
 
-**Dead code summary:**
-- `DatabaseService` — entire class unused
-- `ExcelService` — entire class unused
-- `TimelineEvent` model — never instantiated
-- `DiaryEntry` model — only used by `AddExtraPage` + `StorageService`
+**Riepilogo codice morto:**
+- `DatabaseService` — intera classe inutilizzata
+- `ExcelService` — intera classe inutilizzata
+- Modello `TimelineEvent` — mai istanziato
+- Modello `DiaryEntry` — usato solo da `AddExtraPage` + `StorageService`
 
-### Home screen
+### Schermata home
 
-Four circular buttons in a 2x2 grid:
-1. **Pasto** → `AddMealPage`
-2. **Esercizio Fisico** → `AddExercisePage`
-3. **Terapia / Note** → `TherapyNotePage`
-4. **Esporta Diario in EXCEL (CSV)** → `ExportTimelinePage`
+Quattro pulsanti circolari in una griglia 2x2:
+1. **Pasto** -> `AddMealPage`
+2. **Esercizio Fisico** -> `AddExercisePage`
+3. **Terapia / Note** -> `TherapyNotePage`
+4. **Esporta Diario in EXCEL (CSV)** -> `ExportTimelinePage`
 
-No navigation back to history, no weekly view, no settings.
+Nessuna navigazione verso lo storico, nessuna vista settimanale, nessuna impostazione.
 
-### AddMealPage (main form, ~777 lines)
+### AddMealPage (form principale, ~777 righe)
 
-Structured in three sections matching the Before/Event/After model:
-- **Prima del pasto**: where, with whom, physical sensations, emotional intensity slider (0-10), emotion picker (18 preset emotions with emoji + custom text), thought
-- **Pasto**: meal type dropdown (6 types), start time, end time, what I ate
-- **Dopo il pasto**: physical sensations, emotional intensity slider, emotion picker, thought
+Strutturato in tre sezioni che rispecchiano il modello Prima/Evento/Dopo:
+- **Prima del pasto**: dove, con chi, sensazioni fisiche, slider intensita emotiva (0-10), selettore emozioni (18 emozioni preset con emoji + testo personalizzato), pensiero
+- **Pasto**: dropdown tipo pasto (6 tipi), ora inizio, ora fine, cosa ho mangiato
+- **Dopo il pasto**: sensazioni fisiche, slider intensita emotiva, selettore emozioni, pensiero
 
-Saves a nested `Map<String, dynamic>` to `TimelineStore`. Emotion system has a "prevalence rule" — if custom text is entered, preset emoji selections are cleared (and vice versa).
+Salva una `Map<String, dynamic>` annidata su `TimelineStore`. Il sistema emozioni ha una "regola di prevalenza" — se viene inserito testo personalizzato, le selezioni emoji preset vengono cancellate (e viceversa).
 
-### AddExercisePage (~897 lines)
+### AddExercisePage (~897 righe)
 
-Structured similarly:
-- **Esercizio**: exercise type (10 presets + custom), duration (stepper, 5-min increments)
-- **Intenzione (prima)**: 4 intention presets (wellness, emotion management, burning/compensating, control/punishment), intensity slider, emotions, thought
-- **Esito (dopo)**: 4 outcome presets, physical sensations, intensity slider, emotions, thought
+Strutturato in modo simile:
+- **Esercizio**: tipo esercizio (10 preset + personalizzato), durata (stepper, incrementi di 5 min)
+- **Intenzione (prima)**: 4 preset di intenzione (benessere, gestione emozioni, bruciare/compensare, controllo/punizione), slider intensita, emozioni, pensiero
+- **Esito (dopo)**: 4 preset esito, sensazioni fisiche, slider intensita, emozioni, pensiero
 
-Also saves to `TimelineStore`.
+Anche questo salva su `TimelineStore`.
 
-### AddExtraPage (~190 lines)
+### AddExtraPage (~190 righe)
 
-Simpler flat form (category dropdown, what, where, with whom, mood, notes). Uses `DiaryEntry` model + `StorageService` (SharedPreferences). **This data is completely invisible to the export page** since export reads from `TimelineStore`, not `StorageService`.
+Form piatto piu semplice (dropdown categoria, cosa, dove, con chi, umore, note). Usa il modello `DiaryEntry` + `StorageService` (SharedPreferences). **Questi dati sono completamente invisibili alla pagina export** poiche l'export legge da `TimelineStore`, non da `StorageService`.
 
-### TherapyNotePage (~172 lines)
+### TherapyNotePage (~172 righe)
 
-Free-text input with a "Save" button. **Save does nothing** — it only shows a SnackBar saying "Salvato" but does not persist the text anywhere. The `_save()` method has a comment: "Per ora: conferma visiva. (Salvataggio vero lo facciamo dopo, se vuoi)".
+Input a testo libero con pulsante "Salva". **Il salvataggio non fa nulla** — mostra solo una SnackBar con "Salvato" ma non persiste il testo in alcun modo. Il metodo `_save()` ha un commento: "Per ora: conferma visiva. (Salvataggio vero lo facciamo dopo, se vuoi)".
 
-### ExportTimelinePage (~313 lines)
+### ExportTimelinePage (~313 righe)
 
-Reads all events from `TimelineStore`, generates an Excel `.xlsx` file with columns: Data, Ora, Tipo evento, Categoria, Intenzione, Emozioni, Intensita emotiva, Sensazioni fisiche, Pensiero, Esito/Dopo, Note libere. Uses `share_plus` to share the file via iOS share sheet.
+Legge tutti gli eventi da `TimelineStore`, genera un file Excel `.xlsx` con colonne: Data, Ora, Tipo evento, Categoria, Intenzione, Emozioni, Intensita emotiva, Sensazioni fisiche, Pensiero, Esito/Dopo, Note libere. Usa `share_plus` per condividere il file tramite il foglio di condivisione iOS.
 
-Has robust field-resolution logic (`_pickAny` / `_pickPath`) that tries multiple key paths to extract data from the heterogeneous event maps.
+Ha una logica robusta di risoluzione campi (`_pickAny` / `_pickPath`) che prova percorsi multipli per estrarre dati dalle mappe eterogenee degli eventi.
 
-### Code quality issues
+### Problemi di qualita del codice
 
-1. **Three persistence systems that don't talk to each other** — architectural fragmentation
-2. **Dead code**: `DatabaseService`, `ExcelService`, `TimelineEvent` model are all unused
-3. **TherapyNotePage doesn't save** — user sees "Salvato" but nothing is persisted
-4. **AddExtraPage data is siloed** — saved to SharedPreferences, invisible to export
-5. **Inconsistent indentation** throughout (mix of 0-indent and 2-indent within classes)
-6. **Italian comments with unescaped apostrophes** cause Dart syntax errors in several files (`dell'app`, `d'animo`, `un'emozione`, `l'intensità`, `l'esercizio`)
-7. **Case-sensitive import bug**: `Timeline_store.dart` vs actual `timeline_store.dart`
-8. **`database_service.dart`**: methods outside class body (missing closing brace), `data_record` column doesn't match `data` schema column, `seedTestPastoIfEmpty` calls `database` getter recursively (infinite loop risk)
-9. **No error handling** on TimelineStore file I/O
-10. **`withOpacity` deprecated** — used extensively across exercise, home, and therapy pages
+1. **Tre sistemi di persistenza che non comunicano tra loro** — frammentazione architetturale
+2. **Codice morto**: `DatabaseService`, `ExcelService`, modello `TimelineEvent` sono tutti inutilizzati
+3. **TherapyNotePage non salva** — l'utente vede "Salvato" ma nulla viene persistito
+4. **I dati di AddExtraPage sono isolati** — salvati in SharedPreferences, invisibili all'export
+5. **Indentazione inconsistente** in tutto il codice (mix di 0-indent e 2-indent dentro le classi)
+6. **Commenti in italiano con apostrofi non escaped** causano errori di sintassi Dart in diversi file (`dell'app`, `d'animo`, `un'emozione`, `l'intensita`, `l'esercizio`)
+7. **Bug import case-sensitive**: `Timeline_store.dart` vs il file effettivo `timeline_store.dart`
+8. **`database_service.dart`**: metodi fuori dal corpo della classe (manca parentesi graffa di chiusura), colonna `data_record` non corrisponde alla colonna `data` dello schema, `seedTestPastoIfEmpty` chiama il getter `database` ricorsivamente (rischio loop infinito)
+9. **Nessuna gestione errori** sull'I/O file di TimelineStore
+10. **`withOpacity` deprecato** — usato estensivamente nelle pagine esercizio, home e terapia
 
-### Dependencies
+### Dipendenze
 
 - `flutter` (SDK)
-- `shared_preferences` — used only by `AddExtraPage`
-- `path_provider` — used by `TimelineStore` and `ExcelService`
-- `excel` — used by `ExportTimelinePage`
-- `share_plus` — used by `ExportTimelinePage`
-- `sqflite` + `path` — used only by dead `DatabaseService`
+- `shared_preferences` — usato solo da `AddExtraPage`
+- `path_provider` — usato da `TimelineStore` e `ExcelService`
+- `excel` — usato da `ExportTimelinePage`
+- `share_plus` — usato da `ExportTimelinePage`
+- `sqflite` + `path` — usati solo dal `DatabaseService` morto
 
 ---
 
-## Step 2 — Comparison with Product Owner's Description
+## Step 2 — Confronto con la Descrizione del Product Owner
 
-### Claim-by-claim verification
+### Verifica claim per claim
 
-| Claim | Reality | Status |
-|-------|---------|--------|
-| App solo iOS | Correct. Only iOS build config used. | Confirmed |
-| Offline-first, dati salvati localmente | Partially true. `TimelineStore` saves to a JSON file. But `TherapyNotePage` doesn't save at all, and `AddExtraPage` saves to a separate silo. | Partially true |
-| Nessun backend, nessun cloud | Correct. No network code whatsoever. | Confirmed |
-| Registra Pasti | Yes, `AddMealPage` works and saves to `TimelineStore`. | Confirmed |
-| Registra Esercizio fisico | Yes, `AddExercisePage` works and saves to `TimelineStore`. | Confirmed |
-| Registra Terapia / Note | **No.** `TherapyNotePage` has UI but `_save()` doesn't persist anything. | Not working |
-| Struttura Prima / Evento / Dopo | Yes for meals (Prima/Pasto/Dopo) and exercise (Intenzione+prima/Esercizio/Esito+dopo). | Confirmed |
-| Dati: emozioni, intensita emotiva | Yes — emotion pickers and intensity sliders in both meal and exercise forms. | Confirmed |
-| Dati: sensazioni fisiche | Yes — text fields for physical sensations in both forms. | Confirmed |
-| Dati: pensieri | Yes — thought text fields in both Before and After sections. | Confirmed |
-| Dati: intenzione | Only in exercise form (4 presets). Not in meal form. | Partial |
-| Export in Excel come timeline | Yes, `ExportTimelinePage` generates `.xlsx` with timeline columns. | Confirmed |
+| Claim | Realta | Stato |
+|-------|--------|-------|
+| App solo iOS | Corretto. Solo configurazione build iOS utilizzata. | Confermato |
+| Offline-first, dati salvati localmente | Parzialmente vero. `TimelineStore` salva su file JSON. Ma `TherapyNotePage` non salva affatto, e `AddExtraPage` salva in un silo separato. | Parziale |
+| Nessun backend, nessun cloud | Corretto. Nessun codice di rete presente. | Confermato |
+| Registra Pasti | Si, `AddMealPage` funziona e salva su `TimelineStore`. | Confermato |
+| Registra Esercizio fisico | Si, `AddExercisePage` funziona e salva su `TimelineStore`. | Confermato |
+| Registra Terapia / Note | **No.** `TherapyNotePage` ha la UI ma `_save()` non persiste nulla. | Non funzionante |
+| Struttura Prima / Evento / Dopo | Si per i pasti (Prima/Pasto/Dopo) e l'esercizio (Intenzione+prima/Esercizio/Esito+dopo). | Confermato |
+| Dati: emozioni, intensita emotiva | Si — selettori emozioni e slider intensita in entrambi i form pasto e esercizio. | Confermato |
+| Dati: sensazioni fisiche | Si — campi testo per sensazioni fisiche in entrambi i form. | Confermato |
+| Dati: pensieri | Si — campi testo pensiero nelle sezioni Prima e Dopo. | Confermato |
+| Dati: intenzione | Solo nel form esercizio (4 preset). Non nel form pasto. | Parziale |
+| Export in Excel come timeline | Si, `ExportTimelinePage` genera `.xlsx` con colonne timeline. | Confermato |
 
-### What the product owner missed or may not realize
+### Cosa il product owner potrebbe non sapere o ha tralasciato
 
-1. **Therapy notes are fake-saved** — the UI confirms save but nothing is persisted. If the app is used therapeutically, any therapy notes entered are lost on app close.
-2. **"Extra meal" data is siloed** — `AddExtraPage` exists in code (and `AddMealPage` has a "Pasti aggiuntivi" option in its dropdown) but `AddExtraPage` saves to a completely different storage system. Its data never appears in the timeline export.
-3. **SQLite database is scaffolded but not wired** — there's a full SQL schema for `pasti` with 30+ columns that mirrors the meal form structure, but no UI code uses it. The `seedTestPastoIfEmpty` method has an infinite recursion bug (calls `database` getter which calls itself).
-4. **No history view exists** — there is no way to review past entries within the app. The only way to see data is via the Excel export.
+1. **Le note terapeutiche hanno un salvataggio finto** — la UI conferma il salvataggio ma nulla viene persistito. Se l'app viene usata a supporto terapeutico, qualsiasi nota inserita va persa alla chiusura dell'app.
+2. **I dati dei "pasti extra" sono isolati** — `AddExtraPage` esiste nel codice (e `AddMealPage` ha un'opzione "Pasti aggiuntivi" nel dropdown) ma `AddExtraPage` salva su un sistema di storage completamente diverso. I suoi dati non compaiono mai nell'export timeline.
+3. **Il database SQLite e predisposto ma non collegato** — c'e uno schema SQL completo per `pasti` con 30+ colonne che rispecchia la struttura del form pasto, ma nessun codice UI lo utilizza. Il metodo `seedTestPastoIfEmpty` ha un bug di ricorsione infinita (chiama il getter `database` che richiama se stesso).
+4. **Non esiste alcuna vista storico** — non c'e modo di rivedere le voci passate dentro l'app. L'unico modo per vedere i dati e tramite l'export Excel.
 
-### What I found that the product owner didn't mention
+### Cosa ho trovato che il product owner non ha menzionato
 
-1. The emotion system in `AddMealPage` is quite sophisticated — 18 preset emotions with a custom-text override that has "prevalence rules" (choosing custom clears presets and vice versa).
-2. The exercise form includes therapeutic intention presets that distinguish between healthy motivations ("Benessere/Energia") and potentially concerning ones ("Bruciare/Rimediare al cibo", "Controllo/Punizione") — this is therapeutically meaningful design.
-3. There are actually two different export systems in code: `ExcelService` (CSV, dead code) and `ExportTimelinePage` (xlsx, active). Only the xlsx one works.
+1. Il sistema emozioni in `AddMealPage` e piuttosto sofisticato — 18 emozioni preset con override testo personalizzato che ha "regole di prevalenza" (scegliere il personalizzato cancella i preset e viceversa).
+2. Il form esercizio include preset di intenzione terapeutica che distinguono tra motivazioni sane ("Benessere/Energia") e potenzialmente preoccupanti ("Bruciare/Rimediare al cibo", "Controllo/Punizione") — questo e un design terapeuticamente significativo.
+3. Esistono in realta due sistemi di export diversi nel codice: `ExcelService` (CSV, codice morto) e `ExportTimelinePage` (xlsx, attivo). Solo quello xlsx funziona.
 
 ---
 
-## Step 3 — Future Roadmap Analysis
+## Step 3 — Analisi Roadmap Futura
 
-### Request 1: Persistenza locale dei dati
+### Richiesta 1: Persistenza locale dei dati
 
-**Current state:** Meals and exercises persist via `TimelineStore` (JSON file). Therapy notes don't persist at all. Extra meals persist in SharedPreferences but are isolated.
+**Stato attuale:** Pasti ed esercizi persistono tramite `TimelineStore` (file JSON). Le note terapeutiche non persistono affatto. I pasti extra persistono in SharedPreferences ma sono isolati.
 
-**Gap:** Medium. The JSON-file approach works for meals/exercise, but:
-- `TherapyNotePage._save()` must be connected to `TimelineStore`
-- `AddExtraPage` should be migrated to `TimelineStore` or removed
-- The dead `DatabaseService` / `StorageService` / `ExcelService` should be deleted to avoid confusion
+**Gap:** Medio. L'approccio file JSON funziona per pasti/esercizio, ma:
+- `TherapyNotePage._save()` deve essere collegato a `TimelineStore`
+- `AddExtraPage` dovrebbe essere migrato a `TimelineStore` o rimosso
+- I servizi morti `DatabaseService` / `StorageService` / `ExcelService` dovrebbero essere eliminati per evitare confusione
 
-**Recommendation:** Consolidate all persistence into `TimelineStore` as the single source of truth. Delete the three unused services. This is the prerequisite for everything else.
+**Raccomandazione:** Consolidare tutta la persistenza in `TimelineStore` come unica fonte di verita. Eliminare i tre servizi inutilizzati. Questo e il prerequisito per tutto il resto.
 
-### Request 2: Storico settimanale interno
+### Richiesta 2: Storico settimanale interno
 
-**Current state:** No history view exists. Zero screens for reviewing past data.
+**Stato attuale:** Non esiste alcuna vista storico. Zero schermate per rivedere i dati passati.
 
-**Gap:** Large. This requires:
-- A new page (e.g., `WeeklyHistoryPage`) accessible from home
-- Week navigation (prev/next week)
-- Grouped timeline view showing meals, exercise, and therapy notes in chronological order
-- Visual distinction of Prima/Evento/Dopo phases
-- Read access to `TimelineStore.events` filtered by date range
+**Gap:** Grande. Richiede:
+- Una nuova pagina (es. `WeeklyHistoryPage`) accessibile dalla home
+- Navigazione per settimana (settimana precedente/successiva)
+- Vista timeline raggruppata che mostri pasti, esercizio e note terapeutiche in ordine cronologico
+- Distinzione visiva delle fasi Prima/Evento/Dopo
+- Accesso in lettura a `TimelineStore.events` filtrato per intervallo di date
 
-**Recommendation:** Build this after Request 1 (unified persistence). The `TimelineStore` already provides `List<Map<String, dynamic>> events` — add date filtering and build a scrollable grouped list. Consider using `TimelineEvent` model (currently dead code) or a similar typed wrapper to make rendering cleaner.
+**Raccomandazione:** Costruire dopo la Richiesta 1 (persistenza unificata). Il `TimelineStore` fornisce gia `List<Map<String, dynamic>> events` — aggiungere filtro per data e costruire una lista raggruppata scorrevole. Considerare l'uso del modello `TimelineEvent` (attualmente codice morto) o un wrapper tipizzato simile per rendere il rendering piu pulito.
 
-### Request 3: Evoluzione del tasto ESERCIZIO
+### Richiesta 3: Evoluzione del tasto ESERCIZIO
 
-**Current state:** `AddExercisePage` already captures:
-- Exercise type + duration (objective)
-- Intention before (4 therapeutic presets)
-- Intensity + emotions + thought (before)
-- Outcome (4 presets) + physical sensations + intensity + emotions + thought (after)
+**Stato attuale:** `AddExercisePage` cattura gia:
+- Tipo esercizio + durata (oggettivo)
+- Intenzione prima (4 preset terapeutici)
+- Intensita + emozioni + pensiero (prima)
+- Esito (4 preset) + sensazioni fisiche + intensita + emozioni + pensiero (dopo)
 
-**Gap:** Small-to-medium. The exercise form is already therapeutically structured. The main gaps:
-- No "During" section (the product owner asks for Prima/Durante/Dopo, current form has Prima+Esercizio/Dopo)
-- Exercise data flows to `TimelineStore` and export already work
-- The intention presets are therapeutically appropriate (includes warning-level items like "Bruciare / Rimediare al cibo")
+**Gap:** Piccolo-medio. Il form esercizio e gia strutturato terapeuticamente. Le lacune principali:
+- Nessuna sezione "Durante" (il product owner chiede Prima/Durante/Dopo, il form attuale ha Prima+Esercizio/Dopo)
+- Il flusso dati esercizio verso `TimelineStore` e l'export funzionano gia
+- I preset di intenzione sono terapeuticamente appropriati (include elementi di avvertimento come "Bruciare / Rimediare al cibo")
 
-**Recommendation:** This is closer to done than the product owner may think. Add a "Durante" section if the therapist wants data captured mid-exercise. Ensure all exercise fields appear properly in the weekly history view (Request 2) and export (Request 5).
+**Raccomandazione:** E piu vicino al completamento di quanto il product owner possa pensare. Aggiungere una sezione "Durante" se il terapeuta vuole dati catturati durante l'esercizio. Assicurarsi che tutti i campi esercizio compaiano correttamente nella vista storico settimanale (Richiesta 2) e nell'export (Richiesta 5).
 
-### Request 4: Evoluzione del tasto TERAPIA / NOTE
+### Richiesta 4: Evoluzione del tasto TERAPIA / NOTE
 
-**Current state:** `TherapyNotePage` is a free-text input that **doesn't save**.
+**Stato attuale:** `TherapyNotePage` e un input a testo libero che **non salva**.
 
-**Gap:** Large (functionally broken). Requires:
-- Connect `_save()` to `TimelineStore` with `type: 'therapy'`, date, and the note text
-- No structural changes needed — the product owner explicitly says "scrittura completamente libera" and "nessuna trasformazione in compiti o moduli strutturati", which matches the current simple text field
-- Notes must appear in timeline and export
+**Gap:** Grande (funzionalmente rotto). Richiede:
+- Collegare `_save()` a `TimelineStore` con `type: 'therapy'`, data e testo della nota
+- Nessuna modifica strutturale necessaria — il product owner dice esplicitamente "scrittura completamente libera" e "nessuna trasformazione in compiti o moduli strutturati", che corrisponde all'attuale semplice campo di testo
+- Le note devono comparire nella timeline e nell'export
 
-**Recommendation:** Simplest fix of all five requests. Wire `_save()` to `TimelineStore.addEntry()` with the date and text content. Add a `type: 'Terapia/Note'` field so the export and history pages can recognize it.
+**Raccomandazione:** La correzione piu semplice tra tutte e cinque le richieste. Collegare `_save()` a `TimelineStore.addEntry()` con data e contenuto testuale. Aggiungere un campo `type: 'Terapia/Note'` in modo che le pagine export e storico possano riconoscerlo.
 
-### Request 5: Export dati (settimanale)
+### Richiesta 5: Export dati (settimanale)
 
-**Current state:** `ExportTimelinePage` exports ALL events as a single xlsx file. No date filtering. No weekly scoping.
+**Stato attuale:** `ExportTimelinePage` esporta TUTTI gli eventi come singolo file xlsx. Nessun filtro per data. Nessun ambito settimanale.
 
-**Gap:** Medium. Requires:
-- Week selector (or auto-detect current week)
-- Filter `TimelineStore.events` by week before generating the xlsx
-- The export column structure is already good and extensible
-- The `_pickAny` / `_pickPath` field resolution handles heterogeneous event types well
+**Gap:** Medio. Richiede:
+- Selettore settimana (o auto-detect settimana corrente)
+- Filtrare `TimelineStore.events` per settimana prima di generare l'xlsx
+- La struttura delle colonne export e gia buona e estendibile
+- La risoluzione campi `_pickAny` / `_pickPath` gestisce bene i tipi di eventi eterogenei
 
-**Recommendation:** Add a week picker to `ExportTimelinePage`. The existing export logic is solid and already handles both meal and exercise event shapes. Once therapy notes are saved (Request 4), add a path resolution for therapy events. The product owner asks for "estendibile in futuro all'export mensile" — this naturally follows from parameterizing the date range filter.
+**Raccomandazione:** Aggiungere un selettore settimana a `ExportTimelinePage`. La logica export esistente e solida e gestisce gia sia gli eventi pasto che esercizio. Una volta che le note terapeutiche vengono salvate (Richiesta 4), aggiungere una risoluzione percorso per gli eventi terapia. Il product owner chiede "estendibile in futuro all'export mensile" — questo segue naturalmente dalla parametrizzazione del filtro intervallo date.
 
-### Suggested implementation order
+### Ordine di implementazione suggerito
 
-1. **Request 1** (persistence) — prerequisite for everything; consolidate into `TimelineStore`, delete dead code
-2. **Request 4** (therapy notes) — smallest change, high impact (currently broken)
-3. **Request 3** (exercise evolution) — already mostly done, minor additions
-4. **Request 2** (weekly history) — largest new feature, builds on unified persistence
-5. **Request 5** (weekly export) — extends existing export with date filtering, natural companion to Request 2
+1. **Richiesta 1** (persistenza) — prerequisito per tutto il resto; consolidare in `TimelineStore`, eliminare codice morto
+2. **Richiesta 4** (note terapia) — modifica piu piccola, alto impatto (attualmente rotto)
+3. **Richiesta 3** (evoluzione esercizio) — gia quasi completato, aggiunte minori
+4. **Richiesta 2** (storico settimanale) — nuova funzionalita piu grande, si basa sulla persistenza unificata
+5. **Richiesta 5** (export settimanale) — estende l'export esistente con filtro date, compagno naturale della Richiesta 2
