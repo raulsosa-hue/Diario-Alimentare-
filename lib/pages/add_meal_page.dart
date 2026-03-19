@@ -50,6 +50,8 @@ class _AddMealPageState extends State<AddMealPage> {
 
   String? _afterEmojis;
 
+  bool _showTimeErrors = false;
+
   @override
   void initState() {
     super.initState();
@@ -101,7 +103,10 @@ class _AddMealPageState extends State<AddMealPage> {
       initialTime: _startTime ?? TimeOfDay.now(),
     );
     if (t == null) return;
-    setState(() => _startTime = t);
+    setState(() {
+      _startTime = t;
+      _showTimeErrors = false;
+    });
   }
 
   Future<void> _pickEndTime() async {
@@ -110,7 +115,10 @@ class _AddMealPageState extends State<AddMealPage> {
       initialTime: _endTime ?? _startTime ?? TimeOfDay.now(),
     );
     if (t == null) return;
-    setState(() => _endTime = t);
+    setState(() {
+      _endTime = t;
+      _showTimeErrors = false;
+    });
   }
 
   String _formatDateTime(DateTime dt) {
@@ -125,6 +133,16 @@ class _AddMealPageState extends State<AddMealPage> {
   }
 
   void _save() {
+    if (_startTime == null || _endTime == null) {
+      setState(() => _showTimeErrors = true);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Inserisci ora di inizio e fine del pasto'),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+      return;
+    }
     Navigator.of(context).pop();
   }
 
@@ -336,11 +354,13 @@ class _AddMealPageState extends State<AddMealPage> {
                 Row(
                   children: [
                     Expanded(
-                      child: _timeCard('Ora inizio (pasto)', _formatTimeOfDay(_startTime), _pickStartTime),
+                      child: _timeCard('Ora inizio (pasto)', _formatTimeOfDay(_startTime), _pickStartTime,
+                          hasError: _showTimeErrors && _startTime == null),
                     ),
                     const SizedBox(width: 10),
                     Expanded(
-                      child: _timeCard('Ora fine (pasto)', _formatTimeOfDay(_endTime), _pickEndTime),
+                      child: _timeCard('Ora fine (pasto)', _formatTimeOfDay(_endTime), _pickEndTime,
+                          hasError: _showTimeErrors && _endTime == null),
                     ),
                   ],
                 ),
@@ -432,16 +452,16 @@ class _AddMealPageState extends State<AddMealPage> {
     );
   }
 
-  Widget _timeCard(String title, String value, VoidCallback onTap) {
+  Widget _timeCard(String title, String value, VoidCallback onTap, {bool hasError = false}) {
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(DS.radiusField),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
         decoration: BoxDecoration(
-          color: DS.surfaceWhite65,
+          color: hasError ? const Color(0x1AFF0000) : DS.surfaceWhite65,
           borderRadius: BorderRadius.circular(DS.radiusField),
-          border: Border.all(color: DS.borderLight),
+          border: Border.all(color: hasError ? Colors.red : DS.borderLight, width: hasError ? 1.5 : 1.0),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
