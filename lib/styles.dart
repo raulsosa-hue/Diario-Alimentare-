@@ -144,6 +144,13 @@ abstract final class DS {
   );
 
   // ========================
+  // SPACING
+  // ========================
+
+  static const double chipWrapSpacing = 6.0;
+  static const double chipWrapRunSpacing = 6.0;
+
+  // ========================
   // RADII
   // ========================
 

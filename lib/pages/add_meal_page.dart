@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../models/emotions.dart';
 import '../styles.dart';
+import '../widgets/emotion_picker.dart';
 
 class AddMealPage extends StatefulWidget {
   const AddMealPage({super.key});
@@ -31,8 +31,7 @@ class _AddMealPageState extends State<AddMealPage> {
   double _beforeIntensity = 0;
   final TextEditingController _beforeThoughtCtrl = TextEditingController();
 
-  final Set<String> _beforeEmojis = <String>{};
-  String _beforeCustomEmotion = '';
+  String? _beforeEmojis;
 
   // -------------------------
   // PASTO
@@ -48,11 +47,7 @@ class _AddMealPageState extends State<AddMealPage> {
   double _afterIntensity = 0;
   final TextEditingController _afterThoughtCtrl = TextEditingController();
 
-  final Set<String> _afterEmojis = <String>{};
-  String _afterCustomEmotion = '';
-
-  // -------------------------
-  final List<EmotionItem> _emotions = kEmotions;
+  String? _afterEmojis;
 
   @override
   void initState() {
@@ -71,50 +66,6 @@ class _AddMealPageState extends State<AddMealPage> {
     _afterBodyCtrl.dispose();
     _afterThoughtCtrl.dispose();
     super.dispose();
-  }
-
-  // -------------------------
-  // REGOLE DI PREVALENZA
-  // -------------------------
-  bool get _beforeUsesCustom => _beforeCustomEmotion.trim().isNotEmpty;
-  bool get _afterUsesCustom => _afterCustomEmotion.trim().isNotEmpty;
-
-  void _toggleBeforeEmoji(String label) {
-    if (_beforeUsesCustom) {
-      setState(() {
-        _beforeCustomEmotion = '';
-        _beforeEmojis.clear();
-        _beforeEmojis.add(label);
-      });
-      return;
-    }
-
-    setState(() {
-      if (_beforeEmojis.contains(label)) {
-        _beforeEmojis.remove(label);
-      } else {
-        _beforeEmojis.add(label);
-      }
-    });
-  }
-
-  void _toggleAfterEmoji(String label) {
-    if (_afterUsesCustom) {
-      setState(() {
-        _afterCustomEmotion = '';
-        _afterEmojis.clear();
-        _afterEmojis.add(label);
-      });
-      return;
-    }
-
-    setState(() {
-      if (_afterEmojis.contains(label)) {
-        _afterEmojis.remove(label);
-      } else {
-        _afterEmojis.add(label);
-      }
-    });
   }
 
   Future<void> _pickDateTime() async {
@@ -368,7 +319,12 @@ class _AddMealPageState extends State<AddMealPage> {
                   onChanged: (v) => setState(() => _beforeIntensity = v),
                 ),
                 const SizedBox(height: 12),
-                _emotionBlockBefore(),
+                EmotionPicker(
+                  title: 'Emozioni (prima) – scegli emoticon oppure scrivi tu',
+                  selected: _beforeEmojis,
+                  selectedColor: DS.chipSelectedMeal,
+                  onChanged: (v) => setState(() => _beforeEmojis = v),
+                ),
                 const SizedBox(height: 12),
                 _textField(_beforeThoughtCtrl, 'Pensiero (prima)...'),
               ],
@@ -434,7 +390,12 @@ class _AddMealPageState extends State<AddMealPage> {
                   onChanged: (v) => setState(() => _afterIntensity = v),
                 ),
                 const SizedBox(height: 12),
-                _emotionBlockAfter(),
+                EmotionPicker(
+                  title: 'Emozioni (dopo) – scegli emoticon oppure scrivi tu',
+                  selected: _afterEmojis,
+                  selectedColor: DS.chipSelectedMeal,
+                  onChanged: (v) => setState(() => _afterEmojis = v),
+                ),
                 const SizedBox(height: 12),
                 _textField(_afterThoughtCtrl, 'Pensiero (dopo)...'),
               ],
@@ -443,166 +404,6 @@ class _AddMealPageState extends State<AddMealPage> {
         ],
       ),
     );
-  }
-
-  Widget _emotionBlockBefore() {
-    return _emotionBlock(
-      title: 'Emozioni (prima) – scegli emoticon oppure scrivi tu',
-      emotions: _emotions,
-      selected: _beforeEmojis,
-      isCustomActive: _beforeUsesCustom,
-      onToggle: _toggleBeforeEmoji,
-      addButtonText: '➕ Altra emozione (prima)',
-      customValue: _beforeCustomEmotion,
-      onOpenCustom: () async {
-        final res = await _openCustomEmotionDialog(
-          title: 'Altra emozione (prima)',
-          initial: _beforeCustomEmotion,
-        );
-        if (res == null) return;
-
-        setState(() {
-          _beforeCustomEmotion = res.trim();
-          if (_beforeUsesCustom) _beforeEmojis.clear();
-        });
-      },
-    );
-  }
-
-  Widget _emotionBlockAfter() {
-    return _emotionBlock(
-      title: 'Emozioni (dopo) – scegli emoticon oppure scrivi tu',
-      emotions: _emotions,
-      selected: _afterEmojis,
-      isCustomActive: _afterUsesCustom,
-      onToggle: _toggleAfterEmoji,
-      addButtonText: '➕ Altra emozione (dopo)',
-      customValue: _afterCustomEmotion,
-      onOpenCustom: () async {
-        final res = await _openCustomEmotionDialog(
-          title: 'Altra emozione (dopo)',
-          initial: _afterCustomEmotion,
-        );
-        if (res == null) return;
-
-        setState(() {
-          _afterCustomEmotion = res.trim();
-          if (_afterUsesCustom) _afterEmojis.clear();
-        });
-      },
-    );
-  }
-
-  Widget _emotionBlock({
-    required String title,
-    required List<EmotionItem> emotions,
-    required Set<String> selected,
-    required bool isCustomActive,
-    required void Function(String label) onToggle,
-    required String addButtonText,
-    required String customValue,
-    required Future<void> Function() onOpenCustom,
-  }) {
-    final chipOpacity = isCustomActive ? 0.35 : 1.0;
-
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: DS.surfaceWhite35,
-        borderRadius: BorderRadius.circular(DS.radiusField),
-        border: Border.all(color: DS.borderFaint),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(title, style: DS.sectionLabel.copyWith(color: DS.textPrimary)),
-          const SizedBox(height: 10),
-          Wrap(
-            spacing: 10,
-            runSpacing: 10,
-            children: emotions.map((e) {
-              final isOn = selected.contains(e.label);
-              return Opacity(
-                opacity: chipOpacity,
-                child: FilterChip(
-                  label: Text('${e.emoji}  ${e.label}', style: DS.filterChipLabel),
-                  selected: isOn,
-                  onSelected: isCustomActive ? null : (_) => onToggle(e.label),
-                  showCheckmark: false,
-                  selectedColor: DS.chipSelectedMeal,
-                  backgroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(DS.radiusPill),
-                    side: BorderSide(color: isOn ? DS.borderEmphasis : DS.borderLight),
-                  ),
-                ),
-              );
-            }).toList(),
-          ),
-          const SizedBox(height: 12),
-          SizedBox(
-            width: double.infinity,
-            child: OutlinedButton(
-              onPressed: () async => onOpenCustom(),
-              style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 14),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(DS.radiusPill)),
-                side: const BorderSide(color: DS.borderLight),
-                backgroundColor: Colors.white,
-              ),
-              child: Text(
-                addButtonText,
-                style: DS.sectionLabel.copyWith(color: DS.textPrimary),
-              ),
-            ),
-          ),
-          if (customValue.trim().isNotEmpty) ...[
-            const SizedBox(height: 10),
-            Text(
-              'Scelta attiva: "${customValue.trim()}"',
-              style: DS.caption,
-            ),
-          ],
-        ],
-      ),
-    );
-  }
-
-  Future<String?> _openCustomEmotionDialog({
-    required String title,
-    required String initial,
-  }) async {
-    final ctrl = TextEditingController(text: initial);
-    final res = await showDialog<String>(
-      context: context,
-      builder: (ctx) {
-        return AlertDialog(
-          title: Text(title),
-          content: TextField(
-            controller: ctrl,
-            autofocus: true,
-            textInputAction: TextInputAction.done,
-            decoration: const InputDecoration(
-              hintText: 'Scrivi un’emozione...',
-              border: OutlineInputBorder(),
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(ctx).pop(null),
-              child: const Text('Annulla'),
-            ),
-            FilledButton(
-              onPressed: () => Navigator.of(ctx).pop(ctrl.text),
-              child: const Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-    ctrl.dispose();
-    return res;
   }
 
   Widget _textField(TextEditingController ctrl, String hint) {

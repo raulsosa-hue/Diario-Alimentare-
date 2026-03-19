@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../models/emotions.dart';
 import '../styles.dart';
+import '../widgets/emotion_picker.dart';
 
 class AddExercisePage extends StatefulWidget {
   const AddExercisePage({super.key});
@@ -43,10 +43,8 @@ class _AddExercisePageState extends State<AddExercisePage> {
 
   double _intensityBefore = 0;
 
-  final List<EmotionItem> _baseEmotions = kEmotions;
-
-  final Set<String> _emotionsBefore = <String>{};
-  final Set<String> _emotionsAfter = <String>{};
+  String? _emotionsBefore;
+  String? _emotionsAfter;
 
   final TextEditingController _thoughtBeforeCtrl = TextEditingController();
 
@@ -125,46 +123,6 @@ class _AddExercisePageState extends State<AddExercisePage> {
                     _isOtherExerciseSelected = true;
                     _selectedExerciseType = null;
                     _otherExerciseCtrl.text = text;
-                  });
-                }
-                Navigator.pop(ctx);
-              },
-              child: const Text('Aggiungi'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Future<void> _addCustomEmotionDialog({required bool isBefore}) async {
-    final controller = TextEditingController();
-    await showDialog<void>(
-      context: context,
-      builder: (ctx) {
-        return AlertDialog(
-          title: const Text('Altra emozione'),
-          content: TextField(
-            controller: controller,
-            decoration: const InputDecoration(
-              hintText: 'Scrivi qui…',
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(ctx),
-              child: const Text('Annulla'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                final text = controller.text.trim();
-                if (text.isNotEmpty) {
-                  setState(() {
-                    if (isBefore) {
-                      _emotionsBefore.add(text);
-                    } else {
-                      _emotionsAfter.add(text);
-                    }
                   });
                 }
                 Navigator.pop(ctx);
@@ -317,114 +275,6 @@ class _AddExercisePageState extends State<AddExercisePage> {
             hintText: hint,
             border: InputBorder.none,
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _emotionsRow(Set<String> selected, {required bool isBefore}) {
-    final chips = <Widget>[];
-
-    for (final e in _baseEmotions) {
-      chips.add(_emotionChip(
-        label: e.label,
-        emoji: e.emoji,
-        selected: selected.contains(e.label),
-        onTap: () {
-          setState(() {
-            if (selected.contains(e.label)) {
-              selected.remove(e.label);
-            } else {
-              selected.add(e.label);
-            }
-          });
-        },
-      ));
-    }
-
-    // Aggiunte custom (se presenti)
-    for (final s in selected.where((x) => !_baseEmotions.any((b) => b.label == x)).toList()) {
-      chips.add(_emotionChip(
-        label: s,
-        emoji: '•',
-        selected: true,
-        onTap: () {
-          setState(() => selected.remove(s));
-        },
-      ));
-    }
-
-    chips.add(_emotionAddChip(
-      onTap: () => _addCustomEmotionDialog(isBefore: isBefore),
-    ));
-
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 6, 16, 16),
-      child: Wrap(
-        spacing: 12,
-        runSpacing: 12,
-        children: chips,
-      ),
-    );
-  }
-
-  Widget _emotionChip({
-    required String label,
-    required String emoji,
-    required bool selected,
-    required VoidCallback onTap,
-  }) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(DS.radiusChip),
-      onTap: onTap,
-      child: Container(
-        constraints: const BoxConstraints(minWidth: 140),
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-        decoration: BoxDecoration(
-          color: selected ? DS.chipSelectedExercise : DS.surfaceWhite65,
-          borderRadius: BorderRadius.circular(DS.radiusChip),
-          border: Border.all(color: DS.borderLight),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(emoji, style: DS.emojiText),
-            const SizedBox(width: 10),
-            Flexible(
-              child: Text(
-                label,
-                overflow: TextOverflow.ellipsis,
-                style: DS.chipLabel.copyWith(color: DS.textDark),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _emotionAddChip({required VoidCallback onTap}) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(DS.radiusChip),
-      onTap: onTap,
-      child: Container(
-        constraints: const BoxConstraints(minWidth: 180),
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-        decoration: BoxDecoration(
-          color: DS.surfaceWhite65,
-          borderRadius: BorderRadius.circular(DS.radiusChip),
-          border: Border.all(color: DS.borderLight),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Text('+', style: DS.sectionLabel),
-            const SizedBox(width: 10),
-            Text(
-              'Altra emozione',
-              style: DS.sectionLabel.copyWith(color: DS.textDark),
-            ),
-          ],
         ),
       ),
     );
@@ -672,7 +522,14 @@ class _AddExercisePageState extends State<AddExercisePage> {
                     onChanged: (v) => setState(() => _intensityBefore = v),
                   ),
                   _titleH3('Quali emozioni sento? (prima)'),
-                  _emotionsRow(_emotionsBefore, isBefore: true),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 6, 16, 16),
+                    child: EmotionPicker(
+                      selected: _emotionsBefore,
+                      selectedColor: DS.chipSelectedExercise,
+                      onChanged: (v) => setState(() => _emotionsBefore = v),
+                    ),
+                  ),
                   _inputFill(
                     hint: 'Quale pensiero ho? (prima)',
                     controller: _thoughtBeforeCtrl,
@@ -717,7 +574,14 @@ class _AddExercisePageState extends State<AddExercisePage> {
                     onChanged: (v) => setState(() => _intensityAfter = v),
                   ),
                   _titleH3('Quali emozioni sento? (dopo)'),
-                  _emotionsRow(_emotionsAfter, isBefore: false),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 6, 16, 16),
+                    child: EmotionPicker(
+                      selected: _emotionsAfter,
+                      selectedColor: DS.chipSelectedExercise,
+                      onChanged: (v) => setState(() => _emotionsAfter = v),
+                    ),
+                  ),
                   _inputFill(
                     hint: 'Quale pensiero ho? (dopo)',
                     controller: _thoughtAfterCtrl,
