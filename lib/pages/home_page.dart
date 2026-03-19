@@ -5,28 +5,26 @@ import 'add_meal_page.dart';
 import 'add_exercise_page.dart';
 import '../styles.dart';
 
-
-
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   // =========================
   // SOLO COLORI (soft + coerenti)
   // =========================
-  static const Color _bgTop = Color(0xFFF2F6FB);       // azzurro/grigio molto chiaro
-  static const Color _bgBottom = Color(0xFFE9EFF7);    // leggermente più “freddo”
-  static const Color _panel = Color(0xFFE7ECF3);       // pannello centrale soft
+  static const Color _bgTop = Color(0xFFF2F6FB); // azzurro/grigio molto chiaro
+  static const Color _bgBottom = Color(0xFFE9EFF7); // leggermente più “freddo”
+  static const Color _panel = Color(0xFFE7ECF3); // pannello centrale soft
 
-  static const Color _circleBase = Color(0xFFF7F8FA);  // cerchi chiari coerenti
+  static const Color _circleBase = Color(0xFFF7F8FA); // cerchi chiari coerenti
   static const Color _circleBorder = Color(0xFFFFFFFF);
 
-  static const Color _shadowDark = Color(0x26000000);  // ombra morbida
+  static const Color _shadowDark = Color(0x26000000); // ombra morbida
   static const Color _shadowLight = Color(0x66FFFFFF); // highlight
 
   // piccoli accenti “soft” per distinguere i 4 cerchi (non invasivi)
-  static const Color _tintMeal = Color(0xFFF7E6D6);     // pesca chiaro
+  static const Color _tintMeal = Color(0xFFF7E6D6); // pesca chiaro
   static const Color _tintExercise = Color(0xFFE3F2E7); // verde chiaro
-  static const Color _tintExport = Color(0xFFE1EEF7);   // azzurro chiaro
+  static const Color _tintExport = Color(0xFFE1EEF7); // azzurro chiaro
 
   @override
   Widget build(BuildContext context) {

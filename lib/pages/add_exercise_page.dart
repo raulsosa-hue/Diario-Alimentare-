@@ -447,9 +447,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
   // ====== SAVE (scrive in TIMELINE) ======
   Future<void> _save() async {
     // 1) Tipo esercizio scelto
-    final String type = _isOtherExerciseSelected
-        ? _otherExerciseCtrl.text.trim()
-        : (_selectedExerciseType ?? '');
+    final String type = _isOtherExerciseSelected ? _otherExerciseCtrl.text.trim() : (_selectedExerciseType ?? '');
 
     // 2) Creo result (utile anche se vuoi usare Navigator.pop)
     final Map<String, dynamic> result = {
@@ -712,7 +710,6 @@ class _AddExercisePageState extends State<AddExercisePage> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   _sectionHeader('INTENZIONE (prima di\nallenarti)'),
-
                   _titleH2('Perché sto facendo esercizio?'),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(16, 8, 16, 10),
@@ -736,16 +733,13 @@ class _AddExercisePageState extends State<AddExercisePage> {
                       ],
                     ),
                   ),
-
                   _titleH3("Qual è l\u2019intensità emotiva? (prima)"),
                   _slider01(
                     value: _intensityBefore,
                     onChanged: (v) => setState(() => _intensityBefore = v),
                   ),
-
                   _titleH3('Quali emozioni sento? (prima)'),
                   _emotionsRow(_emotionsBefore, isBefore: true),
-
                   _inputFill(
                     hint: 'Quale pensiero ho? (prima)',
                     controller: _thoughtBeforeCtrl,
@@ -761,7 +755,6 @@ class _AddExercisePageState extends State<AddExercisePage> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   _sectionHeader('ESITO (dopo l\'esercizio)'),
-
                   _titleH2("Dopo l\u2019esercizio mi sento\u2026"),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(16, 8, 16, 10),
@@ -781,28 +774,22 @@ class _AddExercisePageState extends State<AddExercisePage> {
                       ],
                     ),
                   ),
-
                   _inputFill(
                     hint: 'Quali sensazioni fisiche provo…',
                     controller: _physicalAfterCtrl,
                   ),
-
                   _titleH3("Qual è l\u2019intensità emotiva? (dopo)"),
                   _slider01(
                     value: _intensityAfter,
                     onChanged: (v) => setState(() => _intensityAfter = v),
                   ),
-
                   _titleH3('Quali emozioni sento? (dopo)'),
                   _emotionsRow(_emotionsAfter, isBefore: false),
-
                   _inputFill(
                     hint: 'Quale pensiero ho? (dopo)',
                     controller: _thoughtAfterCtrl,
                   ),
-
                   const SizedBox(height: 14),
-
                   Center(
                     child: InkWell(
                       borderRadius: BorderRadius.circular(24),

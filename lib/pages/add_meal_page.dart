@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import '../services/timeline_store.dart';
 import '../styles.dart';
 
-
-
 class AddMealPage extends StatefulWidget {
   const AddMealPage({super.key});
 
@@ -196,10 +194,8 @@ class _AddMealPageState extends State<AddMealPage> {
   }
 
   Map<String, dynamic> _buildPayload() {
-    final beforeEmotionValue =
-        _beforeUsesCustom ? _beforeCustomEmotion.trim() : _beforeEmojis.join(', ');
-    final afterEmotionValue =
-        _afterUsesCustom ? _afterCustomEmotion.trim() : _afterEmojis.join(', ');
+    final beforeEmotionValue = _beforeUsesCustom ? _beforeCustomEmotion.trim() : _beforeEmojis.join(', ');
+    final afterEmotionValue = _afterUsesCustom ? _afterCustomEmotion.trim() : _afterEmojis.join(', ');
 
     return <String, dynamic>{
       'type': 'meal',

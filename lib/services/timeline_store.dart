@@ -39,11 +39,12 @@ class TimelineStore {
     final f = await _file();
     await f.writeAsString(jsonEncode(_events));
   }
-Future<void> addEntry(Map<String, dynamic> entry) async {
-  await load();
-  _events.add(entry);
-  await _save();
-}
+
+  Future<void> addEntry(Map<String, dynamic> entry) async {
+    await load();
+    _events.add(entry);
+    await _save();
+  }
 
   /// TEST: aggiunge un evento "Pasto" semplice (per collegare subito Salva → Export)
   Future<void> addMealTest() async {
