@@ -43,7 +43,7 @@ Future<void> _onCreate(Database db, int version) async {
       ora_record TEXT NOT NULL,        -- es: 09:52
 
       -- tipo pasto
-      tipo_pasto TEXT NOT NULL,        -- Colazione/Spuntino/Pranzo/Merenda/Cena/Pasti aggiuntivi
+      tipo_pasto TEXT NOT NULL,        -- Colazione/Spuntino/Pranzo/Merenda/Cena
 
       -- CONTESO PRIMA (preset + testo libero eventuale)
       dove_sono TEXT,                 -- preset: casa/lavoro/macchina/in giro/...

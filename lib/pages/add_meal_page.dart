@@ -20,7 +20,6 @@ class _AddMealPageState extends State<AddMealPage> {
     'Pranzo',
     'Merenda',
     'Cena',
-    'Pasti aggiuntivi',
   ];
   String _mealType = 'Colazione';
 
