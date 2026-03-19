@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import '../models/mindfulness_suggestions.dart';
 import '../styles.dart';
 import '../widgets/common_buttons.dart';
 import '../widgets/emotion_picker.dart';
+import '../widgets/mindfulness_card.dart';
 
 class AddExercisePage extends StatefulWidget {
   const AddExercisePage({super.key});
@@ -57,6 +59,9 @@ class _AddExercisePageState extends State<AddExercisePage> {
   final TextEditingController _bodyAfterCtrl = TextEditingController();
   final TextEditingController _thoughtAfterCtrl = TextEditingController();
 
+  late String _suggestionBeforeExercise;
+  late String _suggestionAfterExercise;
+
   // ====== UI COLORS ======
   static const Color _pageBg = Color(0xFFEFEFF7);
   static const Color _cardBlue = Color(0xFFD9E9FF); // ESERCIZIO
@@ -64,6 +69,13 @@ class _AddExercisePageState extends State<AddExercisePage> {
   static const Color _cardGreen = Color(0xFFDFF1D7); // ESITO (dopo)
 
   // ====== LIFECYCLE ======
+  @override
+  void initState() {
+    super.initState();
+    _suggestionBeforeExercise = pickSuggestion(MindfulnessMoment.beforeExercise);
+    _suggestionAfterExercise = pickSuggestion(MindfulnessMoment.afterExercise);
+  }
+
   @override
   void dispose() {
     _otherExerciseCtrl.dispose();
@@ -566,7 +578,19 @@ class _AddExercisePageState extends State<AddExercisePage> {
             const SizedBox(height: 14),
             _dateTimeSection(),
             _exerciseSection(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: MindfulnessCard(
+                suggestion: _suggestionBeforeExercise,
+              ),
+            ),
             _intentionSection(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: MindfulnessCard(
+                suggestion: _suggestionAfterExercise,
+              ),
+            ),
             _outcomeSection(),
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 18, 16, 6),

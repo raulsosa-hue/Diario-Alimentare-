@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import '../models/mindfulness_suggestions.dart';
 import '../styles.dart';
 import '../widgets/common_buttons.dart';
 import '../widgets/emotion_picker.dart';
+import '../widgets/mindfulness_card.dart';
 
 class AddMealPage extends StatefulWidget {
   const AddMealPage({super.key});
@@ -45,6 +47,9 @@ class _AddMealPageState extends State<AddMealPage> {
 
   bool _showTimeErrors = false;
 
+  late String _suggestionBeforeMeal;
+  late String _suggestionAfterMeal;
+
   // ====== UI COLORS ======
   static const Color _pageBg = Color(0xFFEFF2F6);
   static const Color _headerPeach = Color(0xFFF2CFAE); // PRIMA
@@ -60,6 +65,8 @@ class _AddMealPageState extends State<AddMealPage> {
     super.initState();
     final now = DateTime.now();
     _startTime = TimeOfDay(hour: now.hour, minute: now.minute);
+    _suggestionBeforeMeal = pickSuggestion(MindfulnessMoment.beforeMeal);
+    _suggestionAfterMeal = pickSuggestion(MindfulnessMoment.afterMeal);
   }
 
   @override
@@ -455,9 +462,13 @@ class _AddMealPageState extends State<AddMealPage> {
             const SizedBox(height: 12),
             _mealTypeSection(),
             const SizedBox(height: 14),
+            MindfulnessCard(suggestion: _suggestionBeforeMeal),
+            const SizedBox(height: 14),
             _beforeSection(),
             const SizedBox(height: 14),
             _mealSection(),
+            const SizedBox(height: 14),
+            MindfulnessCard(suggestion: _suggestionAfterMeal),
             const SizedBox(height: 14),
             _afterSection(),
             const SizedBox(height: 18),
