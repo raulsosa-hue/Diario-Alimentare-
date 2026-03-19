@@ -188,27 +188,25 @@ class _AddMealPageState extends State<AddMealPage> {
         foregroundColor: Colors.black,
         elevation: 0.5,
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(14, 14, 14, 24),
-          child: Column(
-            children: [
-              _dateTimeCard(),
-              const SizedBox(height: 12),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.fromLTRB(14, 14, 14, 24),
+        child: Column(
+          children: [
+            _dateTimeCard(),
+            const SizedBox(height: 12),
 
-              // ✅ NUOVO: TIPO PASTO (tra data/ora e PRIMA)
-              _mealTypeCard(),
-              const SizedBox(height: 14),
+            // ✅ NUOVO: TIPO PASTO (tra data/ora e PRIMA)
+            _mealTypeCard(),
+            const SizedBox(height: 14),
 
-              _segmentBefore(),
-              const SizedBox(height: 14),
-              _segmentMeal(),
-              const SizedBox(height: 14),
-              _segmentAfter(),
-              const SizedBox(height: 18),
-              _saveButton(),
-            ],
-          ),
+            _segmentBefore(),
+            const SizedBox(height: 14),
+            _segmentMeal(),
+            const SizedBox(height: 14),
+            _segmentAfter(),
+            const SizedBox(height: 18),
+            _saveButton(),
+          ],
         ),
       ),
     );
