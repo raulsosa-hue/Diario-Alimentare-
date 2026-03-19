@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../models/emotions.dart';
 import '../styles.dart';
 
 class AddMealPage extends StatefulWidget {
@@ -51,28 +52,7 @@ class _AddMealPageState extends State<AddMealPage> {
   String _afterCustomEmotion = '';
 
   // -------------------------
-  // EMOZIONI (preimpostate)
-  // -------------------------
-  final List<_EmotionItem> _emotions = const <_EmotionItem>[
-    _EmotionItem("Fame d'amore", '❤️'),
-    _EmotionItem('Gioia', '😊'),
-    _EmotionItem('Tristezza', '😢'),
-    _EmotionItem('Rabbia', '😠'),
-    _EmotionItem('Paura', '😨'),
-    _EmotionItem('Ansia', '😰'),
-    _EmotionItem('Disgusto', '🤢'),
-    _EmotionItem('Sorpresa', '😮'),
-    _EmotionItem('Orgoglio', '😌'),
-    _EmotionItem('Imbarazzo / Vergogna', '😳'),
-    _EmotionItem('Invidia / Gelosia', '😒'),
-    _EmotionItem('Nostalgia', '🥲'),
-    _EmotionItem('Colpa / Rimorso', '😔'),
-    _EmotionItem('Frustrazione', '😤'),
-    _EmotionItem('Solitudine', '😔'),
-    _EmotionItem('Apatia', '😐'),
-    _EmotionItem('Vuoto', '🫥'),
-    _EmotionItem('Calma', '🧘'),
-  ];
+  final List<EmotionItem> _emotions = kEmotions;
 
   @override
   void initState() {
@@ -517,7 +497,7 @@ class _AddMealPageState extends State<AddMealPage> {
 
   Widget _emotionBlock({
     required String title,
-    required List<_EmotionItem> emotions,
+    required List<EmotionItem> emotions,
     required Set<String> selected,
     required bool isCustomActive,
     required void Function(String label) onToggle,
@@ -705,10 +685,4 @@ class _AddMealPageState extends State<AddMealPage> {
       ),
     );
   }
-}
-
-class _EmotionItem {
-  final String label;
-  final String emoji;
-  const _EmotionItem(this.label, this.emoji);
 }

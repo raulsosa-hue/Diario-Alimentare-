@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../models/emotions.dart';
 import '../styles.dart';
 
 class AddExercisePage extends StatefulWidget {
@@ -42,21 +43,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
 
   double _intensityBefore = 0;
 
-  // ====== EMOZIONI (uguali al pasto) ======
-  final List<_EmotionItem> _baseEmotions = const [
-    _EmotionItem('Gioia', '😊'),
-    _EmotionItem('Tristezza', '😢'),
-    _EmotionItem('Rabbia', '😠'),
-    _EmotionItem('Paura', '😨'),
-    _EmotionItem('Ansia', '😰'),
-    _EmotionItem('Disgusto', '🤢'),
-    _EmotionItem('Sorpresa', '😮'),
-    _EmotionItem('Orgoglio', '😌'),
-    _EmotionItem('Imbarazzo / Vergogna', '😳'),
-    _EmotionItem('Invidia / Gelosia', '😒'),
-    _EmotionItem('Nostalgia', '🥲'),
-    _EmotionItem('Colpa / Rimorso', '😔'),
-  ];
+  final List<EmotionItem> _baseEmotions = kEmotions;
 
   final Set<String> _emotionsBefore = <String>{};
   final Set<String> _emotionsAfter = <String>{};
@@ -779,10 +766,4 @@ class _LabeledEmoji {
   final String label;
   final String emoji;
   const _LabeledEmoji(this.label, this.emoji);
-}
-
-class _EmotionItem {
-  final String label;
-  final String emoji;
-  const _EmotionItem(this.label, this.emoji);
 }
