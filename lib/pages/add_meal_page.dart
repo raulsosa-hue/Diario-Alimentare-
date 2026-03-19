@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../styles.dart';
+import '../widgets/common_buttons.dart';
 import '../widgets/emotion_picker.dart';
 
 class AddMealPage extends StatefulWidget {
@@ -188,23 +189,7 @@ class _AddMealPageState extends State<AddMealPage> {
             ],
           ),
           const SizedBox(height: 10),
-          SizedBox(
-            width: double.infinity,
-            child: OutlinedButton.icon(
-              onPressed: _pickDateTime,
-              icon: const Icon(Icons.calendar_month, color: DS.accent),
-              label: Text(
-                'Cambia data/ora',
-                style: DS.bodyTextBold.copyWith(color: DS.accent),
-              ),
-              style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                side: const BorderSide(color: DS.borderLight),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(DS.radiusField)),
-                backgroundColor: DS.surfaceMuted,
-              ),
-            ),
-          ),
+          ChangeDateTimeButton(onPressed: _pickDateTime),
         ],
       ),
     );
@@ -471,17 +456,6 @@ class _AddMealPageState extends State<AddMealPage> {
   }
 
   Widget _saveButton() {
-    return SizedBox(
-      width: double.infinity,
-      child: FilledButton.icon(
-        onPressed: _save,
-        icon: const Icon(Icons.save),
-        label: const Text('Salva', style: DS.buttonPrimary),
-        style: FilledButton.styleFrom(
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(DS.radiusCard)),
-        ),
-      ),
-    );
+    return SaveButton(onPressed: _save);
   }
 }

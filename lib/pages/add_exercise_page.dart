@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../styles.dart';
+import '../widgets/common_buttons.dart';
 import '../widgets/emotion_picker.dart';
 
 class AddExercisePage extends StatefulWidget {
@@ -67,8 +68,6 @@ class _AddExercisePageState extends State<AddExercisePage> {
   static const Color _cardBlue = Color(0xFFD9E9FF); // ESERCIZIO
   static const Color _cardPeach = Color(0xFFF3DCCB); // INTENZIONE (prima)
   static const Color _cardGreen = Color(0xFFDFF1D7); // ESITO (dopo)
-
-  static const Color _saveGreen = Color(0xFFDFF1D7);
 
   // ====== HELPERS ======
   String _two(int n) => n.toString().padLeft(2, '0');
@@ -322,31 +321,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
                       style: DS.bodyText,
                     ),
                     const SizedBox(height: 14),
-                    Center(
-                      child: InkWell(
-                        borderRadius: BorderRadius.circular(24),
-                        onTap: _pickDateTime,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
-                          decoration: BoxDecoration(
-                            color: DS.surfaceWhite65,
-                            borderRadius: BorderRadius.circular(24),
-                            border: Border.all(color: DS.borderLight),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Icon(Icons.calendar_month, size: 26),
-                              const SizedBox(width: 10),
-                              Text(
-                                'Cambia data/ora',
-                                style: DS.bodyTextBold.copyWith(color: Colors.teal.shade700),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
+                    ChangeDateTimeButton(onPressed: _pickDateTime),
                   ],
                 ),
               ),
@@ -586,38 +561,14 @@ class _AddExercisePageState extends State<AddExercisePage> {
                     hint: 'Quale pensiero ho? (dopo)',
                     controller: _thoughtAfterCtrl,
                   ),
-                  const SizedBox(height: 14),
-                  Center(
-                    child: InkWell(
-                      borderRadius: BorderRadius.circular(24),
-                      onTap: _save,
-                      child: Container(
-                        margin: const EdgeInsets.only(bottom: 18),
-                        padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 14),
-                        decoration: BoxDecoration(
-                          color: _saveGreen,
-                          borderRadius: BorderRadius.circular(24),
-                          boxShadow: const [DS.cardShadow],
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Icon(Icons.save, color: DS.accentDark),
-                            const SizedBox(width: 12),
-                            Text(
-                              'Salva',
-                              style: DS.buttonPrimary.copyWith(color: Colors.teal.shade800),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ),
 
-            const SizedBox(height: 6),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 18, 16, 6),
+              child: SaveButton(onPressed: _save),
+            ),
           ],
         ),
       ),
