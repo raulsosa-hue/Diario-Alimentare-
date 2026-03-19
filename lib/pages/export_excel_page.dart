@@ -6,6 +6,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../services/timeline_store.dart';
+import '../styles.dart';
 
 class ExportTimelinePage extends StatefulWidget {
   const ExportTimelinePage({super.key});
@@ -295,12 +296,12 @@ class _ExportTimelinePageState extends State<ExportTimelinePage> {
                 : const Icon(Icons.timeline),
             label: Text(
               _isExporting ? 'Esportazione…' : 'Esporta TIMELINE',
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+              style: DS.buttonSecondary,
             ),
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(18),
+                borderRadius: BorderRadius.circular(DS.radiusCard),
               ),
             ),
             onPressed: _isExporting ? null : _exportTimeline,

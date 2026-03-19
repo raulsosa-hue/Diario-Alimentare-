@@ -3,6 +3,7 @@ import 'export_excel_page.dart';
 
 import 'add_meal_page.dart';
 import 'add_exercise_page.dart';
+import '../styles.dart';
 
 
 
@@ -50,12 +51,7 @@ class HomePage extends StatelessWidget {
                     const SizedBox(height: 18),
                     const Text(
                       'DIARIO ALIMENTARE',
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w900,
-                        letterSpacing: 1.2,
-                        color: Colors.black87,
-                      ),
+                      style: DS.pageTitle,
                     ),
                     const SizedBox(height: 18),
 
@@ -202,12 +198,7 @@ class _CircleButton extends StatelessWidget {
               Text(
                 label,
                 textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.w900,
-                  color: Colors.black87,
-                  height: 1.15,
-                ),
+                style: DS.navLabel,
               ),
             ],
           ),

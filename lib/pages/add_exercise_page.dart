@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../services/timeline_store.dart';
+import '../styles.dart';
 
 class AddExercisePage extends StatefulWidget {
   const AddExercisePage({super.key});
@@ -76,15 +77,12 @@ class _AddExercisePageState extends State<AddExercisePage> {
   double _intensityAfter = 0;
   final TextEditingController _thoughtAfterCtrl = TextEditingController();
 
-  // ====== UI COLORS (come screen) ======
+  // ====== UI COLORS (page-specific) ======
   static const Color _pageBg = Color(0xFFEFEFF7);
 
   static const Color _cardBlue = Color(0xFFD9E9FF); // ESERCIZIO
   static const Color _cardPeach = Color(0xFFF3DCCB); // INTENZIONE (prima)
   static const Color _cardGreen = Color(0xFFDFF1D7); // ESITO (dopo)
-
-  static const Color _chipBorder = Color(0x22000000);
-  static const Color _chipSelected = Color(0x2200A86B);
 
   static const Color _saveGreen = Color(0xFFDFF1D7);
 
@@ -202,17 +200,11 @@ class _AddExercisePageState extends State<AddExercisePage> {
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       decoration: BoxDecoration(
         color: color,
-        borderRadius: BorderRadius.circular(18),
-        boxShadow: const [
-          BoxShadow(
-            color: Color(0x14000000),
-            blurRadius: 10,
-            offset: Offset(0, 6),
-          ),
-        ],
+        borderRadius: BorderRadius.circular(DS.radiusCard),
+        boxShadow: const [DS.cardShadow],
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(DS.radiusCard),
         child: child,
       ),
     );
@@ -222,7 +214,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       decoration: const BoxDecoration(
-        color: Color(0x22000000),
+        color: DS.borderLight,
       ),
       child: Row(
         children: [
@@ -230,7 +222,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
           const SizedBox(width: 10),
           Text(
             title,
-            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
+            style: DS.sectionLabel,
           ),
         ],
       ),
@@ -247,24 +239,20 @@ class _AddExercisePageState extends State<AddExercisePage> {
     final child = Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
       decoration: BoxDecoration(
-        color: selected ? _chipSelected : Colors.white.withOpacity(0.65),
-        borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: _chipBorder),
+        color: selected ? DS.chipSelectedExercise : DS.surfaceWhite65,
+        borderRadius: BorderRadius.circular(DS.radiusChip),
+        border: Border.all(color: DS.borderLight),
       ),
       child: Row(
         mainAxisSize: fullWidth ? MainAxisSize.max : MainAxisSize.min,
         children: [
-          Text(emoji, style: const TextStyle(fontSize: 18)),
+          Text(emoji, style: DS.emojiText),
           const SizedBox(width: 10),
           Expanded(
             child: Text(
               label,
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w800,
-                color: Colors.black.withOpacity(0.78),
-              ),
+              style: DS.chipLabel.copyWith(color: DS.textDark),
             ),
           ),
         ],
@@ -272,7 +260,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
     );
 
     return InkWell(
-      borderRadius: BorderRadius.circular(22),
+      borderRadius: BorderRadius.circular(DS.radiusChip),
       onTap: onTap,
       child: child,
     );
@@ -283,7 +271,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
       padding: const EdgeInsets.fromLTRB(16, 14, 16, 6),
       child: Text(
         text,
-        style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w900),
+        style: DS.sectionLabel,
       ),
     );
   }
@@ -293,11 +281,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
       padding: const EdgeInsets.fromLTRB(16, 10, 16, 6),
       child: Text(
         text,
-        style: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.w800,
-          color: Colors.black.withOpacity(0.75),
-        ),
+        style: DS.sectionLabel.copyWith(color: DS.textMuted),
       ),
     );
   }
@@ -310,7 +294,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Row(
         children: [
-          const Text('0', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
+          const Text('0', style: DS.sectionLabel),
           Expanded(
             child: Slider(
               value: value,
@@ -320,7 +304,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
               onChanged: onChanged,
             ),
           ),
-          const Text('10', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
+          const Text('10', style: DS.sectionLabel),
         ],
       ),
     );
@@ -335,13 +319,14 @@ class _AddExercisePageState extends State<AddExercisePage> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.65),
-          borderRadius: BorderRadius.circular(18),
-          border: Border.all(color: _chipBorder),
+          color: DS.surfaceWhite65,
+          borderRadius: BorderRadius.circular(DS.radiusCard),
+          border: Border.all(color: DS.borderLight),
         ),
         child: TextField(
           controller: controller,
           maxLines: null,
+          style: DS.bodyText,
           decoration: InputDecoration(
             hintText: hint,
             border: InputBorder.none,
@@ -404,30 +389,26 @@ class _AddExercisePageState extends State<AddExercisePage> {
     required VoidCallback onTap,
   }) {
     return InkWell(
-      borderRadius: BorderRadius.circular(22),
+      borderRadius: BorderRadius.circular(DS.radiusChip),
       onTap: onTap,
       child: Container(
         constraints: const BoxConstraints(minWidth: 140),
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
         decoration: BoxDecoration(
-          color: selected ? _chipSelected : Colors.white.withOpacity(0.65),
-          borderRadius: BorderRadius.circular(22),
-          border: Border.all(color: _chipBorder),
+          color: selected ? DS.chipSelectedExercise : DS.surfaceWhite65,
+          borderRadius: BorderRadius.circular(DS.radiusChip),
+          border: Border.all(color: DS.borderLight),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(emoji, style: const TextStyle(fontSize: 18)),
+            Text(emoji, style: DS.emojiText),
             const SizedBox(width: 10),
             Flexible(
               child: Text(
                 label,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w800,
-                  color: Colors.black.withOpacity(0.78),
-                ),
+                style: DS.chipLabel.copyWith(color: DS.textDark),
               ),
             ),
           ],
@@ -438,28 +419,24 @@ class _AddExercisePageState extends State<AddExercisePage> {
 
   Widget _emotionAddChip({required VoidCallback onTap}) {
     return InkWell(
-      borderRadius: BorderRadius.circular(22),
+      borderRadius: BorderRadius.circular(DS.radiusChip),
       onTap: onTap,
       child: Container(
         constraints: const BoxConstraints(minWidth: 180),
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.65),
-          borderRadius: BorderRadius.circular(22),
-          border: Border.all(color: _chipBorder),
+          color: DS.surfaceWhite65,
+          borderRadius: BorderRadius.circular(DS.radiusChip),
+          border: Border.all(color: DS.borderLight),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text('+', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900)),
+            const Text('+', style: DS.sectionLabel),
             const SizedBox(width: 10),
             Text(
               'Altra emozione',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w900,
-                color: Colors.black.withOpacity(0.78),
-              ),
+              style: DS.sectionLabel.copyWith(color: DS.textDark),
             ),
           ],
         ),
@@ -561,7 +538,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
                   children: [
                     Text(
                       'Data e ora: ${_formatDateTime(_dateTime)}',
-                      style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w900),
+                      style: DS.bodyText,
                     ),
                     const SizedBox(height: 14),
                     Center(
@@ -571,9 +548,9 @@ class _AddExercisePageState extends State<AddExercisePage> {
                         child: Container(
                           padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.65),
+                            color: DS.surfaceWhite65,
                             borderRadius: BorderRadius.circular(24),
-                            border: Border.all(color: _chipBorder),
+                            border: Border.all(color: DS.borderLight),
                           ),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
@@ -582,11 +559,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
                               const SizedBox(width: 10),
                               Text(
                                 'Cambia data/ora',
-                                style: TextStyle(
-                                  fontSize: 28,
-                                  fontWeight: FontWeight.w900,
-                                  color: Colors.teal.shade700,
-                                ),
+                                style: DS.bodyTextBold.copyWith(color: Colors.teal.shade700),
                               ),
                             ],
                           ),
@@ -636,26 +609,22 @@ class _AddExercisePageState extends State<AddExercisePage> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(16, 10, 16, 0),
                     child: InkWell(
-                      borderRadius: BorderRadius.circular(22),
+                      borderRadius: BorderRadius.circular(DS.radiusChip),
                       onTap: _addOtherExerciseDialog,
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.65),
-                          borderRadius: BorderRadius.circular(22),
-                          border: Border.all(color: _chipBorder),
+                          color: DS.surfaceWhite65,
+                          borderRadius: BorderRadius.circular(DS.radiusChip),
+                          border: Border.all(color: DS.borderLight),
                         ),
                         child: Row(
                           children: [
-                            const Text('+', style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900)),
+                            const Text('+', style: DS.sectionLabel),
                             const SizedBox(width: 10),
                             Text(
                               'Altro esercizio',
-                              style: TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.w900,
-                                color: Colors.black.withOpacity(0.78),
-                              ),
+                              style: DS.sectionLabel.copyWith(color: DS.textDark),
                             ),
                           ],
                         ),
@@ -692,9 +661,9 @@ class _AddExercisePageState extends State<AddExercisePage> {
                           child: Container(
                             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
                             decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.65),
-                              borderRadius: BorderRadius.circular(22),
-                              border: Border.all(color: _chipBorder),
+                              color: DS.surfaceWhite65,
+                              borderRadius: BorderRadius.circular(DS.radiusChip),
+                              border: Border.all(color: DS.borderLight),
                             ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -707,12 +676,12 @@ class _AddExercisePageState extends State<AddExercisePage> {
                                   },
                                   child: const Padding(
                                     padding: EdgeInsets.symmetric(horizontal: 12),
-                                    child: Text('−', style: TextStyle(fontSize: 30, fontWeight: FontWeight.w900)),
+                                    child: Text('−', style: DS.controlButton),
                                   ),
                                 ),
                                 Text(
                                   '$_durationMinutes min',
-                                  style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w900),
+                                  style: DS.displayMedium,
                                 ),
                                 InkWell(
                                   onTap: () {
@@ -722,7 +691,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
                                   },
                                   child: const Padding(
                                     padding: EdgeInsets.symmetric(horizontal: 12),
-                                    child: Text('+', style: TextStyle(fontSize: 30, fontWeight: FontWeight.w900)),
+                                    child: Text('+', style: DS.controlButton),
                                   ),
                                 ),
                               ],
@@ -768,7 +737,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
                     ),
                   ),
 
-                  _titleH3('Qual è l’intensità emotiva? (prima)'),
+                  _titleH3("Qual è l\u2019intensità emotiva? (prima)"),
                   _slider01(
                     value: _intensityBefore,
                     onChanged: (v) => setState(() => _intensityBefore = v),
@@ -793,7 +762,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
                 children: [
                   _sectionHeader('ESITO (dopo l\'esercizio)'),
 
-                  _titleH2('Dopo l’esercizio mi sento…'),
+                  _titleH2("Dopo l\u2019esercizio mi sento\u2026"),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(16, 8, 16, 10),
                     child: Column(
@@ -818,7 +787,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
                     controller: _physicalAfterCtrl,
                   ),
 
-                  _titleH3('Qual è l’intensità emotiva? (dopo)'),
+                  _titleH3("Qual è l\u2019intensità emotiva? (dopo)"),
                   _slider01(
                     value: _intensityAfter,
                     onChanged: (v) => setState(() => _intensityAfter = v),
@@ -844,26 +813,16 @@ class _AddExercisePageState extends State<AddExercisePage> {
                         decoration: BoxDecoration(
                           color: _saveGreen,
                           borderRadius: BorderRadius.circular(24),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Color(0x14000000),
-                              blurRadius: 10,
-                              offset: Offset(0, 6),
-                            ),
-                          ],
+                          boxShadow: const [DS.cardShadow],
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Icon(Icons.save, color: Colors.teal.shade800, size: 26),
+                            const Icon(Icons.save, color: DS.accentDark),
                             const SizedBox(width: 12),
                             Text(
                               'Salva',
-                              style: TextStyle(
-                                fontSize: 26,
-                                fontWeight: FontWeight.w900,
-                                color: Colors.teal.shade800,
-                              ),
+                              style: DS.buttonPrimary.copyWith(color: Colors.teal.shade800),
                             ),
                           ],
                         ),

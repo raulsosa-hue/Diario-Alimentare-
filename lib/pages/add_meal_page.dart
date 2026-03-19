@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../services/timeline_store.dart';
+import '../styles.dart';
 
 
 
@@ -279,14 +280,8 @@ class _AddMealPageState extends State<AddMealPage> {
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(18),
-        boxShadow: const [
-          BoxShadow(
-            blurRadius: 10,
-            offset: Offset(0, 6),
-            color: Color(0x14000000),
-          ),
-        ],
+        borderRadius: BorderRadius.circular(DS.radiusCard),
+        boxShadow: const [DS.cardShadow],
       ),
       child: Column(
         children: [
@@ -294,12 +289,12 @@ class _AddMealPageState extends State<AddMealPage> {
             children: [
               const Text(
                 'Data e ora: ',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+                style: DS.bodyText,
               ),
               Expanded(
                 child: Text(
                   _formatDateTime(_dateTime),
-                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+                  style: DS.bodyText,
                 ),
               ),
             ],
@@ -309,20 +304,16 @@ class _AddMealPageState extends State<AddMealPage> {
             width: double.infinity,
             child: OutlinedButton.icon(
               onPressed: _pickDateTime,
-              icon: const Icon(Icons.calendar_month, color: Color(0xFF1D7A6A)),
-              label: const Text(
+              icon: const Icon(Icons.calendar_month, color: DS.accent),
+              label: Text(
                 'Cambia data/ora',
-                style: TextStyle(
-                  color: Color(0xFF1D7A6A),
-                  fontSize: 18,
-                  fontWeight: FontWeight.w800,
-                ),
+                style: DS.bodyTextBold.copyWith(color: DS.accent),
               ),
               style: OutlinedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 16),
-                side: const BorderSide(color: Color(0x22000000)),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                backgroundColor: const Color(0xFFF3F5F9),
+                side: const BorderSide(color: DS.borderLight),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(DS.radiusField)),
+                backgroundColor: DS.surfaceMuted,
               ),
             ),
           ),
@@ -336,22 +327,16 @@ class _AddMealPageState extends State<AddMealPage> {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.85),
-        borderRadius: BorderRadius.circular(18),
-        boxShadow: const [
-          BoxShadow(
-            blurRadius: 10,
-            offset: Offset(0, 6),
-            color: Color(0x14000000),
-          ),
-        ],
-        border: Border.all(color: const Color(0x14000000)),
+        color: DS.surfaceWhite85,
+        borderRadius: BorderRadius.circular(DS.radiusCard),
+        boxShadow: const [DS.cardShadow],
+        border: Border.all(color: DS.borderSubtle),
       ),
       child: Row(
         children: [
           const Text(
             'Tipo pasto: ',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
+            style: DS.bodyTextBold,
           ),
           const SizedBox(width: 8),
           Expanded(
@@ -359,8 +344,8 @@ class _AddMealPageState extends State<AddMealPage> {
               padding: const EdgeInsets.symmetric(horizontal: 12),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: const Color(0x22000000)),
+                borderRadius: BorderRadius.circular(DS.radiusField),
+                border: Border.all(color: DS.borderLight),
               ),
               child: DropdownButtonHideUnderline(
                 child: DropdownButton<String>(
@@ -371,7 +356,7 @@ class _AddMealPageState extends State<AddMealPage> {
                             value: e,
                             child: Text(
                               e,
-                              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
+                              style: DS.bodyTextBold,
                             ),
                           ))
                       .toList(),
@@ -393,13 +378,13 @@ class _AddMealPageState extends State<AddMealPage> {
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       decoration: BoxDecoration(
         color: barColor,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(18)),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(DS.radiusCard)),
       ),
       child: Row(
         children: [
           Icon(icon, size: 18, color: Colors.black87),
           const SizedBox(width: 8),
-          Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800)),
+          Text(title, style: DS.sectionLabel),
         ],
       ),
     );
@@ -409,15 +394,9 @@ class _AddMealPageState extends State<AddMealPage> {
     return Container(
       decoration: BoxDecoration(
         color: bodyColor,
-        borderRadius: BorderRadius.circular(18),
-        boxShadow: const [
-          BoxShadow(
-            blurRadius: 10,
-            offset: Offset(0, 6),
-            color: Color(0x14000000),
-          ),
-        ],
-        border: Border.all(color: const Color(0x14000000)),
+        borderRadius: BorderRadius.circular(DS.radiusCard),
+        boxShadow: const [DS.cardShadow],
+        border: Border.all(color: DS.borderSubtle),
       ),
       child: child,
     );
@@ -593,14 +572,14 @@ class _AddMealPageState extends State<AddMealPage> {
       width: double.infinity,
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.35),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0x1A000000)),
+        color: DS.surfaceWhite35,
+        borderRadius: BorderRadius.circular(DS.radiusField),
+        border: Border.all(color: DS.borderFaint),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: Colors.black87)),
+          Text(title, style: DS.sectionLabel.copyWith(color: DS.textPrimary)),
           const SizedBox(height: 10),
           Wrap(
             spacing: 10,
@@ -610,15 +589,15 @@ class _AddMealPageState extends State<AddMealPage> {
               return Opacity(
                 opacity: chipOpacity,
                 child: FilterChip(
-                  label: Text('${e.emoji}  ${e.label}', style: const TextStyle(fontWeight: FontWeight.w700)),
+                  label: Text('${e.emoji}  ${e.label}', style: DS.filterChipLabel),
                   selected: isOn,
                   onSelected: isCustomActive ? null : (_) => onToggle(e.label),
                   showCheckmark: false,
-                  selectedColor: const Color(0xFFBFE3D8),
+                  selectedColor: DS.chipSelectedMeal,
                   backgroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(999),
-                    side: BorderSide(color: isOn ? const Color(0x55000000) : const Color(0x22000000)),
+                    borderRadius: BorderRadius.circular(DS.radiusPill),
+                    side: BorderSide(color: isOn ? DS.borderEmphasis : DS.borderLight),
                   ),
                 ),
               );
@@ -631,13 +610,13 @@ class _AddMealPageState extends State<AddMealPage> {
               onPressed: () async => onOpenCustom(),
               style: OutlinedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 14),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(999)),
-                side: const BorderSide(color: Color(0x22000000)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(DS.radiusPill)),
+                side: const BorderSide(color: DS.borderLight),
                 backgroundColor: Colors.white,
               ),
               child: Text(
                 addButtonText,
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: Colors.black87),
+                style: DS.sectionLabel.copyWith(color: DS.textPrimary),
               ),
             ),
           ),
@@ -645,7 +624,7 @@ class _AddMealPageState extends State<AddMealPage> {
             const SizedBox(height: 10),
             Text(
               'Scelta attiva: "${customValue.trim()}"',
-              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+              style: DS.caption,
             ),
           ],
         ],
@@ -695,18 +674,18 @@ class _AddMealPageState extends State<AddMealPage> {
       decoration: InputDecoration(
         hintText: hint,
         filled: true,
-        fillColor: Colors.white.withValues(alpha: 0.65),
+        fillColor: DS.surfaceWhite65,
         contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: Color(0x22000000)),
+          borderRadius: BorderRadius.circular(DS.radiusField),
+          borderSide: const BorderSide(color: DS.borderLight),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: Color(0x22000000)),
+          borderRadius: BorderRadius.circular(DS.radiusField),
+          borderSide: const BorderSide(color: DS.borderLight),
         ),
       ),
-      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+      style: DS.bodyText,
     );
   }
 
@@ -718,7 +697,7 @@ class _AddMealPageState extends State<AddMealPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800)),
+        Text(label, style: DS.sectionLabel),
         Slider(
           value: value,
           min: 0,
@@ -733,20 +712,20 @@ class _AddMealPageState extends State<AddMealPage> {
   Widget _timeCard(String title, String value, VoidCallback onTap) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(DS.radiusField),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
         decoration: BoxDecoration(
-          color: Colors.white.withValues(alpha: 0.65),
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: const Color(0x22000000)),
+          color: DS.surfaceWhite65,
+          borderRadius: BorderRadius.circular(DS.radiusField),
+          border: Border.all(color: DS.borderLight),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(title, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: Colors.black87)),
+            Text(title, style: DS.captionBold),
             const SizedBox(height: 6),
-            Text(value, style: const TextStyle(fontSize: 28, fontWeight: FontWeight.w900)),
+            Text(value, style: DS.displayLarge),
           ],
         ),
       ),
@@ -759,10 +738,10 @@ class _AddMealPageState extends State<AddMealPage> {
       child: FilledButton.icon(
         onPressed: _save,
         icon: const Icon(Icons.save),
-        label: const Text('Salva', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900)),
+        label: const Text('Salva', style: DS.buttonPrimary),
         style: FilledButton.styleFrom(
           padding: const EdgeInsets.symmetric(vertical: 16),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(DS.radiusCard)),
         ),
       ),
     );
