@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../services/timeline_store.dart';
 import '../styles.dart';
 
 class AddMealPage extends StatefulWidget {
@@ -193,44 +192,8 @@ class _AddMealPageState extends State<AddMealPage> {
     return '${two(t.hour)}:${two(t.minute)}';
   }
 
-  Map<String, dynamic> _buildPayload() {
-    final beforeEmotionValue = _beforeUsesCustom ? _beforeCustomEmotion.trim() : _beforeEmojis.join(', ');
-    final afterEmotionValue = _afterUsesCustom ? _afterCustomEmotion.trim() : _afterEmojis.join(', ');
-
-    return <String, dynamic>{
-      'type': 'meal',
-      'mealType': _mealType, // ✅ aggiunto
-      'dateTime': _dateTime.toIso8601String(),
-      'before': {
-        'where': _whereCtrl.text.trim(),
-        'withWho': _withWhoCtrl.text.trim(),
-        'body': _beforeBodyCtrl.text.trim(),
-        'intensity': _beforeIntensity.round(),
-        'emotion': beforeEmotionValue,
-        'emotion_mode': _beforeUsesCustom ? 'custom' : 'emoji',
-        'thought': _beforeThoughtCtrl.text.trim(),
-      },
-      'meal': {
-        'start': _formatTimeOfDay(_startTime),
-        'what': _whatEatCtrl.text.trim(),
-        'end': _formatTimeOfDay(_endTime),
-      },
-      'after': {
-        'body': _afterBodyCtrl.text.trim(),
-        'intensity': _afterIntensity.round(),
-        'emotion': afterEmotionValue,
-        'emotion_mode': _afterUsesCustom ? 'custom' : 'emoji',
-        'thought': _afterThoughtCtrl.text.trim(),
-      },
-    };
-  }
-
-  Future<void> _save() async {
-    final payload = _buildPayload();
-    await TimelineStore.instance.addEntry(payload);
-
-    if (!mounted) return;
-    Navigator.of(context).pop(payload);
+  void _save() {
+    Navigator.of(context).pop();
   }
 
   @override

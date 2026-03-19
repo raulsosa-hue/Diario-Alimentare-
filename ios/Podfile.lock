@@ -1,21 +1,15 @@
 PODS:
   - Flutter (1.0.0)
-  - share_plus (0.0.1):
-    - Flutter
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
-  - share_plus (from `.symlinks/plugins/share_plus/ios`)
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
-  share_plus:
-    :path: ".symlinks/plugins/share_plus/ios"
 
 SPEC CHECKSUMS:
   Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
-  share_plus: 50da8cb520a8f0f65671c6c6a99b3617ed10a58a
 
 PODFILE CHECKSUM: 3c63482e143d1b91d2d2560aee9fb04ecc74ac7e
 

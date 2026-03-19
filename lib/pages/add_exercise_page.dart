@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../services/timeline_store.dart';
 import '../styles.dart';
 
 class AddExercisePage extends StatefulWidget {
@@ -444,61 +443,8 @@ class _AddExercisePageState extends State<AddExercisePage> {
     );
   }
 
-  // ====== SAVE (scrive in TIMELINE) ======
-  Future<void> _save() async {
-    // 1) Tipo esercizio scelto
-    final String type = _isOtherExerciseSelected ? _otherExerciseCtrl.text.trim() : (_selectedExerciseType ?? '');
-
-    // 2) Creo result (utile anche se vuoi usare Navigator.pop)
-    final Map<String, dynamic> result = {
-      'dateTime': _dateTime.toIso8601String(),
-
-      // Dati base esercizio
-      'tipoEsercizio': type,
-      'durataMinuti': _durationMinutes,
-
-      // PRIMA
-      'intenzione': _selectedIntention ?? '',
-      'intensitaPrima': _intensityBefore.round(),
-      'emozioniPrima': _emotionsBefore.toList(),
-      'pensieroPrima': _thoughtBeforeCtrl.text.trim(),
-
-      // DOPO
-      'esito': _selectedOutcome ?? '',
-      'sensazioniFisicheDopo': _physicalAfterCtrl.text.trim(),
-      'intensitaDopo': _intensityAfter.round(),
-      'emozioniDopo': _emotionsAfter.toList(),
-      'pensieroDopo': _thoughtAfterCtrl.text.trim(),
-    };
-
-    // 3) Scrivo nella TIMELINE (formato Map come il tuo TimelineStore)
-    //    Metto anche campi "tipo/categoria" per aiutare export futuro.
-    await TimelineStore.instance.addEntry({
-      'dateTime': result['dateTime'],
-      'type': 'Esercizio',
-      'category': type,
-      // duplicati comodi per export/pick
-      'Intenzione': result['intenzione'],
-      'Emozioni': {
-        'prima': result['emozioniPrima'],
-        'dopo': result['emozioniDopo'],
-      },
-      'Intensità': {
-        'prima': result['intensitaPrima'],
-        'dopo': result['intensitaDopo'],
-      },
-      'Pensiero': {
-        'prima': result['pensieroPrima'],
-        'dopo': result['pensieroDopo'],
-      },
-      'Esito': result['esito'],
-      'Sensazioni': result['sensazioniFisicheDopo'],
-      'DurataMinuti': result['durataMinuti'],
-      'data': result, // salvo tutto anche qui (completo)
-    });
-
-    if (!mounted) return;
-    Navigator.pop(context, result);
+  void _save() {
+    Navigator.pop(context);
   }
 
   @override
