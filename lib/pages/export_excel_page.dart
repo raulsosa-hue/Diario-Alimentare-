@@ -74,7 +74,6 @@ class _ExportTimelinePageState extends State<ExportTimelinePage> {
     final t = (e['type'] ?? e['eventType'] ?? '').toString().trim().toLowerCase();
     if (t == 'meal') return 'Pasto';
     if (t == 'exercise') return 'Esercizio';
-    if (t == 'therapy' || t == 'note' || t == 'notes') return 'Terapia/Note';
     if (t.isNotEmpty) return t;
     return '';
   }

@@ -3,7 +3,7 @@ import 'export_excel_page.dart';
 
 import 'add_meal_page.dart';
 import 'add_exercise_page.dart';
-import 'therapy_note_page.dart';
+
 
 
 class HomePage extends StatelessWidget {
@@ -25,7 +25,6 @@ class HomePage extends StatelessWidget {
   // piccoli accenti “soft” per distinguere i 4 cerchi (non invasivi)
   static const Color _tintMeal = Color(0xFFF7E6D6);     // pesca chiaro
   static const Color _tintExercise = Color(0xFFE3F2E7); // verde chiaro
-  static const Color _tintTherapy = Color(0xFFEDE7F6);  // lilla chiaro
   static const Color _tintExport = Color(0xFFE1EEF7);   // azzurro chiaro
 
   @override
@@ -60,7 +59,7 @@ class HomePage extends StatelessWidget {
                     ),
                     const SizedBox(height: 18),
 
-                    // griglia 2x2
+                    // griglia 2+1
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -88,33 +87,15 @@ class HomePage extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 18),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        _CircleButton(
-                          label: 'Terapia/\nNote',
-                          icon: Icons.edit_note,
-                          tint: _tintTherapy,
-                          onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(builder: (_) => const TherapyNotePage()),
-                            );
-                          },
-                        ),
-                        const SizedBox(width: 18),
-                        _CircleButton(
-                          label: 'Esporta Diario\nin EXCEL\n(CSV)',
-                          icon: Icons.download,
-                          tint: _tintExport,
-                          onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(builder: (_) => ExportTimelinePage()),
-
-
-                            );
-                          },
-                        ),
-                      ],
+                    _CircleButton(
+                      label: 'Esporta Diario\nin EXCEL\n(CSV)',
+                      icon: Icons.download,
+                      tint: _tintExport,
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (_) => ExportTimelinePage()),
+                        );
+                      },
                     ),
 
                     const SizedBox(height: 20),
