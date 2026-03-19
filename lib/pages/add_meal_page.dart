@@ -11,9 +11,10 @@ class AddMealPage extends StatefulWidget {
 }
 
 class _AddMealPageState extends State<AddMealPage> {
+  // ====== DATA FIELDS ======
   DateTime _dateTime = DateTime.now();
 
-  // ✅ TIPO PASTO
+  // -- Tipo pasto --
   final List<String> _mealTypes = const <String>[
     'Colazione',
     'Spuntino',
@@ -23,35 +24,37 @@ class _AddMealPageState extends State<AddMealPage> {
   ];
   String _mealType = 'Colazione';
 
-  // -------------------------
-  // PRIMA DEL PASTO
-  // -------------------------
+  // -- Prima del pasto --
   final TextEditingController _whereCtrl = TextEditingController();
   final TextEditingController _withWhoCtrl = TextEditingController();
-  final TextEditingController _beforeBodyCtrl = TextEditingController();
-  double _beforeIntensity = 0;
-  final TextEditingController _beforeThoughtCtrl = TextEditingController();
+  final TextEditingController _bodyBeforeCtrl = TextEditingController();
+  double _intensityBefore = 0;
+  String? _emotionsBefore;
+  final TextEditingController _thoughtBeforeCtrl = TextEditingController();
 
-  String? _beforeEmojis;
-
-  // -------------------------
-  // PASTO
-  // -------------------------
+  // -- Pasto --
   TimeOfDay? _startTime;
   TimeOfDay? _endTime;
   final TextEditingController _whatEatCtrl = TextEditingController();
 
-  // -------------------------
-  // DOPO IL PASTO
-  // -------------------------
-  final TextEditingController _afterBodyCtrl = TextEditingController();
-  double _afterIntensity = 0;
-  final TextEditingController _afterThoughtCtrl = TextEditingController();
-
-  String? _afterEmojis;
+  // -- Dopo il pasto --
+  final TextEditingController _bodyAfterCtrl = TextEditingController();
+  double _intensityAfter = 0;
+  String? _emotionsAfter;
+  final TextEditingController _thoughtAfterCtrl = TextEditingController();
 
   bool _showTimeErrors = false;
 
+  // ====== UI COLORS ======
+  static const Color _pageBg = Color(0xFFEFF2F6);
+  static const Color _headerPeach = Color(0xFFF2CFAE); // PRIMA
+  static const Color _cardPeach = Color(0xFFF7E2CC); // PRIMA
+  static const Color _headerGreen = Color(0xFFBBD8B4); // PASTO
+  static const Color _cardGreen = Color(0xFFE2F0DD); // PASTO
+  static const Color _headerBlue = Color(0xFF9CC0E6); // DOPO
+  static const Color _cardBlue = Color(0xFFD6E7F8); // DOPO
+
+  // ====== LIFECYCLE ======
   @override
   void initState() {
     super.initState();
@@ -63,36 +66,49 @@ class _AddMealPageState extends State<AddMealPage> {
   void dispose() {
     _whereCtrl.dispose();
     _withWhoCtrl.dispose();
-    _beforeBodyCtrl.dispose();
-    _beforeThoughtCtrl.dispose();
+    _bodyBeforeCtrl.dispose();
+    _thoughtBeforeCtrl.dispose();
     _whatEatCtrl.dispose();
-    _afterBodyCtrl.dispose();
-    _afterThoughtCtrl.dispose();
+    _bodyAfterCtrl.dispose();
+    _thoughtAfterCtrl.dispose();
     super.dispose();
   }
 
+  // ====== HELPERS ======
+  String _formatDateTime(DateTime dt) {
+    String two(int n) => n.toString().padLeft(2, '0');
+    return '${two(dt.day)}/${two(dt.month)}/${dt.year}  ${two(dt.hour)}:${two(dt.minute)}';
+  }
+
+  String _formatTimeOfDay(TimeOfDay? t) {
+    if (t == null) return '--:--';
+    String two(int n) => n.toString().padLeft(2, '0');
+    return '${two(t.hour)}:${two(t.minute)}';
+  }
+
+  // ====== ACTIONS ======
   Future<void> _pickDateTime() async {
-    final pickedDate = await showDatePicker(
+    final date = await showDatePicker(
       context: context,
       initialDate: _dateTime,
       firstDate: DateTime(2020),
       lastDate: DateTime(2100),
     );
-    if (pickedDate == null) return;
+    if (date == null) return;
 
-    final pickedTime = await showTimePicker(
+    final time = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.fromDateTime(_dateTime),
     );
-    if (pickedTime == null) return;
+    if (time == null) return;
 
     setState(() {
       _dateTime = DateTime(
-        pickedDate.year,
-        pickedDate.month,
-        pickedDate.day,
-        pickedTime.hour,
-        pickedTime.minute,
+        date.year,
+        date.month,
+        date.day,
+        time.hour,
+        time.minute,
       );
     });
   }
@@ -121,17 +137,6 @@ class _AddMealPageState extends State<AddMealPage> {
     });
   }
 
-  String _formatDateTime(DateTime dt) {
-    String two(int n) => n.toString().padLeft(2, '0');
-    return '${two(dt.day)}/${two(dt.month)}/${dt.year}  ${two(dt.hour)}:${two(dt.minute)}';
-  }
-
-  String _formatTimeOfDay(TimeOfDay? t) {
-    if (t == null) return '--:--';
-    String two(int n) => n.toString().padLeft(2, '0');
-    return '${two(t.hour)}:${two(t.minute)}';
-  }
-
   void _save() {
     if (_startTime == null || _endTime == null) {
       setState(() => _showTimeErrors = true);
@@ -146,125 +151,20 @@ class _AddMealPageState extends State<AddMealPage> {
     Navigator.of(context).pop();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    const bg = Color(0xFFEFF2F6);
-
-    return Scaffold(
-      backgroundColor: bg,
-      appBar: AppBar(
-        title: const Text('Nuovo pasto principale'),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
-        elevation: 0.5,
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(14, 14, 14, 24),
-        child: Column(
-          children: [
-            _dateTimeCard(),
-            const SizedBox(height: 12),
-
-            // ✅ NUOVO: TIPO PASTO (tra data/ora e PRIMA)
-            _mealTypeCard(),
-            const SizedBox(height: 14),
-
-            _segmentBefore(),
-            const SizedBox(height: 14),
-            _segmentMeal(),
-            const SizedBox(height: 14),
-            _segmentAfter(),
-            const SizedBox(height: 18),
-            _saveButton(),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _dateTimeCard() {
+  // ====== WIDGET BUILDERS ======
+  Widget _card({required Color color, required Widget child}) {
     return Container(
-      padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(DS.radiusCard),
-        boxShadow: const [DS.cardShadow],
-      ),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              const Text(
-                'Data e ora: ',
-                style: DS.bodyText,
-              ),
-              Expanded(
-                child: Text(
-                  _formatDateTime(_dateTime),
-                  style: DS.bodyText,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          ChangeDateTimeButton(onPressed: _pickDateTime),
-        ],
-      ),
-    );
-  }
-
-  // ✅ Card “Tipo pasto”
-  Widget _mealTypeCard() {
-    return Container(
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: DS.surfaceWhite85,
+        color: color,
         borderRadius: BorderRadius.circular(DS.radiusCard),
         boxShadow: const [DS.cardShadow],
         border: Border.all(color: DS.borderSubtle),
       ),
-      child: Row(
-        children: [
-          const Text(
-            'Tipo pasto: ',
-            style: DS.bodyTextBold,
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(DS.radiusField),
-                border: Border.all(color: DS.borderLight),
-              ),
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton<String>(
-                  value: _mealType,
-                  isExpanded: true,
-                  items: _mealTypes
-                      .map((e) => DropdownMenuItem<String>(
-                            value: e,
-                            child: Text(
-                              e,
-                              style: DS.bodyTextBold,
-                            ),
-                          ))
-                      .toList(),
-                  onChanged: (v) {
-                    if (v == null) return;
-                    setState(() => _mealType = v);
-                  },
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
+      child: child,
     );
   }
 
-  Widget _segmentHeader(String title, IconData icon, Color barColor) {
+  Widget _sectionHeader(String title, IconData icon, Color barColor) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       decoration: BoxDecoration(
@@ -281,139 +181,9 @@ class _AddMealPageState extends State<AddMealPage> {
     );
   }
 
-  Widget _segmentContainer({required Widget child, required Color bodyColor}) {
-    return Container(
-      decoration: BoxDecoration(
-        color: bodyColor,
-        borderRadius: BorderRadius.circular(DS.radiusCard),
-        boxShadow: const [DS.cardShadow],
-        border: Border.all(color: DS.borderSubtle),
-      ),
-      child: child,
-    );
-  }
-
-  Widget _segmentBefore() {
-    const headerColor = Color(0xFFF2CFAE);
-    const bodyColor = Color(0xFFF7E2CC);
-
-    return _segmentContainer(
-      bodyColor: bodyColor,
-      child: Column(
-        children: [
-          _segmentHeader('Prima del pasto', Icons.circle_outlined, headerColor),
-          Padding(
-            padding: const EdgeInsets.all(14),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Expanded(child: _textField(_whereCtrl, 'Dove sono (prima)...')),
-                    const SizedBox(width: 10),
-                    Expanded(child: _textField(_withWhoCtrl, 'Con chi sono (prima)...')),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                _textField(_beforeBodyCtrl, 'Sensazioni fisiche (prima)...'),
-                const SizedBox(height: 14),
-                _sliderBlock(
-                  label: 'Intensità emotiva (prima) 0–10',
-                  value: _beforeIntensity,
-                  onChanged: (v) => setState(() => _beforeIntensity = v),
-                ),
-                const SizedBox(height: 12),
-                EmotionPicker(
-                  title: 'Emozioni (prima) – scegli emoticon oppure scrivi tu',
-                  selected: _beforeEmojis,
-                  selectedColor: DS.chipSelectedMeal,
-                  onChanged: (v) => setState(() => _beforeEmojis = v),
-                ),
-                const SizedBox(height: 12),
-                _textField(_beforeThoughtCtrl, 'Pensiero (prima)...'),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _segmentMeal() {
-    const headerColor = Color(0xFFBBD8B4);
-    const bodyColor = Color(0xFFE2F0DD);
-
-    return _segmentContainer(
-      bodyColor: bodyColor,
-      child: Column(
-        children: [
-          _segmentHeader('Pasto', Icons.restaurant, headerColor),
-          Padding(
-            padding: const EdgeInsets.all(14),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: _timeCard('Ora inizio (pasto)', _formatTimeOfDay(_startTime), _pickStartTime,
-                          hasError: _showTimeErrors && _startTime == null),
-                    ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: _timeCard('Ora fine (pasto)', _formatTimeOfDay(_endTime), _pickEndTime,
-                          hasError: _showTimeErrors && _endTime == null),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 12),
-                _textField(_whatEatCtrl, 'Cosa mangio (pasto)...'),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _segmentAfter() {
-    const headerColor = Color(0xFF9CC0E6);
-    const bodyColor = Color(0xFFD6E7F8);
-
-    return _segmentContainer(
-      bodyColor: bodyColor,
-      child: Column(
-        children: [
-          _segmentHeader('Dopo il pasto', Icons.favorite_border, headerColor),
-          Padding(
-            padding: const EdgeInsets.all(14),
-            child: Column(
-              children: [
-                _textField(_afterBodyCtrl, 'Sensazioni fisiche (dopo)...'),
-                const SizedBox(height: 14),
-                _sliderBlock(
-                  label: 'Intensità emotiva (dopo) 0–10',
-                  value: _afterIntensity,
-                  onChanged: (v) => setState(() => _afterIntensity = v),
-                ),
-                const SizedBox(height: 12),
-                EmotionPicker(
-                  title: 'Emozioni (dopo) – scegli emoticon oppure scrivi tu',
-                  selected: _afterEmojis,
-                  selectedColor: DS.chipSelectedMeal,
-                  onChanged: (v) => setState(() => _afterEmojis = v),
-                ),
-                const SizedBox(height: 12),
-                _textField(_afterThoughtCtrl, 'Pensiero (dopo)...'),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _textField(TextEditingController ctrl, String hint) {
+  Widget _textField(TextEditingController controller, String hint) {
     return TextField(
-      controller: ctrl,
+      controller: controller,
       decoration: InputDecoration(
         hintText: hint,
         filled: true,
@@ -475,7 +245,226 @@ class _AddMealPageState extends State<AddMealPage> {
     );
   }
 
-  Widget _saveButton() {
-    return SaveButton(onPressed: _save);
+  // ====== SECTIONS ======
+  Widget _dateTimeSection() {
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(DS.radiusCard),
+        boxShadow: const [DS.cardShadow],
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              const Text(
+                'Data e ora: ',
+                style: DS.bodyText,
+              ),
+              Expanded(
+                child: Text(
+                  _formatDateTime(_dateTime),
+                  style: DS.bodyText,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          ChangeDateTimeButton(onPressed: _pickDateTime),
+        ],
+      ),
+    );
+  }
+
+  Widget _mealTypeSection() {
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: DS.surfaceWhite85,
+        borderRadius: BorderRadius.circular(DS.radiusCard),
+        boxShadow: const [DS.cardShadow],
+        border: Border.all(color: DS.borderSubtle),
+      ),
+      child: Row(
+        children: [
+          const Text(
+            'Tipo pasto: ',
+            style: DS.bodyTextBold,
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(DS.radiusField),
+                border: Border.all(color: DS.borderLight),
+              ),
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton<String>(
+                  value: _mealType,
+                  isExpanded: true,
+                  items: _mealTypes
+                      .map((e) => DropdownMenuItem<String>(
+                            value: e,
+                            child: Text(
+                              e,
+                              style: DS.bodyTextBold,
+                            ),
+                          ))
+                      .toList(),
+                  onChanged: (v) {
+                    if (v == null) return;
+                    setState(() => _mealType = v);
+                  },
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _beforeSection() {
+    return _card(
+      color: _cardPeach,
+      child: Column(
+        children: [
+          _sectionHeader('Prima del pasto', Icons.circle_outlined, _headerPeach),
+          Padding(
+            padding: const EdgeInsets.all(14),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(child: _textField(_whereCtrl, 'Dove sono (prima)...')),
+                    const SizedBox(width: 10),
+                    Expanded(child: _textField(_withWhoCtrl, 'Con chi sono (prima)...')),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                _textField(_bodyBeforeCtrl, 'Sensazioni fisiche (prima)...'),
+                const SizedBox(height: 14),
+                _sliderBlock(
+                  label: 'Intensità emotiva (prima) 0–10',
+                  value: _intensityBefore,
+                  onChanged: (v) => setState(() => _intensityBefore = v),
+                ),
+                const SizedBox(height: 12),
+                EmotionPicker(
+                  title: 'Emozioni (prima) – scegli emoticon oppure scrivi tu',
+                  selected: _emotionsBefore,
+                  selectedColor: DS.chipSelectedMeal,
+                  onChanged: (v) => setState(() => _emotionsBefore = v),
+                ),
+                const SizedBox(height: 12),
+                _textField(_thoughtBeforeCtrl, 'Pensiero (prima)...'),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _mealSection() {
+    return _card(
+      color: _cardGreen,
+      child: Column(
+        children: [
+          _sectionHeader('Pasto', Icons.restaurant, _headerGreen),
+          Padding(
+            padding: const EdgeInsets.all(14),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: _timeCard('Ora inizio (pasto)', _formatTimeOfDay(_startTime), _pickStartTime,
+                          hasError: _showTimeErrors && _startTime == null),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: _timeCard('Ora fine (pasto)', _formatTimeOfDay(_endTime), _pickEndTime,
+                          hasError: _showTimeErrors && _endTime == null),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                _textField(_whatEatCtrl, 'Cosa mangio (pasto)...'),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _afterSection() {
+    return _card(
+      color: _cardBlue,
+      child: Column(
+        children: [
+          _sectionHeader('Dopo il pasto', Icons.favorite_border, _headerBlue),
+          Padding(
+            padding: const EdgeInsets.all(14),
+            child: Column(
+              children: [
+                _textField(_bodyAfterCtrl, 'Sensazioni fisiche (dopo)...'),
+                const SizedBox(height: 14),
+                _sliderBlock(
+                  label: 'Intensità emotiva (dopo) 0–10',
+                  value: _intensityAfter,
+                  onChanged: (v) => setState(() => _intensityAfter = v),
+                ),
+                const SizedBox(height: 12),
+                EmotionPicker(
+                  title: 'Emozioni (dopo) – scegli emoticon oppure scrivi tu',
+                  selected: _emotionsAfter,
+                  selectedColor: DS.chipSelectedMeal,
+                  onChanged: (v) => setState(() => _emotionsAfter = v),
+                ),
+                const SizedBox(height: 12),
+                _textField(_thoughtAfterCtrl, 'Pensiero (dopo)...'),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ====== BUILD ======
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: _pageBg,
+      appBar: AppBar(
+        title: const Text('Nuovo pasto principale'),
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+        elevation: 0.5,
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.fromLTRB(14, 14, 14, 24),
+        child: Column(
+          children: [
+            _dateTimeSection(),
+            const SizedBox(height: 12),
+            _mealTypeSection(),
+            const SizedBox(height: 14),
+            _beforeSection(),
+            const SizedBox(height: 14),
+            _mealSection(),
+            const SizedBox(height: 14),
+            _afterSection(),
+            const SizedBox(height: 18),
+            SaveButton(onPressed: _save),
+          ],
+        ),
+      ),
+    );
   }
 }

@@ -11,9 +11,10 @@ class AddExercisePage extends StatefulWidget {
 }
 
 class _AddExercisePageState extends State<AddExercisePage> {
+  // ====== DATA FIELDS ======
   DateTime _dateTime = DateTime.now();
 
-  // ====== ESERCIZIO (oggettivo) ======
+  // -- Esercizio (oggettivo) --
   final List<_LabeledEmoji> _exerciseTypes = const [
     _LabeledEmoji('Camminata', '🚶‍♂️'),
     _LabeledEmoji('Corsa / Running', '🏃'),
@@ -26,14 +27,12 @@ class _AddExercisePageState extends State<AddExercisePage> {
     _LabeledEmoji('Sport di squadra', '⚽'),
     _LabeledEmoji('Allenamento a casa', '🏠'),
   ];
-
   String? _selectedExerciseType;
   bool _isOtherExerciseSelected = false;
   final TextEditingController _otherExerciseCtrl = TextEditingController();
-
   int _durationMinutes = 20;
 
-  // ====== INTENZIONE (prima) ======
+  // -- Intenzione (prima) --
   final List<_LabeledEmoji> _intentionOptions = const [
     _LabeledEmoji('Benessere / Energia', '✅'),
     _LabeledEmoji('Gestire emozioni / Stress', '🧠'),
@@ -41,15 +40,11 @@ class _AddExercisePageState extends State<AddExercisePage> {
     _LabeledEmoji('Controllo / Punizione', '❗'),
   ];
   String? _selectedIntention;
-
   double _intensityBefore = 0;
-
   String? _emotionsBefore;
-  String? _emotionsAfter;
-
   final TextEditingController _thoughtBeforeCtrl = TextEditingController();
 
-  // ====== ESITO (dopo) ======
+  // -- Esito (dopo) --
   final List<_LabeledEmoji> _outcomeOptions = const [
     _LabeledEmoji('Più libero / leggero', '✅'),
     _LabeledEmoji('Uguale', '😐'),
@@ -57,25 +52,34 @@ class _AddExercisePageState extends State<AddExercisePage> {
     _LabeledEmoji('Peggio (ansia, urgenza,\nOvalutore del controllo)', '❗'),
   ];
   String? _selectedOutcome;
-
-  final TextEditingController _physicalAfterCtrl = TextEditingController();
   double _intensityAfter = 0;
+  String? _emotionsAfter;
+  final TextEditingController _bodyAfterCtrl = TextEditingController();
   final TextEditingController _thoughtAfterCtrl = TextEditingController();
 
-  // ====== UI COLORS (page-specific) ======
+  // ====== UI COLORS ======
   static const Color _pageBg = Color(0xFFEFEFF7);
-
   static const Color _cardBlue = Color(0xFFD9E9FF); // ESERCIZIO
   static const Color _cardPeach = Color(0xFFF3DCCB); // INTENZIONE (prima)
   static const Color _cardGreen = Color(0xFFDFF1D7); // ESITO (dopo)
 
-  // ====== HELPERS ======
-  String _two(int n) => n.toString().padLeft(2, '0');
-
-  String _formatDateTime(DateTime dt) {
-    return '${_two(dt.day)}/${_two(dt.month)}/${dt.year}  ${_two(dt.hour)}:${_two(dt.minute)}';
+  // ====== LIFECYCLE ======
+  @override
+  void dispose() {
+    _otherExerciseCtrl.dispose();
+    _thoughtBeforeCtrl.dispose();
+    _bodyAfterCtrl.dispose();
+    _thoughtAfterCtrl.dispose();
+    super.dispose();
   }
 
+  // ====== HELPERS ======
+  String _formatDateTime(DateTime dt) {
+    String two(int n) => n.toString().padLeft(2, '0');
+    return '${two(dt.day)}/${two(dt.month)}/${dt.year}  ${two(dt.hour)}:${two(dt.minute)}';
+  }
+
+  // ====== ACTIONS ======
   Future<void> _pickDateTime() async {
     final date = await showDatePicker(
       context: context,
@@ -134,7 +138,11 @@ class _AddExercisePageState extends State<AddExercisePage> {
     );
   }
 
-  // ====== WIDGETS ======
+  void _save() {
+    Navigator.pop(context);
+  }
+
+  // ====== WIDGET BUILDERS ======
   Widget _card({
     required Color color,
     required Widget child,
@@ -229,7 +237,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
     );
   }
 
-  Widget _slider01({
+  Widget _sliderBlock({
     required double value,
     required ValueChanged<double> onChanged,
   }) {
@@ -253,7 +261,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
     );
   }
 
-  Widget _inputFill({
+  Widget _textField({
     required String hint,
     required TextEditingController controller,
   }) {
@@ -279,20 +287,269 @@ class _AddExercisePageState extends State<AddExercisePage> {
     );
   }
 
-  void _save() {
-    Navigator.pop(context);
+  // ====== SECTIONS ======
+  Widget _dateTimeSection() {
+    return _card(
+      color: Colors.white.withOpacity(0.70),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(18, 16, 18, 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Data e ora: ${_formatDateTime(_dateTime)}',
+              style: DS.bodyText,
+            ),
+            const SizedBox(height: 14),
+            ChangeDateTimeButton(onPressed: _pickDateTime),
+          ],
+        ),
+      ),
+    );
   }
 
-  @override
-  void dispose() {
-    _otherExerciseCtrl.dispose();
-    _thoughtBeforeCtrl.dispose();
-    _physicalAfterCtrl.dispose();
-    _thoughtAfterCtrl.dispose();
-    super.dispose();
+  Widget _exerciseSection() {
+    return _card(
+      color: _cardBlue,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _sectionHeader('ESERCIZIO'),
+
+          _titleH2('Tipo esercizio'),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 6, 16, 6),
+            child: Wrap(
+              spacing: 12,
+              runSpacing: 12,
+              children: [
+                for (final ex in _exerciseTypes)
+                  SizedBox(
+                    width: 240,
+                    child: _chipButton(
+                      label: ex.label,
+                      emoji: ex.emoji,
+                      selected: (!_isOtherExerciseSelected && _selectedExerciseType == ex.label),
+                      onTap: () {
+                        setState(() {
+                          _isOtherExerciseSelected = false;
+                          _otherExerciseCtrl.clear();
+                          _selectedExerciseType = ex.label;
+                        });
+                      },
+                    ),
+                  ),
+              ],
+            ),
+          ),
+
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 10, 16, 0),
+            child: InkWell(
+              borderRadius: BorderRadius.circular(DS.radiusChip),
+              onTap: _addOtherExerciseDialog,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                decoration: BoxDecoration(
+                  color: DS.surfaceWhite65,
+                  borderRadius: BorderRadius.circular(DS.radiusChip),
+                  border: Border.all(color: DS.borderLight),
+                ),
+                child: Row(
+                  children: [
+                    const Text('+', style: DS.sectionLabel),
+                    const SizedBox(width: 10),
+                    Text(
+                      'Altro esercizio',
+                      style: DS.sectionLabel.copyWith(color: DS.textDark),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+
+          // mostra selezione altro esercizio (se presente)
+          if (_isOtherExerciseSelected && _otherExerciseCtrl.text.trim().isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 10, 16, 0),
+              child: _chipButton(
+                label: _otherExerciseCtrl.text.trim(),
+                emoji: '+',
+                selected: true,
+                onTap: () {
+                  setState(() {
+                    _isOtherExerciseSelected = false;
+                    _otherExerciseCtrl.clear();
+                  });
+                },
+                fullWidth: true,
+              ),
+            ),
+
+          // Durata
+          _titleH2('Durata'),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 6, 16, 16),
+            child: Row(
+              children: [
+                const SizedBox(width: 4),
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+                    decoration: BoxDecoration(
+                      color: DS.surfaceWhite65,
+                      borderRadius: BorderRadius.circular(DS.radiusChip),
+                      border: Border.all(color: DS.borderLight),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              _durationMinutes = (_durationMinutes - 5).clamp(5, 300);
+                            });
+                          },
+                          child: const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 12),
+                            child: Text('−', style: DS.controlButton),
+                          ),
+                        ),
+                        Text(
+                          '$_durationMinutes min',
+                          style: DS.displayMedium,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              _durationMinutes = (_durationMinutes + 5).clamp(5, 300);
+                            });
+                          },
+                          child: const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 12),
+                            child: Text('+', style: DS.controlButton),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
-  // ====== UI ======
+  Widget _intentionSection() {
+    return _card(
+      color: _cardPeach,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _sectionHeader('INTENZIONE (prima di\nallenarti)'),
+          _titleH2('Perché sto facendo esercizio?'),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 10),
+            child: Column(
+              children: [
+                for (final it in _intentionOptions)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: _chipButton(
+                      label: it.label,
+                      emoji: it.emoji,
+                      selected: _selectedIntention == it.label,
+                      onTap: () {
+                        setState(() {
+                          _selectedIntention = it.label;
+                        });
+                      },
+                      fullWidth: true,
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          _titleH3("Qual è l\u2019intensità emotiva? (prima)"),
+          _sliderBlock(
+            value: _intensityBefore,
+            onChanged: (v) => setState(() => _intensityBefore = v),
+          ),
+          _titleH3('Quali emozioni sento? (prima)'),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 6, 16, 16),
+            child: EmotionPicker(
+              selected: _emotionsBefore,
+              selectedColor: DS.chipSelectedExercise,
+              onChanged: (v) => setState(() => _emotionsBefore = v),
+            ),
+          ),
+          _textField(
+            hint: 'Quale pensiero ho? (prima)',
+            controller: _thoughtBeforeCtrl,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _outcomeSection() {
+    return _card(
+      color: _cardGreen,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _sectionHeader('ESITO (dopo l\'esercizio)'),
+          _titleH2("Dopo l\u2019esercizio mi sento\u2026"),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 10),
+            child: Column(
+              children: [
+                for (final o in _outcomeOptions)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: _chipButton(
+                      label: o.label,
+                      emoji: o.emoji,
+                      selected: _selectedOutcome == o.label,
+                      onTap: () => setState(() => _selectedOutcome = o.label),
+                      fullWidth: true,
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          _textField(
+            hint: 'Quali sensazioni fisiche provo…',
+            controller: _bodyAfterCtrl,
+          ),
+          _titleH3("Qual è l\u2019intensità emotiva? (dopo)"),
+          _sliderBlock(
+            value: _intensityAfter,
+            onChanged: (v) => setState(() => _intensityAfter = v),
+          ),
+          _titleH3('Quali emozioni sento? (dopo)'),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 6, 16, 16),
+            child: EmotionPicker(
+              selected: _emotionsAfter,
+              selectedColor: DS.chipSelectedExercise,
+              onChanged: (v) => setState(() => _emotionsAfter = v),
+            ),
+          ),
+          _textField(
+            hint: 'Quale pensiero ho? (dopo)',
+            controller: _thoughtAfterCtrl,
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ====== BUILD ======
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -307,264 +564,10 @@ class _AddExercisePageState extends State<AddExercisePage> {
         child: Column(
           children: [
             const SizedBox(height: 14),
-
-            // ===== DATA/ORA card =====
-            _card(
-              color: Colors.white.withOpacity(0.70),
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(18, 16, 18, 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Data e ora: ${_formatDateTime(_dateTime)}',
-                      style: DS.bodyText,
-                    ),
-                    const SizedBox(height: 14),
-                    ChangeDateTimeButton(onPressed: _pickDateTime),
-                  ],
-                ),
-              ),
-            ),
-
-            // ===== ESERCIZIO card =====
-            _card(
-              color: _cardBlue,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  _sectionHeader('ESERCIZIO'),
-
-                  _titleH2('Tipo esercizio'),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 6, 16, 6),
-                    child: Wrap(
-                      spacing: 12,
-                      runSpacing: 12,
-                      children: [
-                        for (final ex in _exerciseTypes)
-                          SizedBox(
-                            width: 240,
-                            child: _chipButton(
-                              label: ex.label,
-                              emoji: ex.emoji,
-                              selected: (!_isOtherExerciseSelected && _selectedExerciseType == ex.label),
-                              onTap: () {
-                                setState(() {
-                                  _isOtherExerciseSelected = false;
-                                  _otherExerciseCtrl.clear();
-                                  _selectedExerciseType = ex.label;
-                                });
-                              },
-                            ),
-                          ),
-                      ],
-                    ),
-                  ),
-
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 10, 16, 0),
-                    child: InkWell(
-                      borderRadius: BorderRadius.circular(DS.radiusChip),
-                      onTap: _addOtherExerciseDialog,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-                        decoration: BoxDecoration(
-                          color: DS.surfaceWhite65,
-                          borderRadius: BorderRadius.circular(DS.radiusChip),
-                          border: Border.all(color: DS.borderLight),
-                        ),
-                        child: Row(
-                          children: [
-                            const Text('+', style: DS.sectionLabel),
-                            const SizedBox(width: 10),
-                            Text(
-                              'Altro esercizio',
-                              style: DS.sectionLabel.copyWith(color: DS.textDark),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  // mostra selezione altro esercizio (se presente)
-                  if (_isOtherExerciseSelected && _otherExerciseCtrl.text.trim().isNotEmpty)
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 10, 16, 0),
-                      child: _chipButton(
-                        label: _otherExerciseCtrl.text.trim(),
-                        emoji: '+',
-                        selected: true,
-                        onTap: () {
-                          setState(() {
-                            _isOtherExerciseSelected = false;
-                            _otherExerciseCtrl.clear();
-                          });
-                        },
-                        fullWidth: true,
-                      ),
-                    ),
-
-                  // Durata
-                  _titleH2('Durata'),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 6, 16, 16),
-                    child: Row(
-                      children: [
-                        const SizedBox(width: 4),
-                        Expanded(
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
-                            decoration: BoxDecoration(
-                              color: DS.surfaceWhite65,
-                              borderRadius: BorderRadius.circular(DS.radiusChip),
-                              border: Border.all(color: DS.borderLight),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      _durationMinutes = (_durationMinutes - 5).clamp(5, 300);
-                                    });
-                                  },
-                                  child: const Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 12),
-                                    child: Text('−', style: DS.controlButton),
-                                  ),
-                                ),
-                                Text(
-                                  '$_durationMinutes min',
-                                  style: DS.displayMedium,
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      _durationMinutes = (_durationMinutes + 5).clamp(5, 300);
-                                    });
-                                  },
-                                  child: const Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 12),
-                                    child: Text('+', style: DS.controlButton),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            // ===== INTENZIONE (prima) card =====
-            _card(
-              color: _cardPeach,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  _sectionHeader('INTENZIONE (prima di\nallenarti)'),
-                  _titleH2('Perché sto facendo esercizio?'),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 10),
-                    child: Column(
-                      children: [
-                        for (final it in _intentionOptions)
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 12),
-                            child: _chipButton(
-                              label: it.label,
-                              emoji: it.emoji,
-                              selected: _selectedIntention == it.label,
-                              onTap: () {
-                                setState(() {
-                                  _selectedIntention = it.label;
-                                });
-                              },
-                              fullWidth: true,
-                            ),
-                          ),
-                      ],
-                    ),
-                  ),
-                  _titleH3("Qual è l\u2019intensità emotiva? (prima)"),
-                  _slider01(
-                    value: _intensityBefore,
-                    onChanged: (v) => setState(() => _intensityBefore = v),
-                  ),
-                  _titleH3('Quali emozioni sento? (prima)'),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 6, 16, 16),
-                    child: EmotionPicker(
-                      selected: _emotionsBefore,
-                      selectedColor: DS.chipSelectedExercise,
-                      onChanged: (v) => setState(() => _emotionsBefore = v),
-                    ),
-                  ),
-                  _inputFill(
-                    hint: 'Quale pensiero ho? (prima)',
-                    controller: _thoughtBeforeCtrl,
-                  ),
-                ],
-              ),
-            ),
-
-            // ===== ESITO (dopo) card =====
-            _card(
-              color: _cardGreen,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  _sectionHeader('ESITO (dopo l\'esercizio)'),
-                  _titleH2("Dopo l\u2019esercizio mi sento\u2026"),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 10),
-                    child: Column(
-                      children: [
-                        for (final o in _outcomeOptions)
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 12),
-                            child: _chipButton(
-                              label: o.label,
-                              emoji: o.emoji,
-                              selected: _selectedOutcome == o.label,
-                              onTap: () => setState(() => _selectedOutcome = o.label),
-                              fullWidth: true,
-                            ),
-                          ),
-                      ],
-                    ),
-                  ),
-                  _inputFill(
-                    hint: 'Quali sensazioni fisiche provo…',
-                    controller: _physicalAfterCtrl,
-                  ),
-                  _titleH3("Qual è l\u2019intensità emotiva? (dopo)"),
-                  _slider01(
-                    value: _intensityAfter,
-                    onChanged: (v) => setState(() => _intensityAfter = v),
-                  ),
-                  _titleH3('Quali emozioni sento? (dopo)'),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 6, 16, 16),
-                    child: EmotionPicker(
-                      selected: _emotionsAfter,
-                      selectedColor: DS.chipSelectedExercise,
-                      onChanged: (v) => setState(() => _emotionsAfter = v),
-                    ),
-                  ),
-                  _inputFill(
-                    hint: 'Quale pensiero ho? (dopo)',
-                    controller: _thoughtAfterCtrl,
-                  ),
-                ],
-              ),
-            ),
-
+            _dateTimeSection(),
+            _exerciseSection(),
+            _intentionSection(),
+            _outcomeSection(),
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 18, 16, 6),
               child: SaveButton(onPressed: _save),
@@ -576,7 +579,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
   }
 }
 
-// ======= MODELS =======
+// ====== MODELS ======
 class _LabeledEmoji {
   final String label;
   final String emoji;
