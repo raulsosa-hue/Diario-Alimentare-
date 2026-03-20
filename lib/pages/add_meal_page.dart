@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../models/meal.dart';
 import '../models/mindfulness_suggestions.dart';
 import '../styles.dart';
 import '../widgets/common_buttons.dart';
@@ -17,14 +18,7 @@ class _AddMealPageState extends State<AddMealPage> {
   DateTime _dateTime = DateTime.now();
 
   // -- Tipo pasto --
-  final List<String> _mealTypes = const <String>[
-    'Colazione',
-    'Spuntino',
-    'Pranzo',
-    'Merenda',
-    'Cena',
-  ];
-  String _mealType = 'Colazione';
+  String _mealType = kMealTypes.first;
 
   // -- Prima del pasto --
   final TextEditingController _whereCtrl = TextEditingController();
@@ -49,6 +43,13 @@ class _AddMealPageState extends State<AddMealPage> {
 
   late String _suggestionBeforeMeal;
   late String _suggestionAfterMeal;
+
+  static final _mealTypeItems = kMealTypes
+      .map((e) => DropdownMenuItem<String>(
+            value: e,
+            child: Text(e, style: DS.bodyTextBold),
+          ))
+      .toList(growable: false);
 
   // ====== UI COLORS ======
   static const Color _pageBg = Color(0xFFEFF2F6);
@@ -312,15 +313,7 @@ class _AddMealPageState extends State<AddMealPage> {
                 child: DropdownButton<String>(
                   value: _mealType,
                   isExpanded: true,
-                  items: _mealTypes
-                      .map((e) => DropdownMenuItem<String>(
-                            value: e,
-                            child: Text(
-                              e,
-                              style: DS.bodyTextBold,
-                            ),
-                          ))
-                      .toList(),
+                  items: _mealTypeItems,
                   onChanged: (v) {
                     if (v == null) return;
                     setState(() => _mealType = v);
