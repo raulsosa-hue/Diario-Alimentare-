@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+
+import '../data/database_helper.dart';
+import '../models/emotions.dart';
 import '../models/meal.dart';
 import '../models/mindfulness_suggestions.dart';
 import '../styles.dart';
@@ -83,11 +86,6 @@ class _AddMealPageState extends State<AddMealPage> {
   }
 
   // ====== HELPERS ======
-  String _formatDateTime(DateTime dt) {
-    String two(int n) => n.toString().padLeft(2, '0');
-    return '${two(dt.day)}/${two(dt.month)}/${dt.year}  ${two(dt.hour)}:${two(dt.minute)}';
-  }
-
   String _formatTimeOfDay(TimeOfDay? t) {
     if (t == null) return '--:--';
     String two(int n) => n.toString().padLeft(2, '0');
@@ -145,7 +143,7 @@ class _AddMealPageState extends State<AddMealPage> {
     });
   }
 
-  void _save() {
+  void _save() async {
     if (_startTime == null || _endTime == null) {
       setState(() => _showTimeErrors = true);
       ScaffoldMessenger.of(context).showSnackBar(
@@ -156,7 +154,32 @@ class _AddMealPageState extends State<AddMealPage> {
       );
       return;
     }
-    Navigator.of(context).pop();
+
+    final meal = Meal(
+      dateTime: _dateTime,
+      mealType: _mealType,
+      location: nullIfEmpty(_whereCtrl),
+      withWhom: nullIfEmpty(_withWhoCtrl),
+      bodySensationsBefore: nullIfEmpty(_bodyBeforeCtrl),
+      emotionalIntensityBefore: _intensityBefore.round(),
+      emotionBefore: buildEmotionStorageValue(_emotionsBefore),
+      thoughtBefore: nullIfEmpty(_thoughtBeforeCtrl),
+      startTime: _formatTimeOfDay(_startTime!),
+      endTime: _formatTimeOfDay(_endTime!),
+      whatEaten: nullIfEmpty(_whatEatCtrl),
+      bodySensationsAfter: nullIfEmpty(_bodyAfterCtrl),
+      emotionalIntensityAfter: _intensityAfter.round(),
+      emotionAfter: buildEmotionStorageValue(_emotionsAfter),
+      thoughtAfter: nullIfEmpty(_thoughtAfterCtrl),
+    );
+
+    try {
+      await DatabaseHelper.instance.insertMeal(meal);
+    } catch (e) {
+      if (mounted) showSaveError(context, e);
+      return;
+    }
+    if (mounted) Navigator.of(context).pop();
   }
 
   // ====== WIDGET BUILDERS ======
@@ -272,7 +295,7 @@ class _AddMealPageState extends State<AddMealPage> {
               ),
               Expanded(
                 child: Text(
-                  _formatDateTime(_dateTime),
+                  formatDateTime(_dateTime),
                   style: DS.bodyText,
                 ),
               ),

@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+
+import '../data/database_helper.dart';
+import '../models/emotions.dart';
+import '../models/exercise.dart';
 import '../models/mindfulness_suggestions.dart';
 import '../styles.dart';
 import '../widgets/common_buttons.dart';
@@ -85,12 +89,6 @@ class _AddExercisePageState extends State<AddExercisePage> {
     super.dispose();
   }
 
-  // ====== HELPERS ======
-  String _formatDateTime(DateTime dt) {
-    String two(int n) => n.toString().padLeft(2, '0');
-    return '${two(dt.day)}/${two(dt.month)}/${dt.year}  ${two(dt.hour)}:${two(dt.minute)}';
-  }
-
   // ====== ACTIONS ======
   Future<void> _pickDateTime() async {
     final date = await showDatePicker(
@@ -150,8 +148,48 @@ class _AddExercisePageState extends State<AddExercisePage> {
     );
   }
 
-  void _save() {
-    Navigator.pop(context);
+  String? _buildLabeledEmojiValue(String? label, List<_LabeledEmoji> options) {
+    if (label == null) return null;
+    final match = options.cast<_LabeledEmoji?>().firstWhere(
+          (e) => e!.label == label,
+          orElse: () => null,
+        );
+    if (match == null) return label;
+    return '${match.emoji} ${match.label}'; // single space
+  }
+
+  String? _buildExerciseTypeValue() {
+    if (_isOtherExerciseSelected) {
+      final text = _otherExerciseCtrl.text.trim();
+      return text.isEmpty ? null : text; // custom — store as-is
+    }
+    if (_selectedExerciseType == null) return null;
+    return _buildLabeledEmojiValue(_selectedExerciseType, _exerciseTypes);
+  }
+
+  void _save() async {
+    final exercise = Exercise(
+      dateTime: _dateTime,
+      exerciseType: _buildExerciseTypeValue(),
+      durationMinutes: _durationMinutes,
+      intention: _buildLabeledEmojiValue(_selectedIntention, _intentionOptions),
+      emotionalIntensityBefore: _intensityBefore.round(),
+      emotionBefore: buildEmotionStorageValue(_emotionsBefore),
+      thoughtBefore: nullIfEmpty(_thoughtBeforeCtrl),
+      outcome: _buildLabeledEmojiValue(_selectedOutcome, _outcomeOptions),
+      bodySensationsAfter: nullIfEmpty(_bodyAfterCtrl),
+      emotionalIntensityAfter: _intensityAfter.round(),
+      emotionAfter: buildEmotionStorageValue(_emotionsAfter),
+      thoughtAfter: nullIfEmpty(_thoughtAfterCtrl),
+    );
+
+    try {
+      await DatabaseHelper.instance.insertExercise(exercise);
+    } catch (e) {
+      if (mounted) showSaveError(context, e);
+      return;
+    }
+    if (mounted) Navigator.pop(context);
   }
 
   // ====== WIDGET BUILDERS ======
@@ -309,7 +347,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Data e ora: ${_formatDateTime(_dateTime)}',
+              'Data e ora: ${formatDateTime(_dateTime)}',
               style: DS.bodyText,
             ),
             const SizedBox(height: 14),

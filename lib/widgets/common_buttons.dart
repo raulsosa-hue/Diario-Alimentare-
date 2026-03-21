@@ -1,5 +1,28 @@
 import 'package:flutter/material.dart';
+
 import '../styles.dart';
+
+/// Trims a [TextEditingController]'s text, returning `null` when empty.
+String? nullIfEmpty(TextEditingController ctrl) {
+  final text = ctrl.text.trim();
+  return text.isEmpty ? null : text;
+}
+
+/// Shows a floating error SnackBar for a failed save operation.
+void showSaveError(BuildContext context, Object error) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text('Errore nel salvataggio: $error'),
+      behavior: SnackBarBehavior.floating,
+    ),
+  );
+}
+
+/// Formats a [DateTime] as "dd/MM/yyyy  HH:mm" for display.
+String formatDateTime(DateTime dt) {
+  String two(int n) => n.toString().padLeft(2, '0');
+  return '${two(dt.day)}/${two(dt.month)}/${dt.year}  ${two(dt.hour)}:${two(dt.minute)}';
+}
 
 /// Full-width save button used on form pages (meal, exercise).
 class SaveButton extends StatelessWidget {

@@ -24,3 +24,15 @@ const List<EmotionItem> kEmotions = <EmotionItem>[
   EmotionItem('Vuoto', '🫥'),
   EmotionItem('Calma', '🧘'),
 ];
+
+/// Formats a selected emotion label as "emoji label" for DB storage.
+/// Returns the label as-is for custom emotions, null for empty input.
+String? buildEmotionStorageValue(String? label) {
+  if (label == null || label.isEmpty) return null;
+  final match = kEmotions.cast<EmotionItem?>().firstWhere(
+        (e) => e!.label == label,
+        orElse: () => null,
+      );
+  if (match == null) return label; // custom emotion — store as-is
+  return '${match.emoji} ${match.label}';
+}

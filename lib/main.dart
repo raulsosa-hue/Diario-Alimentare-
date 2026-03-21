@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+
+import 'data/database_helper.dart';
 import 'pages/home_page.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  DatabaseHelper.instance.database;
   runApp(const DiarioApp());
 }
 
