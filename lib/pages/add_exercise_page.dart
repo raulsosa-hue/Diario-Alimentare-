@@ -604,11 +604,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: _pageBg,
-      appBar: AppBar(
-        title: const Text('Nuovo esercizio'),
-        backgroundColor: Colors.white,
-        elevation: 0.6,
-      ),
+      appBar: appAppBar('Nuovo esercizio'),
       body: SingleChildScrollView(
         padding: const EdgeInsets.only(bottom: 28),
         child: Column(

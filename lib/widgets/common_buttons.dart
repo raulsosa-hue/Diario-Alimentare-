@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../styles.dart';
 
+/// Zero-pads an integer to two digits, e.g. 5 → "05".
+String twoDigit(int n) => n.toString().padLeft(2, '0');
+
 /// Trims a [TextEditingController]'s text, returning `null` when empty.
 String? nullIfEmpty(TextEditingController ctrl) {
   final text = ctrl.text.trim();
@@ -20,8 +23,17 @@ void showSaveError(BuildContext context, Object error) {
 
 /// Formats a [DateTime] as "dd/MM/yyyy  HH:mm" for display.
 String formatDateTime(DateTime dt) {
-  String two(int n) => n.toString().padLeft(2, '0');
-  return '${two(dt.day)}/${two(dt.month)}/${dt.year}  ${two(dt.hour)}:${two(dt.minute)}';
+  return '${twoDigit(dt.day)}/${twoDigit(dt.month)}/${dt.year}  ${twoDigit(dt.hour)}:${twoDigit(dt.minute)}';
+}
+
+/// Shared AppBar style used across all pages.
+AppBar appAppBar(String title, {TextStyle? titleStyle}) {
+  return AppBar(
+    title: Text(title, style: titleStyle),
+    backgroundColor: Colors.white,
+    foregroundColor: Colors.black,
+    elevation: 0.5,
+  );
 }
 
 /// Full-width save button used on form pages (meal, exercise).

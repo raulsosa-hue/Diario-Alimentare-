@@ -88,8 +88,7 @@ class _AddMealPageState extends State<AddMealPage> {
   // ====== HELPERS ======
   String _formatTimeOfDay(TimeOfDay? t) {
     if (t == null) return '--:--';
-    String two(int n) => n.toString().padLeft(2, '0');
-    return '${two(t.hour)}:${two(t.minute)}';
+    return '${twoDigit(t.hour)}:${twoDigit(t.minute)}';
   }
 
   // ====== ACTIONS ======
@@ -464,12 +463,7 @@ class _AddMealPageState extends State<AddMealPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: _pageBg,
-      appBar: AppBar(
-        title: const Text('Nuovo pasto principale'),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
-        elevation: 0.5,
-      ),
+      appBar: appAppBar('Nuovo pasto principale'),
       body: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(14, 14, 14, 24),
         child: Column(

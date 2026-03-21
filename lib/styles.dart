@@ -32,6 +32,15 @@ abstract final class DS {
   static const Color textPrimary = Colors.black87;
   static const Color textDark = Color(0xC7000000); // ~0.78 alpha
   static const Color textMuted = Color(0xBF000000); // ~0.75 alpha
+  static const Color textNd = Color(0x66000000); // ~40% black — "N/D" values
+
+  // --- Diary ---
+  static const Color diaryMealAccent = Color(0xFFF7E6D6); // peach
+  static const Color diaryExerciseAccent = Color(0xFFE3F2E7); // green
+  static const Color diaryMealHeader = Color(0xFFE4C0A0); // darkest peach
+  static const Color diaryMealSectionBar = Color(0xFFEDD5C0); // darker peach
+  static const Color diaryExerciseHeader = Color(0xFFB3D4BA); // darkest green
+  static const Color diaryExerciseSectionBar = Color(0xFFCDE5D3); // darker green
 
   // ========================
   // TEXT STYLES
@@ -131,6 +140,34 @@ abstract final class DS {
     fontWeight: FontWeight.w900,
     color: textPrimary,
     height: 1.15,
+  );
+
+  /// Week header title — diary week group header
+  static const TextStyle weekHeaderTitle = TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.w900,
+    color: textPrimary,
+  );
+
+  /// Diary card header — date/time and type label row
+  static const TextStyle diaryCardHeaderText = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w700,
+    color: textPrimary,
+  );
+
+  /// Diary card field label — bold label in field rows
+  static const TextStyle diaryFieldLabel = TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w800,
+    color: textPrimary,
+  );
+
+  /// Diary card field value — normal weight value text
+  static const TextStyle diaryFieldValue = TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w600,
+    color: textDark,
   );
 
   // ========================

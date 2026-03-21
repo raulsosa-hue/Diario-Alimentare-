@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'add_meal_page.dart';
-import 'add_exercise_page.dart';
 import '../styles.dart';
+import 'add_exercise_page.dart';
+import 'add_meal_page.dart';
+import 'diary_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -23,6 +24,7 @@ class HomePage extends StatelessWidget {
   // piccoli accenti “soft” per distinguere i 4 cerchi (non invasivi)
   static const Color _tintMeal = Color(0xFFF7E6D6); // pesca chiaro
   static const Color _tintExercise = Color(0xFFE3F2E7); // verde chiaro
+  static const Color _tintDiary = Color(0xFFD6E3F8); // azzurro chiaro
 
   @override
   Widget build(BuildContext context) {
@@ -77,6 +79,19 @@ class HomePage extends StatelessWidget {
                           },
                         ),
                       ],
+                    ),
+                    const SizedBox(height: 18),
+                    _CircleButton(
+                      label: 'Diario',
+                      icon: Icons.menu_book,
+                      tint: _tintDiary,
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => const DiaryPage(),
+                          ),
+                        );
+                      },
                     ),
                     const SizedBox(height: 20),
                   ],
