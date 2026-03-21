@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
+import 'package:printing/printing.dart';
 
 import '../data/database_helper.dart';
 import '../models/exercise.dart';
 import '../models/meal.dart';
+import '../services/pdf_diary_export.dart';
 import '../styles.dart';
 import '../widgets/common_buttons.dart';
 import '../widgets/diary_card_helpers.dart';
@@ -20,6 +22,7 @@ class DiaryPage extends StatefulWidget {
 class _DiaryPageState extends State<DiaryPage> {
   bool _isLoading = true;
   List<_WeekGroup> _weekGroups = [];
+  DateTime? _sharingWeek;
 
   @override
   void initState() {
@@ -64,6 +67,45 @@ class _DiaryPageState extends State<DiaryPage> {
     return DateTime(day.year, day.month, day.day);
   }
 
+  Future<void> _shareWeek(_WeekGroup group) async {
+    if (_sharingWeek != null) return;
+    setState(() => _sharingWeek = group.monday);
+    try {
+      final meals = <Meal>[];
+      final exercises = <Exercise>[];
+      for (final entry in group.entries) {
+        switch (entry) {
+          case _MealEntry(meal: final m):
+            meals.add(m);
+          case _ExerciseEntry(exercise: final e):
+            exercises.add(e);
+        }
+      }
+
+      final bytes = await generateWeeklyDiaryPdf(
+        monday: group.monday,
+        meals: meals,
+        exercises: exercises,
+      );
+
+      if (!mounted) return;
+
+      await Printing.sharePdf(
+        bytes: bytes,
+        filename: 'diario_${group.monday.year}_${twoDigit(group.monday.month)}_${twoDigit(group.monday.day)}.pdf',
+      );
+    } catch (_) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Errore durante la creazione del PDF'),
+        ),
+      );
+    } finally {
+      if (mounted) setState(() => _sharingWeek = null);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,7 +123,11 @@ class _DiaryPageState extends State<DiaryPage> {
                   slivers: [
                     for (final group in _weekGroups)
                       SliverStickyHeader(
-                        header: _WeekHeader(monday: group.monday),
+                        header: _WeekHeader(
+                          monday: group.monday,
+                          onShare: () => _shareWeek(group),
+                          isLoading: _sharingWeek == group.monday,
+                        ),
                         sliver: SliverList(
                           delegate: SliverChildBuilderDelegate(
                             (context, index) {
@@ -137,7 +183,13 @@ class _WeekGroup {
 
 class _WeekHeader extends StatelessWidget {
   final DateTime monday;
-  const _WeekHeader({required this.monday});
+  final VoidCallback onShare;
+  final bool isLoading;
+  const _WeekHeader({
+    required this.monday,
+    required this.onShare,
+    this.isLoading = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -152,7 +204,17 @@ class _WeekHeader extends StatelessWidget {
               style: DS.weekHeaderTitle,
             ),
           ),
-          const Icon(Icons.ios_share, size: 22, color: DS.textMuted),
+          if (isLoading)
+            const SizedBox(
+              width: 22,
+              height: 22,
+              child: CircularProgressIndicator(strokeWidth: 2),
+            )
+          else
+            GestureDetector(
+              onTap: onShare,
+              child: const Icon(Icons.ios_share, size: 22, color: DS.textMuted),
+            ),
         ],
       ),
     );
