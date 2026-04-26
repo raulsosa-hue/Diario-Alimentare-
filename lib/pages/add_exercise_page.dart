@@ -55,7 +55,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
     _LabeledEmoji('Più libero / leggero', '✅'),
     _LabeledEmoji('Uguale', '😐'),
     _LabeledEmoji('Più in colpa / più rigido', '⚠️'),
-    _LabeledEmoji('Peggio (ansia, urgenza,\nOvalutore del controllo)', '❗'),
+    _LabeledEmoji('Peggio (ansia, urgenza,)', '❗'),
   ];
   String? _selectedOutcome;
   double _intensityAfter = 0;
