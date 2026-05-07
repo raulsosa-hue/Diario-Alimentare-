@@ -113,36 +113,36 @@ class _DiaryPageState extends State<DiaryPage> {
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : _weekGroups.isEmpty
-              ? const Center(
-                  child: Text(
-                    'Nessuna registrazione',
-                    style: DS.bodyText,
-                  ),
-                )
-              : CustomScrollView(
-                  slivers: [
-                    for (final group in _weekGroups)
-                      SliverStickyHeader(
-                        header: _WeekHeader(
-                          monday: group.monday,
-                          onShare: () => _shareWeek(group),
-                          isLoading: _sharingWeek == group.monday,
-                        ),
-                        sliver: SliverList(
-                          delegate: SliverChildBuilderDelegate(
-                            (context, index) {
-                              final entry = group.entries[index];
-                              return switch (entry) {
-                                _MealEntry(meal: final m) => DiaryMealCard(meal: m),
-                                _ExerciseEntry(exercise: final e) => DiaryExerciseCard(exercise: e),
-                              };
-                            },
-                            childCount: group.entries.length,
-                          ),
-                        ),
-                      ),
-                  ],
+          ? const Center(
+        child: Text(
+          'Nessuna registrazione',
+          style: DS.bodyText,
+        ),
+      )
+          : CustomScrollView(
+        slivers: [
+          for (final group in _weekGroups)
+            SliverStickyHeader(
+              header: _WeekHeader(
+                monday: group.monday,
+                onShare: () => _shareWeek(group),
+                isLoading: _sharingWeek == group.monday,
+              ),
+              sliver: SliverList(
+                delegate: SliverChildBuilderDelegate(
+                      (context, index) {
+                    final entry = group.entries[index];
+                    return switch (entry) {
+                      _MealEntry(meal: final m) => DiaryMealCard(meal: m),
+                      _ExerciseEntry(exercise: final e) => DiaryExerciseCard(exercise: e),
+                    };
+                  },
+                  childCount: group.entries.length,
                 ),
+              ),
+            ),
+        ],
+      ),
     );
   }
 }

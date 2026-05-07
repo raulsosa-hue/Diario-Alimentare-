@@ -49,9 +49,9 @@ class _AddMealPageState extends State<AddMealPage> {
 
   static final _mealTypeItems = kMealTypes
       .map((e) => DropdownMenuItem<String>(
-            value: e,
-            child: Text(e, style: DS.bodyTextBold),
-          ))
+    value: e,
+    child: Text(e, style: DS.bodyTextBold),
+  ))
       .toList(growable: false);
 
   // ====== UI COLORS ======
@@ -98,13 +98,106 @@ class _AddMealPageState extends State<AddMealPage> {
       initialDate: _dateTime,
       firstDate: DateTime(2020),
       lastDate: DateTime(2100),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: const ColorScheme.light(
+              primary: DS.accent,
+              onPrimary: Colors.white,
+              surface: Color(0xFFF8FAFC),
+              onSurface: Colors.black87,
+            ),
+            datePickerTheme: DatePickerThemeData(
+              backgroundColor: const Color(0xFFF8FAFC),
+              headerBackgroundColor: const Color(0xFFD6EBDD),
+              headerForegroundColor: Colors.black87,
+              surfaceTintColor: Colors.transparent,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(28),
+              ),
+              dayBackgroundColor: WidgetStateProperty.resolveWith<Color?>((states) {
+                if (states.contains(WidgetState.selected)) {
+                  return DS.accent;
+                }
+                return null;
+              }),
+              dayForegroundColor: WidgetStateProperty.resolveWith<Color?>((states) {
+                if (states.contains(WidgetState.selected)) {
+                  return Colors.white;
+                }
+                return Colors.black87;
+              }),
+              todayForegroundColor: WidgetStateProperty.resolveWith<Color?>((states) {
+                if (states.contains(WidgetState.selected)) {
+                  return Colors.white;
+                }
+                return DS.accentDark;
+              },
+              ),
+              todayBorder: const BorderSide(
+                color: DS.accentDark,
+                width: 1.4,
+              ),
+              yearForegroundColor: WidgetStateProperty.resolveWith<Color?>((states) {
+                if (states.contains(WidgetState.selected)) {
+                  return Colors.white;
+                }
+                return Colors.black87;
+              }),
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: DS.accentDark,
+                textStyle: const TextStyle(
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      },
     );
+
     if (date == null) return;
 
     final time = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.fromDateTime(_dateTime),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: const ColorScheme.light(
+              primary: DS.accent,
+              onPrimary: Colors.white,
+              surface: Color(0xFFF8FAFC),
+              onSurface: Colors.black87,
+            ),
+            timePickerTheme: TimePickerThemeData(
+              backgroundColor: const Color(0xFFF8FAFC),
+              hourMinuteColor: const Color(0xFFE3F2E7),
+              hourMinuteTextColor: Colors.black87,
+              dialHandColor: DS.accent,
+              dialBackgroundColor: const Color(0xFFEFF6F3),
+              entryModeIconColor: DS.accentDark,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(28),
+              ),
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: DS.accentDark,
+                textStyle: const TextStyle(
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      },
     );
+
     if (time == null) return;
 
     setState(() {
@@ -461,29 +554,58 @@ class _AddMealPageState extends State<AddMealPage> {
   // ====== BUILD ======
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+    final width = screenSize.width;
+    final height = screenSize.height;
+    final horizontalPadding = (width * 0.045).clamp(14.0,22.0);
+    final verticalPadding = (height * 0.03).clamp(16.0,28.0);
+    final bottomButtonHeight = (height * 0.07).clamp(42.0,56.0);
+    final bottomButtonPadding = bottomButtonHeight + 15;
     return Scaffold(
       backgroundColor: _pageBg,
       appBar: appAppBar('Nuovo pasto principale'),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(14, 14, 14, 24),
-        child: Column(
-          children: [
-            _dateTimeSection(),
-            const SizedBox(height: 12),
-            _mealTypeSection(),
-            const SizedBox(height: 14),
-            MindfulnessCard(suggestion: _suggestionBeforeMeal),
-            const SizedBox(height: 14),
-            _beforeSection(),
-            const SizedBox(height: 14),
-            _mealSection(),
-            const SizedBox(height: 14),
-            MindfulnessCard(suggestion: _suggestionAfterMeal),
-            const SizedBox(height: 14),
-            _afterSection(),
-            const SizedBox(height: 18),
-            SaveButton(onPressed: _save),
-          ],
+      body: SafeArea(
+        bottom: false,
+        child: SingleChildScrollView(
+          padding: EdgeInsets.fromLTRB(
+            horizontalPadding,
+            verticalPadding,
+            horizontalPadding,
+            bottomButtonPadding,
+          ),
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 520),
+              child: Column(
+                children: [
+                  _dateTimeSection(),
+                  const SizedBox(height: 12),
+                  _mealTypeSection(),
+                  const SizedBox(height: 14),
+                  MindfulnessCard(suggestion: _suggestionBeforeMeal),
+                  const SizedBox(height: 14),
+                  _beforeSection(),
+                  const SizedBox(height: 14),
+                  _mealSection(),
+                  const SizedBox(height: 14),
+                  MindfulnessCard(suggestion: _suggestionAfterMeal),
+                  const SizedBox(height: 14),
+                  _afterSection(),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+      bottomNavigationBar: SafeArea(
+        top: false,
+        child: Container(
+          color: _pageBg,
+          padding: EdgeInsets.fromLTRB(horizontalPadding, 8, horizontalPadding, 12),
+          child: SizedBox(
+            height: bottomButtonHeight,
+            child: SaveButton(onPressed: _save),
+          ),
         ),
       ),
     );

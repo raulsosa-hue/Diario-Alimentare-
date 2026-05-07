@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../data/database_helper.dart';
 import '../models/emotions.dart';
 import '../models/exercise.dart';
+import '../models/labeled_emoji.dart';
 import '../models/mindfulness_suggestions.dart';
 import '../styles.dart';
 import '../widgets/common_buttons.dart';
@@ -21,17 +22,17 @@ class _AddExercisePageState extends State<AddExercisePage> {
   DateTime _dateTime = DateTime.now();
 
   // -- Esercizio (oggettivo) --
-  final List<_LabeledEmoji> _exerciseTypes = const [
-    _LabeledEmoji('Camminata', '🚶‍♂️'),
-    _LabeledEmoji('Corsa / Running', '🏃'),
-    _LabeledEmoji('Bici', '🚴'),
-    _LabeledEmoji('Palestra / Pesi', '🏋️'),
-    _LabeledEmoji('Stretching / Mobilità', '🧘'),
-    _LabeledEmoji('Yoga / Pilates', '🧘‍♂️'),
-    _LabeledEmoji('Nuoto', '🏊'),
-    _LabeledEmoji('Trekking / Camminata lunga', '🥾'),
-    _LabeledEmoji('Sport di squadra', '⚽'),
-    _LabeledEmoji('Allenamento a casa', '🏠'),
+  final List<LabeledEmoji> _exerciseTypes = const [
+    LabeledEmoji('Camminata', '🚶‍♂️'),
+    LabeledEmoji('Corsa / Running', '🏃'),
+    LabeledEmoji('Bici', '🚴'),
+    LabeledEmoji('Palestra / Pesi', '🏋️'),
+    LabeledEmoji('Stretching / Mobilità', '🧘'),
+    LabeledEmoji('Yoga / Pilates', '🧘‍♂️'),
+    LabeledEmoji('Nuoto', '🏊'),
+    LabeledEmoji('Trekking / Camminata lunga', '🥾'),
+    LabeledEmoji('Sport di squadra', '⚽'),
+    LabeledEmoji('Allenamento a casa', '🏠'),
   ];
   String? _selectedExerciseType;
   bool _isOtherExerciseSelected = false;
@@ -39,11 +40,11 @@ class _AddExercisePageState extends State<AddExercisePage> {
   int _durationMinutes = 20;
 
   // -- Intenzione (prima) --
-  final List<_LabeledEmoji> _intentionOptions = const [
-    _LabeledEmoji('Benessere / Energia', '✅'),
-    _LabeledEmoji('Gestire emozioni / Stress', '🧠'),
-    _LabeledEmoji('Bruciare / Rimediare al cibo', '⚠️'),
-    _LabeledEmoji('Controllo / Punizione', '❗'),
+  final List<LabeledEmoji> _intentionOptions = const [
+    LabeledEmoji('Benessere / Energia', '✅'),
+    LabeledEmoji('Gestire emozioni / Stress', '🧠'),
+    LabeledEmoji('Bruciare / Rimediare al cibo', '⚠️'),
+    LabeledEmoji('Controllo / Punizione', '❗'),
   ];
   String? _selectedIntention;
   double _intensityBefore = 0;
@@ -51,11 +52,11 @@ class _AddExercisePageState extends State<AddExercisePage> {
   final TextEditingController _thoughtBeforeCtrl = TextEditingController();
 
   // -- Esito (dopo) --
-  final List<_LabeledEmoji> _outcomeOptions = const [
-    _LabeledEmoji('Più libero / leggero', '✅'),
-    _LabeledEmoji('Uguale', '😐'),
-    _LabeledEmoji('Più in colpa / più rigido', '⚠️'),
-  _LabeledEmoji('Ansia peggiorata / urgenza', '❗'),
+  final List<LabeledEmoji> _outcomeOptions = const [
+    LabeledEmoji('Più libero / leggero', '✅'),
+    LabeledEmoji('Uguale', '😐'),
+    LabeledEmoji('Più in colpa / più rigido', '⚠️'),
+    LabeledEmoji('Ansia peggiorata / urgenza', '❗'),
   ];
   String? _selectedOutcome;
   double _intensityAfter = 0;
@@ -96,17 +97,116 @@ class _AddExercisePageState extends State<AddExercisePage> {
       initialDate: _dateTime,
       firstDate: DateTime(2020),
       lastDate: DateTime(2100),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: const ColorScheme.light(
+              primary: DS.accent,
+              onPrimary: Colors.white,
+              surface: Color(0xFFF8FAFC),
+              onSurface: Colors.black87,
+            ),
+            datePickerTheme: DatePickerThemeData(
+              backgroundColor: const Color(0xFFF8FAFC),
+              headerBackgroundColor: const Color(0xFFD6EBDD),
+              headerForegroundColor: Colors.black87,
+              surfaceTintColor: Colors.transparent,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(28),
+              ),
+              dayBackgroundColor: WidgetStateProperty.resolveWith<Color?>((states) {
+                if (states.contains(WidgetState.selected)) {
+                  return DS.accent;
+                }
+                return null;
+              }),
+              dayForegroundColor: WidgetStateProperty.resolveWith<Color?>((states) {
+                if (states.contains(WidgetState.selected)) {
+                  return Colors.white;
+                }
+                return Colors.black87;
+              }),
+              todayForegroundColor: WidgetStateProperty.resolveWith<Color?>((states) {
+                if (states.contains(WidgetState.selected)) {
+                  return Colors.white;
+                }
+                return DS.accentDark;
+              },
+              ),
+              todayBorder: const BorderSide(
+                color: DS.accentDark,
+                width: 1.4,
+              ),
+              yearForegroundColor: WidgetStateProperty.resolveWith<Color?>((states) {
+                if (states.contains(WidgetState.selected)) {
+                  return Colors.white;
+                }
+                return Colors.black87;
+              }),
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: DS.accentDark,
+                textStyle: const TextStyle(
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      },
     );
-    if (date == null || !mounted) return;
+
+    if (date == null) return;
 
     final time = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.fromDateTime(_dateTime),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: const ColorScheme.light(
+              primary: DS.accent,
+              onPrimary: Colors.white,
+              surface: Color(0xFFF8FAFC),
+              onSurface: Colors.black87,
+            ),
+            timePickerTheme: TimePickerThemeData(
+              backgroundColor: const Color(0xFFF8FAFC),
+              hourMinuteColor: const Color(0xFFE3F2E7),
+              hourMinuteTextColor: Colors.black87,
+              dialHandColor: DS.accent,
+              dialBackgroundColor: const Color(0xFFEFF6F3),
+              entryModeIconColor: DS.accentDark,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(28),
+              ),
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: DS.accentDark,
+                textStyle: const TextStyle(
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      },
     );
-    if (time == null || !mounted) return;
+
+    if (time == null) return;
 
     setState(() {
-      _dateTime = DateTime(date.year, date.month, date.day, time.hour, time.minute);
+      _dateTime = DateTime(
+        date.year,
+        date.month,
+        date.day,
+        time.hour,
+        time.minute,
+      );
     });
   }
 
@@ -148,12 +248,12 @@ class _AddExercisePageState extends State<AddExercisePage> {
     );
   }
 
-  String? _buildLabeledEmojiValue(String? label, List<_LabeledEmoji> options) {
+  String? _buildLabeledEmojiValue(String? label, List<LabeledEmoji> options) {
     if (label == null) return null;
-    final match = options.cast<_LabeledEmoji?>().firstWhere(
+    final match = options.cast<LabeledEmoji?>().firstWhere(
           (e) => e!.label == label,
-          orElse: () => null,
-        );
+      orElse: () => null,
+    );
     if (match == null) return label;
     return '${match.emoji} ${match.label}'; // single space
   }
@@ -602,44 +702,59 @@ class _AddExercisePageState extends State<AddExercisePage> {
   // ====== BUILD ======
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+    final width = screenSize.width;
+    final height = screenSize.height;
+    final horizontalPadding = (width * 0.045).clamp(14.0,22.0);
+    final verticalPadding = (height * 0.03).clamp(16.0,28.0);
+    final bottomButtonHeight = (height * 0.07).clamp(42.0,56.0);
+    final bottomButtonPadding = bottomButtonHeight + 15;
     return Scaffold(
       backgroundColor: _pageBg,
       appBar: appAppBar('Nuovo esercizio'),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.only(bottom: 28),
-        child: Column(
-          children: [
-            const SizedBox(height: 14),
-            _dateTimeSection(),
-            _exerciseSection(),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: MindfulnessCard(
-                suggestion: _suggestionBeforeExercise,
+      body: SafeArea(
+        bottom: false,
+        child: SingleChildScrollView(
+          padding: EdgeInsets.fromLTRB(
+            horizontalPadding,
+            verticalPadding,
+            horizontalPadding,
+            bottomButtonPadding,
+          ),
+          child: Center(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: 520),
+              child: Column(
+                children: [
+                  _dateTimeSection(),
+                  const SizedBox(height: 14),
+                  _exerciseSection(),
+                  const SizedBox(height: 14),
+                  MindfulnessCard(suggestion: _suggestionBeforeExercise),
+                  _intentionSection(),
+                  const SizedBox(height: 14),
+                  MindfulnessCard(suggestion: _suggestionAfterExercise),
+                  _outcomeSection(),
+                  const SizedBox(height: 14),
+                ],
               ),
             ),
-            _intentionSection(),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: MindfulnessCard(
-                suggestion: _suggestionAfterExercise,
-              ),
+          ),
+        ),
+      ),
+      bottomNavigationBar: SafeArea(
+        top: false,
+        child: Container(
+          color: _pageBg,
+          padding: EdgeInsets.fromLTRB(horizontalPadding, 8, horizontalPadding, 12),
+          child: SizedBox(
+            height: bottomButtonHeight,
+            child: SaveButton(
+              onPressed: _save,
             ),
-            _outcomeSection(),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 18, 16, 6),
-              child: SaveButton(onPressed: _save),
-            ),
-          ],
+          ),
         ),
       ),
     );
   }
-}
-
-// ====== MODELS ======
-class _LabeledEmoji {
-  final String label;
-  final String emoji;
-  const _LabeledEmoji(this.label, this.emoji);
 }
