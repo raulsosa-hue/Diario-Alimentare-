@@ -85,7 +85,7 @@ class HomePage extends StatelessWidget {
 
                     _HomeActionCard(
                       title: 'ESERCIZIO',
-                      subtitle: 'Allenamenti e benessere',
+                      subtitle: 'Allenati,senti e annota',
                       icon: Icons.directions_run_rounded,
                       accentColor: _exerciseColor,
                       backgroundColor: _exerciseLight,
