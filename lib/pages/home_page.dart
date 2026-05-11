@@ -68,7 +68,7 @@ class HomePage extends StatelessWidget {
 
                     _HomeActionCard(
                       title: 'PASTO',
-                      subtitle: 'Mangia, senti\ne annota',
+                      subtitle: 'Mangia, senti e\nannota',
                       icon: Icons.restaurant_rounded,
                       accentColor: _mealColor,
                       backgroundColor: _mealLight,
@@ -85,7 +85,7 @@ class HomePage extends StatelessWidget {
 
                     _HomeActionCard(
                       title: 'ESERCIZIO',
-                      subtitle: 'Allenamenti e benessere',
+                      subtitle: 'Allenati, senti e\nannota',
                       icon: Icons.directions_run_rounded,
                       accentColor: _exerciseColor,
                       backgroundColor: _exerciseLight,
@@ -140,21 +140,24 @@ class _HomeHeader extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(
-              Icons.eco_rounded,
-              color: HomePage._green,
-              size: 30,
-            ),
-            const SizedBox(width: 8),
             Text(
               'Mi Ascolto',
               textAlign: TextAlign.center,
               style: DS.pageTitle.copyWith(
                 fontSize: titleSize,
+                fontStyle: FontStyle.italic,
                 fontWeight: FontWeight.w800,
                 color: HomePage._greenDark,
                 letterSpacing: 0.2,
               ),
+            ),
+
+            const SizedBox(width: 8),
+
+            const Icon(
+              Icons.eco_rounded,
+              color: HomePage._green,
+              size: 30,
             ),
           ],
         ),

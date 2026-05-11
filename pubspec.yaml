@@ -19,6 +19,8 @@ dependencies:
 
 dev_dependencies:
   flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.0
+  flutter_native_splash: ^2.4.7
   flutter_test:
     sdk: flutter
 
@@ -28,4 +30,28 @@ flutter:
     - assets/fonts/NotoSans-Regular.ttf
     - assets/fonts/NotoSans-Bold.ttf
     - assets/fonts/NotoEmoji-Regular.ttf
+    - assets/icons/app_icon_foreground.png
 
+flutter_launcher_icons:
+  android: true
+  ios: true
+
+  image_path: "assets/icons/app_icon.png"
+
+  adaptive_icon_background: "#FCFAF5"
+  adaptive_icon_foreground: "assets/icons/app_icon_foreground.png"
+
+  remove_alpha_ios: true
+  background_color_ios: "#FCFAF5"
+
+flutter_native_splash:
+  color: "#FCFAF5"
+  image: assets/icons/app_icon_foreground.png
+
+  android: true
+  ios: true
+
+  android_12:
+    color: "#FCFAF5"
+    image: assets/icons/app_icon_foreground.png
+    icon_background_color: "#FCFAF5"
