@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mi_ascolto/widgets/app_icon_mark.dart';
 
 import '../data/database_helper.dart';
 import '../models/emotions.dart';
@@ -811,12 +812,11 @@ class _AddMealPageState extends State<AddMealPage> {
                         letterSpacing: 0.2,
                       ),
                     ),
-                    const SizedBox(width: 8),
-                    Icon(
-                      Icons.eco_rounded,
+                    const SizedBox(width: 2),
+                    AppIconMark(
+                      size: 40,
                       color: _stepAccent,
-                      size: 26,
-                    ),
+                    )
                   ],
                 ),
               ),
@@ -1764,7 +1764,7 @@ class _AddMealPageState extends State<AddMealPage> {
               child: Opacity(
                 opacity: 0.12,
                 child: Icon(
-                  Icons.eco_rounded,
+                  Icons.restaurant_rounded,
                   size: 130,
                   color: _stepAccent,
                 ),

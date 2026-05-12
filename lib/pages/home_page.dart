@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mi_ascolto/widgets/app_icon_mark.dart';
 
 import '../styles.dart';
 import 'add_exercise_page.dart';
@@ -152,13 +153,12 @@ class _HomeHeader extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(width: 8),
+            const SizedBox(width: 2),
 
-            const Icon(
-              Icons.eco_rounded,
-              color: HomePage._green,
-              size: 30,
-            ),
+            AppIconMark(
+              size: 40,
+              color: HomePage._greenDark,
+            )
           ],
         ),
 
