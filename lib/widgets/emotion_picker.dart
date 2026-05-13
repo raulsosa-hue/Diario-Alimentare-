@@ -27,10 +27,16 @@ class EmotionPicker extends StatefulWidget {
 class _EmotionPickerState extends State<EmotionPicker> {
   static const Map<String, List<String>> _sections = {
     'Piacevoli': [
-      "Fame d'amore",
       'Gioia',
       'Orgoglio',
     ],
+
+    'Affettive profonde': [
+      "Fame d'amore",
+      'Vuoto',
+      'Nostalgia',
+    ],
+
     'Difficili': [
       'Tristezza',
       'Rabbia',
@@ -40,12 +46,13 @@ class _EmotionPickerState extends State<EmotionPicker> {
       'Frustrazione',
       'Solitudine',
     ],
+
     'Miste o neutre': [
       'Sorpresa',
       'Imbarazzo / Vergogna',
       'Invidia / Gelosia',
-      'Nostalgia',
       'Colpa / Rimorso',
+      'Apatia',
     ],
   };
 

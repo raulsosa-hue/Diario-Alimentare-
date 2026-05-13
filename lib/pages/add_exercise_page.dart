@@ -945,19 +945,15 @@ class _AddExercisePageState extends State<AddExercisePage> {
                 size: 21,
               )
                   : active
-                  ? Text(
-                '${index + 1}',
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w900,
-                ),
-              )
-                  : Icon(
+                  ? Icon(
+                icon,
+                color: Colors.white,
+                size: 21,
+              ) : Icon(
                 icon,
                 color: color,
                 size: 21,
-              ),
+              )
             ),
           ),
           const SizedBox(height: 7),

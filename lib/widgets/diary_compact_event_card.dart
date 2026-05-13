@@ -26,136 +26,160 @@ class DiaryCompactEventCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 8),
       child: Material(
-        color: Colors.white.withOpacity(0.96),
-        borderRadius: BorderRadius.circular(22),
+        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(24),
         child: InkWell(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(22),
+          borderRadius: BorderRadius.circular(24),
           child: Container(
-            padding: const EdgeInsets.fromLTRB(14, 13, 10, 13),
+            width: double.infinity,
+            padding: const EdgeInsets.fromLTRB(15, 14, 12, 14),
             decoration: BoxDecoration(
               color: Colors.white.withOpacity(0.96),
-              borderRadius: BorderRadius.circular(22),
+              borderRadius: BorderRadius.circular(24),
               border: Border.all(
-                color: accentColor.withOpacity(0.16),
+                color: accentColor.withOpacity(0.14),
               ),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withOpacity(0.035),
-                  blurRadius: 12,
-                  offset: const Offset(0, 5),
+                  blurRadius: 14,
+                  offset: const Offset(0, 6),
                 ),
               ],
             ),
-            child: Row(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  width: 48,
-                  height: 48,
-                  decoration: BoxDecoration(
-                    color: accentColor.withOpacity(0.13),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    _icon(entry),
-                    color: accentColor,
-                    size: 25,
-                  ),
-                ),
-
-                const SizedBox(width: 13),
-
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              title,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: DS.bodyText.copyWith(
-                                fontWeight: FontWeight.w900,
-                                fontSize: 17,
-                                height: 1.15,
-                                color: DS.textPrimary,
-                              ),
-                            ),
-                          ),
-
-                          const SizedBox(width: 8),
-
-                          Text(
-                            time,
-                            style: DS.bodyText.copyWith(
-                              color: DS.textMuted,
-                              fontSize: 13,
-                              fontWeight: FontWeight.w800,
-                            ),
-                          ),
-                        ],
+                Row(
+                  children: [
+                    Container(
+                      width: 38,
+                      height: 38,
+                      decoration: BoxDecoration(
+                        color: accentColor.withOpacity(0.12),
+                        shape: BoxShape.circle,
                       ),
+                      child: Icon(
+                        _icon(entry),
+                        color: accentColor.withOpacity(0.75),
+                        size: 22,
+                      ),
+                    ),
 
-                      const SizedBox(height: 9),
+                    const SizedBox(width: 10),
 
-                      for (final line in lines)
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 5),
-                          child: RichText(
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            text: TextSpan(
-                              style: DS.bodyText.copyWith(
-                                fontSize: 14.5,
-                                height: 1.25,
-                                color: DS.textPrimary,
-                              ),
-                              children: [
-                                TextSpan(
-                                  text: '${line.label}  ',
-                                  style: DS.bodyText.copyWith(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w900,
-                                    color: accentColor.withOpacity(0.72),
-                                    letterSpacing: 0.5,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: line.value,
-                                  style: DS.bodyText.copyWith(
-                                    fontSize: 14.5,
-                                    fontWeight: FontWeight.w700,
-                                    color: DS.textPrimary,
-                                    height: 1.25,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                    ],
+                    Text(
+                      _entryKind(entry),
+                      style: DS.bodyText.copyWith(
+                        fontSize: 12,
+                        height: 1,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 0.7,
+                        color: accentColor.withOpacity(0.62),
+                      ),
+                    ),
+
+                    const Spacer(),
+
+                    Text(
+                      time,
+                      style: DS.bodyText.copyWith(
+                        color: DS.textPrimary.withOpacity(0.78),
+                        fontSize: 13.5,
+                        height: 1,
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+
+                    const SizedBox(width: 4),
+
+                    Icon(
+                      Icons.chevron_right_rounded,
+                      color: accentColor.withOpacity(0.44),
+                      size: 27,
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 10),
+
+                Text(
+                  title,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: DS.bodyText.copyWith(
+                    fontWeight: FontWeight.w900,
+                    fontSize: 18,
+                    height: 1.08,
+                    color: DS.textPrimary,
                   ),
                 ),
 
-                const SizedBox(width: 4),
+                const SizedBox(height: 12),
 
-                Padding(
-                  padding: const EdgeInsets.only(top: 7),
-                  child: Icon(
-                    Icons.chevron_right_rounded,
-                    color: accentColor.withOpacity(0.7),
-                    size: 29,
+                for (final line in lines)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 7),
+                    child: _CompactInfoRow(
+                      label: line.label,
+                      value: line.value,
+                      accentColor: accentColor,
+                    ),
                   ),
-                ),
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+}
+
+class _CompactInfoRow extends StatelessWidget {
+  final String label;
+  final String value;
+  final Color accentColor;
+
+  const _CompactInfoRow({
+    required this.label,
+    required this.value,
+    required this.accentColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          width: 62,
+          child: Text(
+            label,
+            style: DS.bodyText.copyWith(
+              fontSize: 12,
+              height: 1.25,
+              fontWeight: FontWeight.w900,
+              letterSpacing: 0.5,
+              color: accentColor.withOpacity(0.36),
+            ),
+          ),
+        ),
+
+        Expanded(
+          child: Text(
+            value,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: DS.bodyText.copyWith(
+              fontSize: 14.5,
+              height: 1.25,
+              fontWeight: FontWeight.w800,
+              color: DS.textPrimary,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -317,6 +341,13 @@ String _title(DiaryEntry entry) {
     cleanDiaryValueOrNull(meal.mealType) ?? 'Pasto',
     ExerciseDiaryEntry(exercise: final exercise) =>
     cleanDiaryValueOrNull(exercise.exerciseType) ?? 'Esercizio',
+  };
+}
+
+String _entryKind(DiaryEntry entry) {
+  return switch (entry) {
+    MealDiaryEntry() => 'PASTO',
+    ExerciseDiaryEntry() => 'ESERCIZIO',
   };
 }
 

@@ -858,7 +858,7 @@ class _AddMealPageState extends State<AddMealPage> {
       padding: const EdgeInsets.fromLTRB(18, 22, 18, 8),
       child: Row(
         children: [
-          Expanded(child: _stepItem(0, 'Prima', Icons.circle_outlined)),
+          Expanded(child: _stepItem(0, 'Prima', Icons.self_improvement_rounded)),
           _stepLine(0),
           Expanded(child: _stepItem(1, 'Pasto', Icons.restaurant_rounded)),
           _stepLine(1),
@@ -919,19 +919,15 @@ class _AddMealPageState extends State<AddMealPage> {
                 size: 21,
               )
                   : active
-                  ? Text(
-                '${index + 1}',
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 17,
-                  fontWeight: FontWeight.w900,
-                ),
-              )
-                  : Icon(
+                  ? Icon(
+                icon,
+                color: Colors.white,
+                size: 21,
+              ) : Icon(
                 icon,
                 color: color,
                 size: 21,
-              ),
+              )
             ),
           ),
           const SizedBox(height: 7),
