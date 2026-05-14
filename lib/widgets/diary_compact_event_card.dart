@@ -16,6 +16,12 @@ class DiaryCompactEventCard extends StatelessWidget {
     required this.onTap,
   });
 
+  static const Color _mealColor = Color(0xFFF28C28);
+  static const Color _exerciseColor = Color(0xFF4F9B65);
+
+  static const Color _beforeColor = Color(0xFFE98926);
+  static const Color _afterColor = Color(0xFF4F9B65);
+
   @override
   Widget build(BuildContext context) {
     final accentColor = _accentColor(entry);
@@ -38,13 +44,13 @@ class DiaryCompactEventCard extends StatelessWidget {
               color: Colors.white.withOpacity(0.96),
               borderRadius: BorderRadius.circular(24),
               border: Border.all(
-                color: accentColor.withOpacity(0.14),
+                color: accentColor.withOpacity(0.18),
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.035),
-                  blurRadius: 14,
-                  offset: const Offset(0, 6),
+                  color: Colors.black.withOpacity(0.045),
+                  blurRadius: 18,
+                  offset: const Offset(0, 8),
                 ),
               ],
             ),
@@ -57,27 +63,21 @@ class DiaryCompactEventCard extends StatelessWidget {
                       width: 38,
                       height: 38,
                       decoration: BoxDecoration(
-                        color: accentColor.withOpacity(0.12),
+                        color: accentColor.withOpacity(0.13),
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
                         _icon(entry),
-                        color: accentColor.withOpacity(0.75),
+                        color: accentColor,
                         size: 22,
                       ),
                     ),
 
                     const SizedBox(width: 10),
 
-                    Text(
-                      _entryKind(entry),
-                      style: DS.bodyText.copyWith(
-                        fontSize: 12,
-                        height: 1,
-                        fontWeight: FontWeight.w900,
-                        letterSpacing: 0.7,
-                        color: accentColor.withOpacity(0.62),
-                      ),
+                    _SmallLabelBadge(
+                      label: _entryKind(entry),
+                      color: accentColor,
                     ),
 
                     const Spacer(),
@@ -96,7 +96,7 @@ class DiaryCompactEventCard extends StatelessWidget {
 
                     Icon(
                       Icons.chevron_right_rounded,
-                      color: accentColor.withOpacity(0.44),
+                      color: accentColor.withOpacity(0.55),
                       size: 27,
                     ),
                   ],
@@ -124,12 +124,68 @@ class DiaryCompactEventCard extends StatelessWidget {
                     child: _CompactInfoRow(
                       label: line.label,
                       value: line.value,
-                      accentColor: accentColor,
+                      accentColor: _lineColor(line.label, accentColor),
                     ),
                   ),
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  static Color _lineColor(String label, Color fallbackColor) {
+    switch (label.toUpperCase()) {
+      case 'PRIMA':
+        return _beforeColor;
+      case 'DOPO':
+        return _afterColor;
+      case 'CIBO':
+      case 'PASTO':
+        return _mealColor;
+      case 'ESERCIZIO':
+        return _exerciseColor;
+      default:
+        return fallbackColor;
+    }
+  }
+}
+
+class _SmallLabelBadge extends StatelessWidget {
+  final String label;
+  final Color color;
+
+  const _SmallLabelBadge({
+    required this.label,
+    required this.color,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 8,
+        vertical: 4,
+      ),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.12),
+        borderRadius: BorderRadius.circular(999),
+        border: Border.all(
+          color: color.withOpacity(0.26),
+          width: 1,
+        ),
+      ),
+      child: Text(
+        label,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: DS.bodyText.copyWith(
+          fontSize: 12,
+          height: 1,
+          fontWeight: FontWeight.w900,
+          letterSpacing: 0.7,
+          color: color,
         ),
       ),
     );
@@ -154,14 +210,33 @@ class _CompactInfoRow extends StatelessWidget {
       children: [
         SizedBox(
           width: 62,
-          child: Text(
-            label,
-            style: DS.bodyText.copyWith(
-              fontSize: 12,
-              height: 1.25,
-              fontWeight: FontWeight.w900,
-              letterSpacing: 0.5,
-              color: accentColor.withOpacity(0.36),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 7,
+                vertical: 3,
+              ),
+              decoration: BoxDecoration(
+                color: accentColor.withOpacity(0.12),
+                borderRadius: BorderRadius.circular(999),
+                border: Border.all(
+                  color: accentColor.withOpacity(0.24),
+                  width: 1,
+                ),
+              ),
+              child: Text(
+                label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: DS.bodyText.copyWith(
+                  fontSize: 11.2,
+                  height: 1,
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: 0.45,
+                  color: accentColor.withOpacity(0.90),
+                ),
+              ),
             ),
           ),
         ),
@@ -360,7 +435,7 @@ IconData _icon(DiaryEntry entry) {
 
 Color _accentColor(DiaryEntry entry) {
   return switch (entry) {
-    MealDiaryEntry() => DS.diaryMealHeader,
-    ExerciseDiaryEntry() => DS.diaryExerciseHeader,
+    MealDiaryEntry() => DiaryCompactEventCard._mealColor,
+    ExerciseDiaryEntry() => DiaryCompactEventCard._exerciseColor,
   };
 }

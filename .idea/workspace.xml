@@ -4,13 +4,12 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a2aed5bb-00c0-45eb-b106-a38f6d0e0abe" name="Changes" comment="Nuova release: aggiornamento struttura diario, con nuova schermata grafica, nuove card compatte ed estendibili per settimane, giorni ed eventi. I dettagli degli eventi, con emozioni annesse, sono visibili tramite tendina. Sistemazione di alcuni dettagli grafici. Maggiore suddivisione delle responsabilità, con un repository che si occupa di recuperare i dati ed interagire con il database.">
+    <list default="true" id="a2aed5bb-00c0-45eb-b106-a38f6d0e0abe" name="Changes" comment="Nuovo aggiornamento: emozioni riorganizzate con una nuova classificazione, sistemato un bug di overflow e di sintassi. Rimossi i numeri dagli step in pasto ed esercizio.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/pages/add_exercise_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pages/add_exercise_page.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/pages/add_extra_page.dart" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/pages/add_meal_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pages/add_meal_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/utils/diary_formatters.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/utils/diary_formatters.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/widgets/diary_compact_event_card.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/widgets/diary_compact_event_card.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/widgets/emotion_picker.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/widgets/emotion_picker.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -129,7 +128,15 @@
       <option name="project" value="LOCAL" />
       <updated>1778592163627</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Nuovo aggiornamento: emozioni riorganizzate con una nuova classificazione, sistemato un bug di overflow e di sintassi. Rimossi i numeri dagli step in pasto ed esercizio.">
+      <option name="closed" value="true" />
+      <created>1778681883715</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1778681883715</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -143,6 +150,7 @@
     <MESSAGE value="Nuovo aggiornamento di &quot;Mi Ascolto&quot;. La nuova release porta una nuova definizione dell'interfaccia utente, quindi schermate dal design grafico nuovo, progressivo, a fasi con &quot;Prima&quot;, &quot;Pasto/Esercizio&quot; e &quot;Dopo&quot;. Migliorato l'aspetto grafico generale dei picker di calendario, data e orario, oltre a quelli per scegliere il tipo di pasto e di esercizio. Le emozioni sono state raccolte ed organizzate per tipologia in una tendina. Miglioramenti generali di stile e caratteri. L'app ora presenta una nuova icon e una schermata dinamica che si apre all'atto dell'ingresso, da parte dell'utente, in app." />
     <MESSAGE value="Nuova release: aggiornamento struttura diario, con nuova schermata grafica, nuove card compatte ed estendibili per settimane, giorni ed eventi. I dettagli degli eventi, con emozioni annesse, sono visibili tramite tendina. Sistemazione di alcuni dettagli grafici." />
     <MESSAGE value="Nuova release: aggiornamento struttura diario, con nuova schermata grafica, nuove card compatte ed estendibili per settimane, giorni ed eventi. I dettagli degli eventi, con emozioni annesse, sono visibili tramite tendina. Sistemazione di alcuni dettagli grafici. Maggiore suddivisione delle responsabilità, con un repository che si occupa di recuperare i dati ed interagire con il database." />
-    <option name="LAST_COMMIT_MESSAGE" value="Nuova release: aggiornamento struttura diario, con nuova schermata grafica, nuove card compatte ed estendibili per settimane, giorni ed eventi. I dettagli degli eventi, con emozioni annesse, sono visibili tramite tendina. Sistemazione di alcuni dettagli grafici. Maggiore suddivisione delle responsabilità, con un repository che si occupa di recuperare i dati ed interagire con il database." />
+    <MESSAGE value="Nuovo aggiornamento: emozioni riorganizzate con una nuova classificazione, sistemato un bug di overflow e di sintassi. Rimossi i numeri dagli step in pasto ed esercizio." />
+    <option name="LAST_COMMIT_MESSAGE" value="Nuovo aggiornamento: emozioni riorganizzate con una nuova classificazione, sistemato un bug di overflow e di sintassi. Rimossi i numeri dagli step in pasto ed esercizio." />
   </component>
 </project>

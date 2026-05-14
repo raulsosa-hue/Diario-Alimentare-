@@ -5,6 +5,7 @@ import '../data/database_helper.dart';
 import '../models/emotions.dart';
 import '../models/meal.dart';
 import '../models/mindfulness_suggestions.dart';
+import '../utils/diary_formatters.dart';
 import '../widgets/common_buttons.dart';
 import '../widgets/emotion_picker.dart';
 
@@ -117,39 +118,6 @@ class _AddMealPageState extends State<AddMealPage> {
     super.dispose();
   }
 
-  String _formatTimeOfDay(TimeOfDay? t) {
-    if (t == null) return '--:--';
-    return '${twoDigit(t.hour)}:${twoDigit(t.minute)}';
-  }
-
-  String _formatPrettyDate(DateTime date) {
-    const days = [
-      'Lunedì',
-      'Martedì',
-      'Mercoledì',
-      'Giovedì',
-      'Venerdì',
-      'Sabato',
-      'Domenica',
-    ];
-
-    const months = [
-      'Gennaio',
-      'Febbraio',
-      'Marzo',
-      'Aprile',
-      'Maggio',
-      'Giugno',
-      'Luglio',
-      'Agosto',
-      'Settembre',
-      'Ottobre',
-      'Novembre',
-      'Dicembre',
-    ];
-
-    return '${days[date.weekday - 1]} ${date.day} ${months[date.month - 1]}';
-  }
 
   Future<DateTime?> _pickDateInSheet() async {
     DateTime tempDate = _dateTime;
@@ -248,7 +216,7 @@ class _AddMealPageState extends State<AddMealPage> {
                           const SizedBox(width: 10),
                           Expanded(
                             child: Text(
-                              _formatPrettyDate(tempDate),
+                              formatPrettyDate(tempDate),
                               style: const TextStyle(
                                 fontSize: 17,
                                 fontWeight: FontWeight.w900,
@@ -485,8 +453,8 @@ class _AddMealPageState extends State<AddMealPage> {
       emotionalIntensityBefore: _intensityBefore.round(),
       emotionBefore: buildEmotionStorageValue(_emotionsBefore),
       thoughtBefore: nullIfEmpty(_thoughtBeforeCtrl),
-      startTime: _formatTimeOfDay(_startTime),
-      endTime: _formatTimeOfDay(_endTime),
+      startTime: formatTimeOfDay(_startTime),
+      endTime: formatTimeOfDay(_endTime),
       whatEaten: nullIfEmpty(_whatEatCtrl),
       bodySensationsAfter: nullIfEmpty(_bodyAfterCtrl),
       emotionalIntensityAfter: _intensityAfter.round(),
@@ -1234,7 +1202,7 @@ class _AddMealPageState extends State<AddMealPage> {
               Expanded(
                 child: _timeBox(
                   title: 'Inizio',
-                  value: _formatTimeOfDay(_startTime),
+                  value: formatTimeOfDay(_startTime),
                   hasError: _showTimeErrors && _startTime == null,
                   onTap: _pickStartTime,
                 ),
@@ -1243,7 +1211,7 @@ class _AddMealPageState extends State<AddMealPage> {
               Expanded(
                 child: _timeBox(
                   title: 'Fine',
-                  value: _formatTimeOfDay(_endTime),
+                  value: formatTimeOfDay(_endTime),
                   hasError: _showTimeErrors && _endTime == null,
                   onTap: _pickEndTime,
                 ),

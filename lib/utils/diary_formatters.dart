@@ -1,3 +1,7 @@
+import 'package:flutter/material.dart';
+
+import '../widgets/common_buttons.dart';
+
 const diaryWeekdaysFull = [
   'Lunedì',
   'Martedì',
@@ -89,4 +93,38 @@ int isoWeekNumber(DateTime date) {
 
 String _two(int n) {
   return n.toString().padLeft(2, '0');
+}
+
+String formatTimeOfDay(TimeOfDay? t) {
+  if (t == null) return '--:--';
+  return '${twoDigit(t.hour)}:${twoDigit(t.minute)}';
+}
+
+String formatPrettyDate(DateTime date) {
+  const days = [
+    'Lunedì',
+    'Martedì',
+    'Mercoledì',
+    'Giovedì',
+    'Venerdì',
+    'Sabato',
+    'Domenica',
+  ];
+
+  const months = [
+    'Gennaio',
+    'Febbraio',
+    'Marzo',
+    'Aprile',
+    'Maggio',
+    'Giugno',
+    'Luglio',
+    'Agosto',
+    'Settembre',
+    'Ottobre',
+    'Novembre',
+    'Dicembre',
+  ];
+
+  return '${days[date.weekday - 1]} ${date.day} ${months[date.month - 1]}';
 }

@@ -6,6 +6,7 @@ import '../models/emotions.dart';
 import '../models/exercise.dart';
 import '../models/labeled_emoji.dart';
 import '../models/mindfulness_suggestions.dart';
+import '../utils/diary_formatters.dart';
 import '../widgets/common_buttons.dart';
 import '../widgets/emotion_picker.dart';
 
@@ -128,34 +129,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
     super.dispose();
   }
 
-  String _formatPrettyDate(DateTime date) {
-    const days = [
-      'Lunedì',
-      'Martedì',
-      'Mercoledì',
-      'Giovedì',
-      'Venerdì',
-      'Sabato',
-      'Domenica',
-    ];
 
-    const months = [
-      'Gennaio',
-      'Febbraio',
-      'Marzo',
-      'Aprile',
-      'Maggio',
-      'Giugno',
-      'Luglio',
-      'Agosto',
-      'Settembre',
-      'Ottobre',
-      'Novembre',
-      'Dicembre',
-    ];
-
-    return '${days[date.weekday - 1]} ${date.day} ${months[date.month - 1]}';
-  }
 
   Future<DateTime?> _pickDateInSheet() async {
     DateTime tempDate = _dateTime;
@@ -254,7 +228,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
                           const SizedBox(width: 10),
                           Expanded(
                             child: Text(
-                              _formatPrettyDate(tempDate),
+                              formatPrettyDate(tempDate),
                               style: const TextStyle(
                                 fontSize: 17,
                                 fontWeight: FontWeight.w900,
