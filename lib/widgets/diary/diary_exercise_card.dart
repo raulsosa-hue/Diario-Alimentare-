@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../models/exercise.dart';
-import '../styles.dart';
+import '../../models/exercise.dart';
+import '../../styles.dart';
 import 'diary_card_helpers.dart';
 
 class DiaryExerciseCard extends StatelessWidget {

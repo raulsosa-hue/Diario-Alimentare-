@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../repository/diary_repository.dart';
+import '../../repository/diary_repository.dart';
 import 'diary_compact_event_card.dart';
-import '../utils/diary_formatters.dart';
+import '../../utils/diary_formatters.dart';
 
 class DayExpansionCard extends StatefulWidget {
   final DiaryDayGroup dayGroup;
@@ -52,7 +52,7 @@ class _DayExpansionCardState extends State<DayExpansionCard> {
         color: _cream,
         borderRadius: BorderRadius.circular(26),
         border: Border.all(
-          color: _creamBorder.withOpacity(0.75),
+          color: _creamBorder.withValues(alpha: 0.75),
           width: 1,
         ),
       ),
@@ -88,9 +88,7 @@ class _DayExpansionCardState extends State<DayExpansionCard> {
                           ),
                         ),
                       ),
-
                       const SizedBox(width: 14),
-
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -118,7 +116,6 @@ class _DayExpansionCardState extends State<DayExpansionCard> {
                           ],
                         ),
                       ),
-
                       AnimatedRotation(
                         duration: const Duration(milliseconds: 180),
                         turns: _expanded ? 0.5 : 0,
@@ -133,15 +130,12 @@ class _DayExpansionCardState extends State<DayExpansionCard> {
                 ),
               ),
             ),
-
             AnimatedCrossFade(
               duration: const Duration(milliseconds: 220),
               sizeCurve: Curves.easeOutCubic,
               firstCurve: Curves.easeOut,
               secondCurve: Curves.easeOut,
-              crossFadeState: _expanded
-                  ? CrossFadeState.showSecond
-                  : CrossFadeState.showFirst,
+              crossFadeState: _expanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
               firstChild: const SizedBox.shrink(),
               secondChild: Padding(
                 padding: const EdgeInsets.fromLTRB(12, 0, 12, 14),
@@ -152,8 +146,7 @@ class _DayExpansionCardState extends State<DayExpansionCard> {
                         entry: entries[i],
                         onTap: () => widget.onEntryTap(entries[i]),
                       ),
-                      if (i != entries.length - 1)
-                        const SizedBox(height: 10),
+                      if (i != entries.length - 1) const SizedBox(height: 10),
                     ],
                   ],
                 ),

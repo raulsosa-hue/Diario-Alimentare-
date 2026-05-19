@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../repository/diary_repository.dart';
-import '../utils/diary_formatters.dart';
+import '../../repository/diary_repository.dart';
+import '../../utils/diary_formatters.dart';
 import 'diary_compact_event_card.dart';
-
 
 class WeekExpansionCard extends StatefulWidget {
   final DiaryWeekGroup group;
@@ -53,8 +52,18 @@ class _WeekExpansionCardState extends State<WeekExpansionCard> {
   int get _eventsCount {
     return widget.group.days.fold<int>(
       0,
-          (sum, day) => sum + day.entries.length,
+      (sum, day) => sum + day.entries.length,
     );
+  }
+
+  void _toggleWeek() {
+    setState(() {
+      _expanded = !_expanded;
+
+      if (_expanded && _expandedDays.isEmpty && widget.group.days.isNotEmpty) {
+        _expandedDays.add(0);
+      }
+    });
   }
 
   @override
@@ -68,12 +77,12 @@ class _WeekExpansionCardState extends State<WeekExpansionCard> {
         color: Colors.white,
         borderRadius: BorderRadius.circular(32),
         border: Border.all(
-          color: Colors.white.withOpacity(0.9),
+          color: Colors.white.withValues(alpha: 0.9),
           width: 1.2,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.055),
+            color: Colors.black.withValues(alpha: 0.055),
             blurRadius: 26,
             offset: const Offset(0, 12),
           ),
@@ -84,9 +93,7 @@ class _WeekExpansionCardState extends State<WeekExpansionCard> {
         child: Column(
           children: [
             InkWell(
-              onTap: () {
-                setState(() => _expanded = !_expanded);
-              },
+              onTap: _toggleWeek,
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(20, 20, 18, 18),
                 child: Row(
@@ -106,13 +113,11 @@ class _WeekExpansionCardState extends State<WeekExpansionCard> {
                               color: _greenDark,
                             ),
                           ),
-
                           const SizedBox(height: 10),
-
                           Text(
                             '${formatDiaryWeekRange(monday)} · '
-                                '${widget.group.days.length} ${diaryPlural(widget.group.days.length, 'giorno', 'giorni')} · '
-                                '$_eventsCount ${diaryPlural(_eventsCount, 'evento', 'eventi')}',
+                            '${widget.group.days.length} ${diaryPlural(widget.group.days.length, 'giorno', 'giorni')} · '
+                            '$_eventsCount ${diaryPlural(_eventsCount, 'evento', 'eventi')}',
                             style: const TextStyle(
                               fontSize: 16,
                               height: 1.3,
@@ -123,37 +128,26 @@ class _WeekExpansionCardState extends State<WeekExpansionCard> {
                         ],
                       ),
                     ),
-
                     const SizedBox(width: 10),
-
                     _roundIconButton(
                       icon: Icons.ios_share_rounded,
                       isLoading: widget.isSharing,
                       onTap: widget.onShare,
                     ),
-
                     const SizedBox(width: 8),
-
                     _roundIconButton(
-                      icon: _expanded
-                          ? Icons.keyboard_arrow_up_rounded
-                          : Icons.keyboard_arrow_down_rounded,
-                      onTap: () {
-                        setState(() => _expanded = !_expanded);
-                      },
+                      icon: _expanded ? Icons.keyboard_arrow_up_rounded : Icons.keyboard_arrow_down_rounded,
+                      onTap: _toggleWeek,
                     ),
                   ],
                 ),
               ),
             ),
-
-            AnimatedCrossFade(
+            AnimatedSize(
               duration: const Duration(milliseconds: 220),
-              crossFadeState: _expanded
-                  ? CrossFadeState.showSecond
-                  : CrossFadeState.showFirst,
-              firstChild: const SizedBox.shrink(),
-              secondChild: Padding(
+              curve: Curves.easeOutCubic,
+              child: _expanded
+                  ? Padding(
                 padding: const EdgeInsets.fromLTRB(14, 0, 14, 16),
                 child: Column(
                   children: [
@@ -164,7 +158,8 @@ class _WeekExpansionCardState extends State<WeekExpansionCard> {
                     ],
                   ],
                 ),
-              ),
+              )
+                  : const SizedBox.shrink(),
             ),
           ],
         ),
@@ -184,7 +179,7 @@ class _WeekExpansionCardState extends State<WeekExpansionCard> {
         color: _cream,
         borderRadius: BorderRadius.circular(26),
         border: Border.all(
-          color: _creamBorder.withOpacity(0.65),
+          color: _creamBorder.withValues(alpha: 0.65),
           width: 1,
         ),
       ),
@@ -218,9 +213,7 @@ class _WeekExpansionCardState extends State<WeekExpansionCard> {
                             color: _textDark,
                           ),
                         ),
-
                         const SizedBox(height: 7),
-
                         Text(
                           diaryEventCountLabel(day.entries.length),
                           style: const TextStyle(
@@ -232,11 +225,8 @@ class _WeekExpansionCardState extends State<WeekExpansionCard> {
                       ],
                     ),
                   ),
-
                   Icon(
-                    isOpen
-                        ? Icons.keyboard_arrow_up_rounded
-                        : Icons.keyboard_arrow_down_rounded,
+                    isOpen ? Icons.keyboard_arrow_up_rounded : Icons.keyboard_arrow_down_rounded,
                     color: _green,
                     size: 32,
                   ),
@@ -244,14 +234,11 @@ class _WeekExpansionCardState extends State<WeekExpansionCard> {
               ),
             ),
           ),
-
-          AnimatedCrossFade(
+          AnimatedSize(
             duration: const Duration(milliseconds: 200),
-            crossFadeState: isOpen
-                ? CrossFadeState.showSecond
-                : CrossFadeState.showFirst,
-            firstChild: const SizedBox.shrink(),
-            secondChild: Padding(
+            curve: Curves.easeOutCubic,
+            child: isOpen
+                ? Padding(
               padding: const EdgeInsets.fromLTRB(14, 0, 14, 14),
               child: Column(
                 children: [
@@ -265,7 +252,8 @@ class _WeekExpansionCardState extends State<WeekExpansionCard> {
                   ],
                 ],
               ),
-            ),
+            )
+                : const SizedBox.shrink(),
           ),
         ],
       ),
@@ -290,18 +278,18 @@ class _WeekExpansionCardState extends State<WeekExpansionCard> {
         child: Center(
           child: isLoading
               ? const SizedBox(
-            width: 19,
-            height: 19,
-            child: CircularProgressIndicator(
-              strokeWidth: 2.2,
-              color: _green,
-            ),
-          )
+                  width: 19,
+                  height: 19,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2.2,
+                    color: _green,
+                  ),
+                )
               : Icon(
-            icon,
-            color: _green,
-            size: 25,
-          ),
+                  icon,
+                  color: _green,
+                  size: 25,
+                ),
         ),
       ),
     );

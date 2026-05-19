@@ -15,8 +15,7 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen>
-    with SingleTickerProviderStateMixin {
+class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
   static const Color _background = Color(0xFFFCFAF5);
   static const Color _primaryGreen = Color(0xFF55C76A);
   static const Color _darkGreen = Color(0xFF18382B);
@@ -112,9 +111,7 @@ class _SplashScreenState extends State<SplashScreen>
                 opacity: _fadeAnimation,
                 child: ScaleTransition(
                   scale: _scaleAnimation,
-                  child: isLandscape
-                      ? _landscapeContent(constraints)
-                      : _portraitContent(constraints),
+                  child: isLandscape ? _landscapeContent(constraints) : _portraitContent(constraints),
                 ),
               );
             },
@@ -143,9 +140,7 @@ class _SplashScreenState extends State<SplashScreen>
               iconSize: 108,
               radius: 42,
             ),
-
             const SizedBox(height: 34),
-
             const Text(
               'Mi Ascolto',
               textAlign: TextAlign.center,
@@ -157,9 +152,7 @@ class _SplashScreenState extends State<SplashScreen>
                 letterSpacing: -1.2,
               ),
             ),
-
             const SizedBox(height: 14),
-
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 12),
               child: Text(
@@ -173,9 +166,7 @@ class _SplashScreenState extends State<SplashScreen>
                 ),
               ),
             ),
-
             const SizedBox(height: 44),
-
             _loader(
               size: 34,
               strokeWidth: 4,
@@ -206,9 +197,7 @@ class _SplashScreenState extends State<SplashScreen>
                 iconSize: 82,
                 radius: 34,
               ),
-
               const SizedBox(width: 34),
-
               Flexible(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -225,9 +214,7 @@ class _SplashScreenState extends State<SplashScreen>
                         letterSpacing: -1.1,
                       ),
                     ),
-
                     const SizedBox(height: 12),
-
                     const Text(
                       'Ascolta il tuo corpo, segui le tue emozioni',
                       textAlign: TextAlign.left,
@@ -238,9 +225,7 @@ class _SplashScreenState extends State<SplashScreen>
                         color: _mutedText,
                       ),
                     ),
-
                     const SizedBox(height: 24),
-
                     _loader(
                       size: 30,
                       strokeWidth: 3.6,
@@ -268,12 +253,12 @@ class _SplashScreenState extends State<SplashScreen>
         borderRadius: BorderRadius.circular(radius),
         boxShadow: [
           BoxShadow(
-            color: _primaryGreen.withOpacity(0.16),
+            color: _primaryGreen.withValues(alpha: 0.16),
             blurRadius: 34,
             offset: const Offset(0, 18),
           ),
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 18,
             offset: const Offset(0, 8),
           ),
@@ -302,7 +287,7 @@ class _SplashScreenState extends State<SplashScreen>
         valueColor: const AlwaysStoppedAnimation<Color>(
           _primaryGreen,
         ),
-        backgroundColor: _primaryGreen.withOpacity(0.16),
+        backgroundColor: _primaryGreen.withValues(alpha: 0.16),
       ),
     );
   }

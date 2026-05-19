@@ -8,13 +8,11 @@ import 'package:pdf/widgets.dart' as pw;
 import '../models/exercise.dart';
 import '../models/meal.dart';
 import '../styles.dart';
-import '../widgets/diary_card_helpers.dart';
+import '../widgets/diary/diary_card_helpers.dart';
 
-// ---------------------------------------------------------------------------
 // Colors — derived from DS constants in styles.dart
-// ---------------------------------------------------------------------------
 
-PdfColor _toPdf(Color c) => PdfColor.fromInt(c.value);
+PdfColor _toPdf(Color c) => PdfColor.fromInt(c.toARGB32());
 
 final _mealHeader = _toPdf(DS.diaryMealHeader);
 final _mealAccent = _toPdf(DS.diaryMealAccent);
@@ -28,9 +26,7 @@ final _textPrimary = _toPdf(DS.textPrimary);
 final _textDark = _toPdf(DS.textDark);
 final _textNd = _toPdf(DS.textNd);
 
-// ---------------------------------------------------------------------------
 // Text styles (scaled down from DS for denser A4 layout)
-// ---------------------------------------------------------------------------
 
 // Mirrors DS.diaryCardHeaderText (16pt → 13pt)
 final _headerStyle = pw.TextStyle(
@@ -57,27 +53,55 @@ final _ndStyle = pw.TextStyle(
   color: _textNd,
 );
 
-// ---------------------------------------------------------------------------
 // Public API
-// ---------------------------------------------------------------------------
-
 pw.Font? _cachedRegular;
 pw.Font? _cachedBold;
-pw.Font? _cachedEmoji;
+List<pw.Font>? _cachedFontFallback;
 
-Future<({pw.Font regular, pw.Font bold, pw.Font emoji})> _loadFonts() async {
-  if (_cachedRegular != null) {
-    return (regular: _cachedRegular!, bold: _cachedBold!, emoji: _cachedEmoji!);
+Future<({pw.Font regular, pw.Font bold, List<pw.Font> fallback})> _loadFonts() async {
+  if (_cachedRegular != null && _cachedBold != null && _cachedFontFallback != null) {
+    return (
+    regular: _cachedRegular!,
+    bold: _cachedBold!,
+    fallback: _cachedFontFallback!,
+    );
   }
-  final results = await Future.wait([
-    rootBundle.load('assets/fonts/NotoSans-Regular.ttf'),
-    rootBundle.load('assets/fonts/NotoSans-Bold.ttf'),
-    rootBundle.load('assets/fonts/NotoEmoji-Regular.ttf'),
-  ]);
-  _cachedRegular = pw.Font.ttf(results[0]);
-  _cachedBold = pw.Font.ttf(results[1]);
-  _cachedEmoji = pw.Font.ttf(results[2]);
-  return (regular: _cachedRegular!, bold: _cachedBold!, emoji: _cachedEmoji!);
+
+  try {
+    final regularData = await rootBundle.load('assets/fonts/NotoSans-Regular.ttf');
+    final boldData = await rootBundle.load('assets/fonts/NotoSans-Bold.ttf');
+
+    _cachedRegular = pw.Font.ttf(regularData);
+    _cachedBold = pw.Font.ttf(boldData);
+
+    final fallback = <pw.Font>[];
+
+    try {
+      final emojiData = await rootBundle.load('assets/fonts/NotoEmoji-Regular.ttf');
+      fallback.add(pw.Font.ttf(emojiData));
+    } catch (_) {
+      // Il PDF viene comunque generato anche se il font emoji non è compatibile.
+    }
+
+    _cachedFontFallback = fallback;
+
+    return (
+    regular: _cachedRegular!,
+    bold: _cachedBold!,
+    fallback: _cachedFontFallback!,
+    );
+  } catch (_) {
+    // Fallback utile soprattutto nei test o se i font asset hanno problemi.
+    _cachedRegular = pw.Font.helvetica();
+    _cachedBold = pw.Font.helveticaBold();
+    _cachedFontFallback = <pw.Font>[];
+
+    return (
+    regular: _cachedRegular!,
+    bold: _cachedBold!,
+    fallback: _cachedFontFallback!,
+    );
+  }
 }
 
 /// Generates a PDF for one week of diary entries, returning the raw bytes.
@@ -101,7 +125,7 @@ Future<Uint8List> generateWeeklyDiaryPdf({
       theme: pw.ThemeData.withFont(
         base: fonts.regular,
         bold: fonts.bold,
-        fontFallback: [fonts.emoji],
+        fontFallback: fonts.fallback,
       ),
       header: (_) => pw.Padding(
         padding: const pw.EdgeInsets.only(bottom: 12),
@@ -128,9 +152,7 @@ Future<Uint8List> generateWeeklyDiaryPdf({
   return doc.save();
 }
 
-// ---------------------------------------------------------------------------
 // Card builders
-// ---------------------------------------------------------------------------
 
 pw.Widget _mealCard(Meal meal) {
   return _card(
@@ -186,9 +208,7 @@ pw.Widget _exerciseCard(Exercise exercise) {
   );
 }
 
-// ---------------------------------------------------------------------------
 // Prevent cards from being split across pages
-// ---------------------------------------------------------------------------
 
 class _KeepTogether extends pw.StatelessWidget {
   _KeepTogether({required this.child});
@@ -201,9 +221,7 @@ class _KeepTogether extends pw.StatelessWidget {
   pw.Widget build(pw.Context context) => child;
 }
 
-// ---------------------------------------------------------------------------
 // Shared card layout
-// ---------------------------------------------------------------------------
 
 pw.Widget _card({
   required PdfColor headerColor,
@@ -289,7 +307,7 @@ pw.Widget _fieldRow(String label, String? value) {
         pw.Text('$label: ', style: _labelStyle),
         pw.Expanded(
           child: pw.Text(
-            hasValue ? value! : 'N/D',
+            hasValue ? value : 'N/D',
             style: hasValue ? _valueStyle : _ndStyle,
           ),
         ),

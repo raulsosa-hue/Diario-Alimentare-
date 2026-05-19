@@ -30,13 +30,11 @@ class _EmotionPickerState extends State<EmotionPicker> {
       'Gioia',
       'Orgoglio',
     ],
-
     'Affettive profonde': [
       "Fame d'amore",
       'Vuoto',
       'Nostalgia',
     ],
-
     'Difficili': [
       'Tristezza',
       'Rabbia',
@@ -46,7 +44,6 @@ class _EmotionPickerState extends State<EmotionPicker> {
       'Frustrazione',
       'Solitudine',
     ],
-
     'Miste o neutre': [
       'Sorpresa',
       'Imbarazzo / Vergogna',
@@ -93,13 +90,13 @@ class _EmotionPickerState extends State<EmotionPicker> {
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(18),
               borderSide: BorderSide(
-                color: Colors.black.withOpacity(0.10),
+                color: Colors.black.withValues(alpha: 0.10),
               ),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(18),
               borderSide: BorderSide(
-                color: widget.accentColor.withOpacity(0.70),
+                color: widget.accentColor.withValues(alpha: 0.70),
                 width: 1.4,
               ),
             ),
@@ -139,21 +136,18 @@ class _EmotionPickerState extends State<EmotionPicker> {
   Widget build(BuildContext context) {
     final allSectionLabels = _sections.values.expand((e) => e).toSet();
 
-    final otherEmotions = kEmotions
-        .where((e) => !allSectionLabels.contains(e.label))
-        .toList(growable: false);
+    final otherEmotions = kEmotions.where((e) => !allSectionLabels.contains(e.label)).toList(growable: false);
 
-    final isCustom = widget.selected != null &&
-        !kEmotions.any((e) => e.label == widget.selected);
+    final isCustom = widget.selected != null && !kEmotions.any((e) => e.label == widget.selected);
 
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.fromLTRB(14, 14, 14, 16),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.82),
+        color: Colors.white.withValues(alpha: 0.82),
         borderRadius: BorderRadius.circular(26),
         border: Border.all(
-          color: Colors.black.withOpacity(0.08),
+          color: Colors.black.withValues(alpha: 0.08),
         ),
       ),
       child: Column(
@@ -196,12 +190,11 @@ class _EmotionPickerState extends State<EmotionPicker> {
                 fontSize: 14.5,
                 height: 1.35,
                 fontWeight: FontWeight.w500,
-                color: DS.textPrimary.withOpacity(0.70),
+                color: DS.textPrimary.withValues(alpha: 0.70),
               ),
             ),
             const SizedBox(height: 18),
           ],
-
           for (final entry in _sections.entries) ...[
             _emotionSection(
               title: entry.key,
@@ -209,7 +202,6 @@ class _EmotionPickerState extends State<EmotionPicker> {
             ),
             const SizedBox(height: 18),
           ],
-
           if (otherEmotions.isNotEmpty) ...[
             _sectionTitle('Altre'),
             const SizedBox(height: 10),
@@ -226,7 +218,6 @@ class _EmotionPickerState extends State<EmotionPicker> {
             ),
             const SizedBox(height: 18),
           ],
-
           if (isCustom) ...[
             _sectionTitle('Personalizzata'),
             const SizedBox(height: 10),
@@ -236,7 +227,6 @@ class _EmotionPickerState extends State<EmotionPicker> {
             ),
             const SizedBox(height: 18),
           ],
-
           Row(
             children: [
               Expanded(
@@ -253,7 +243,7 @@ class _EmotionPickerState extends State<EmotionPicker> {
                     foregroundColor: DS.textPrimary,
                     backgroundColor: Colors.white,
                     side: BorderSide(
-                      color: Colors.black.withOpacity(0.10),
+                      color: Colors.black.withValues(alpha: 0.10),
                     ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(DS.radiusPill),
@@ -270,15 +260,13 @@ class _EmotionPickerState extends State<EmotionPicker> {
                 height: 50,
                 width: 54,
                 child: OutlinedButton(
-                  onPressed: widget.selected == null
-                      ? null
-                      : () => widget.onChanged(null),
+                  onPressed: widget.selected == null ? null : () => widget.onChanged(null),
                   style: OutlinedButton.styleFrom(
                     padding: EdgeInsets.zero,
                     backgroundColor: Colors.white,
-                    disabledForegroundColor: Colors.black.withOpacity(0.18),
+                    disabledForegroundColor: Colors.black.withValues(alpha: 0.18),
                     side: BorderSide(
-                      color: Colors.black.withOpacity(0.10),
+                      color: Colors.black.withValues(alpha: 0.10),
                     ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(DS.radiusPill),
@@ -298,9 +286,7 @@ class _EmotionPickerState extends State<EmotionPicker> {
     required String title,
     required List<String> labels,
   }) {
-    final emotions = kEmotions
-        .where((e) => labels.contains(e.label))
-        .toList(growable: false);
+    final emotions = kEmotions.where((e) => labels.contains(e.label)).toList(growable: false);
 
     if (emotions.isEmpty) return const SizedBox.shrink();
 
@@ -330,7 +316,7 @@ class _EmotionPickerState extends State<EmotionPicker> {
       style: TextStyle(
         fontSize: 15,
         fontWeight: FontWeight.w900,
-        color: DS.textPrimary.withOpacity(0.92),
+        color: DS.textPrimary.withValues(alpha: 0.92),
       ),
     );
   }
@@ -356,9 +342,7 @@ class _EmotionPickerState extends State<EmotionPicker> {
       selectedColor: widget.selectedColor,
       backgroundColor: Colors.white,
       side: BorderSide(
-        color: selected
-            ? widget.accentColor.withOpacity(0.55)
-            : Colors.black.withOpacity(0.13),
+        color: selected ? widget.accentColor.withValues(alpha: 0.55) : Colors.black.withValues(alpha: 0.13),
         width: selected ? 1.4 : 1,
       ),
       shape: RoundedRectangleBorder(

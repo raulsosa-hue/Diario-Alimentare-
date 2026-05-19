@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../styles.dart';
-import 'common_buttons.dart';
+import '../../styles.dart';
+import '../common_buttons.dart';
 
 final _ndStyle = DS.diaryFieldValue.copyWith(color: DS.textNd);
 
@@ -92,7 +92,7 @@ Widget diaryFieldRow(String label, String? value) {
         Text('$label: ', style: DS.diaryFieldLabel),
         Expanded(
           child: Text(
-            hasValue ? value! : 'N/D',
+            hasValue ? value : 'N/D',
             style: hasValue ? DS.diaryFieldValue : _ndStyle,
           ),
         ),

@@ -15,7 +15,6 @@ final ThemeData appTheme = ThemeData(
   scaffoldBackgroundColor: const Color(0xFFE9EFF2),
   colorScheme: ColorScheme.light(
     primary: const Color(0xFF4F8F86),
-    background: const Color(0xFFE9EFF2),
     surface: const Color(0xFFF6F7F8),
   ),
   cardTheme: CardThemeData(

@@ -43,7 +43,6 @@ class HomePage extends StatelessWidget {
               right: -55,
               child: _DecorativeLeaf(),
             ),
-
             SingleChildScrollView(
               padding: EdgeInsets.fromLTRB(
                 horizontalPadding,
@@ -53,20 +52,15 @@ class HomePage extends StatelessWidget {
               ),
               child: ConstrainedBox(
                 constraints: BoxConstraints(
-                  minHeight: size.height -
-                      MediaQuery.of(context).padding.top -
-                      MediaQuery.of(context).padding.bottom -
-                      70,
+                  minHeight: size.height - MediaQuery.of(context).padding.top - MediaQuery.of(context).padding.bottom - 70,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const _HomeHeader(),
-
                     SizedBox(
                       height: (size.height * 0.06).clamp(38.0, 60.0),
                     ),
-
                     _HomeActionCard(
                       title: 'PASTO',
                       subtitle: 'Mangia, senti e\nannota',
@@ -81,9 +75,7 @@ class HomePage extends StatelessWidget {
                         );
                       },
                     ),
-
                     SizedBox(height: cardGap),
-
                     _HomeActionCard(
                       title: 'ESERCIZIO',
                       subtitle: 'Allenati, senti e\nannota',
@@ -98,9 +90,7 @@ class HomePage extends StatelessWidget {
                         );
                       },
                     ),
-
                     SizedBox(height: cardGap),
-
                     _HomeActionCard(
                       title: 'DIARIO',
                       subtitle: 'Attività, emozioni\ne pensieri',
@@ -152,18 +142,14 @@ class _HomeHeader extends StatelessWidget {
                 letterSpacing: 0.2,
               ),
             ),
-
             const SizedBox(width: 2),
-
             AppIconMark(
               size: 40,
               color: HomePage._greenDark,
             )
           ],
         ),
-
         const SizedBox(height: 32),
-
         Text(
           'Ascolta il tuo corpo,\nsegui le tue emozioni',
           textAlign: TextAlign.center,
@@ -171,7 +157,7 @@ class _HomeHeader extends StatelessWidget {
             fontSize: subtitleSize,
             height: 1.35,
             fontWeight: FontWeight.w600,
-            color: HomePage._greenDark.withOpacity(0.78),
+            color: HomePage._greenDark.withValues(alpha: 0.78),
           ),
         ),
       ],
@@ -237,17 +223,17 @@ class _HomeActionCardState extends State<_HomeActionCard> {
             color: widget.backgroundColor,
             borderRadius: BorderRadius.circular(28),
             border: Border.all(
-              color: Colors.white.withOpacity(0.85),
+              color: Colors.white.withValues(alpha: 0.85),
               width: 1.2,
             ),
             boxShadow: [
               BoxShadow(
-                color: widget.accentColor.withOpacity(_pressed ? 0.10 : 0.16),
+                color: widget.accentColor.withValues(alpha: _pressed ? 0.10 : 0.16),
                 blurRadius: _pressed ? 12 : 22,
                 offset: _pressed ? const Offset(0, 5) : const Offset(0, 12),
               ),
               BoxShadow(
-                color: Colors.black.withOpacity(_pressed ? 0.04 : 0.07),
+                color: Colors.black.withValues(alpha: _pressed ? 0.04 : 0.07),
                 blurRadius: _pressed ? 10 : 18,
                 offset: _pressed ? const Offset(0, 4) : const Offset(0, 9),
               ),
@@ -263,7 +249,7 @@ class _HomeActionCardState extends State<_HomeActionCard> {
                   color: widget.accentColor,
                   boxShadow: [
                     BoxShadow(
-                      color: widget.accentColor.withOpacity(0.30),
+                      color: widget.accentColor.withValues(alpha: 0.30),
                       blurRadius: 18,
                       offset: const Offset(0, 8),
                     ),
@@ -275,9 +261,7 @@ class _HomeActionCardState extends State<_HomeActionCard> {
                   size: iconSize,
                 ),
               ),
-
               const SizedBox(width: 22),
-
               Expanded(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -295,9 +279,7 @@ class _HomeActionCardState extends State<_HomeActionCard> {
                         height: 1.05,
                       ),
                     ),
-
                     const SizedBox(height: 7),
-
                     Text(
                       widget.subtitle,
                       maxLines: 2,
@@ -312,12 +294,10 @@ class _HomeActionCardState extends State<_HomeActionCard> {
                   ],
                 ),
               ),
-
               const SizedBox(width: 8),
-
               Icon(
                 Icons.chevron_right_rounded,
-                color: widget.accentColor.withOpacity(0.85),
+                color: widget.accentColor.withValues(alpha: 0.85),
                 size: 36,
               ),
             ],

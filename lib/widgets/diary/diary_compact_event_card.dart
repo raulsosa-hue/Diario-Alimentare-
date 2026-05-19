@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../models/exercise.dart';
-import '../models/meal.dart';
-import '../repository/diary_repository.dart';
-import '../styles.dart';
-import '../utils/diary_formatters.dart';
+import '../../models/exercise.dart';
+import '../../models/meal.dart';
+import '../../repository/diary_repository.dart';
+import '../../styles.dart';
+import '../../utils/diary_formatters.dart';
 
 class DiaryCompactEventCard extends StatelessWidget {
   final DiaryEntry entry;
@@ -41,14 +41,14 @@ class DiaryCompactEventCard extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.fromLTRB(15, 14, 12, 14),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.96),
+              color: Colors.white.withValues(alpha: 0.96),
               borderRadius: BorderRadius.circular(24),
               border: Border.all(
-                color: accentColor.withOpacity(0.18),
+                color: accentColor.withValues(alpha: 0.18),
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.045),
+                  color: Colors.black.withValues(alpha: 0.045),
                   blurRadius: 18,
                   offset: const Offset(0, 8),
                 ),
@@ -63,7 +63,7 @@ class DiaryCompactEventCard extends StatelessWidget {
                       width: 38,
                       height: 38,
                       decoration: BoxDecoration(
-                        color: accentColor.withOpacity(0.13),
+                        color: accentColor.withValues(alpha: 0.13),
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
@@ -72,38 +72,30 @@ class DiaryCompactEventCard extends StatelessWidget {
                         size: 22,
                       ),
                     ),
-
                     const SizedBox(width: 10),
-
                     _SmallLabelBadge(
                       label: _entryKind(entry),
                       color: accentColor,
                     ),
-
                     const Spacer(),
-
                     Text(
                       time,
                       style: DS.bodyText.copyWith(
-                        color: DS.textPrimary.withOpacity(0.78),
+                        color: DS.textPrimary.withValues(alpha: 0.78),
                         fontSize: 13.5,
                         height: 1,
                         fontWeight: FontWeight.w900,
                       ),
                     ),
-
                     const SizedBox(width: 4),
-
                     Icon(
                       Icons.chevron_right_rounded,
-                      color: accentColor.withOpacity(0.55),
+                      color: accentColor.withValues(alpha: 0.55),
                       size: 27,
                     ),
                   ],
                 ),
-
                 const SizedBox(height: 10),
-
                 Text(
                   title,
                   maxLines: 2,
@@ -115,9 +107,7 @@ class DiaryCompactEventCard extends StatelessWidget {
                     color: DS.textPrimary,
                   ),
                 ),
-
                 const SizedBox(height: 12),
-
                 for (final line in lines)
                   Padding(
                     padding: const EdgeInsets.only(bottom: 7),
@@ -169,10 +159,10 @@ class _SmallLabelBadge extends StatelessWidget {
         vertical: 4,
       ),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.12),
+        color: color.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(999),
         border: Border.all(
-          color: color.withOpacity(0.26),
+          color: color.withValues(alpha: 0.26),
           width: 1,
         ),
       ),
@@ -218,10 +208,10 @@ class _CompactInfoRow extends StatelessWidget {
                 vertical: 3,
               ),
               decoration: BoxDecoration(
-                color: accentColor.withOpacity(0.12),
+                color: accentColor.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(999),
                 border: Border.all(
-                  color: accentColor.withOpacity(0.24),
+                  color: accentColor.withValues(alpha: 0.24),
                   width: 1,
                 ),
               ),
@@ -234,13 +224,12 @@ class _CompactInfoRow extends StatelessWidget {
                   height: 1,
                   fontWeight: FontWeight.w900,
                   letterSpacing: 0.45,
-                  color: accentColor.withOpacity(0.90),
+                  color: accentColor.withValues(alpha: 0.90),
                 ),
               ),
             ),
           ),
         ),
-
         Expanded(
           child: Text(
             value,
@@ -269,37 +258,22 @@ class _CompactLine {
 List<_CompactLine> _summaryLines(DiaryEntry entry) {
   return switch (entry) {
     MealDiaryEntry(meal: final meal) => _mealSummaryLines(meal),
-    ExerciseDiaryEntry(exercise: final exercise) =>
-        _exerciseSummaryLines(exercise),
+    ExerciseDiaryEntry(exercise: final exercise) => _exerciseSummaryLines(exercise),
   };
 }
 
 List<_CompactLine> _mealSummaryLines(Meal meal) {
-  final thoughtBefore = cleanDiaryValueOrNull(meal.thoughtBefore);
-  final thoughtAfter = cleanDiaryValueOrNull(meal.thoughtAfter);
-
-  if (thoughtBefore != null || thoughtAfter != null) {
-    return [
-      if (thoughtBefore != null) _CompactLine('PRIMA', '“$thoughtBefore”'),
-      if (thoughtAfter != null) _CompactLine('DOPO', '“$thoughtAfter”'),
-    ];
-  }
-
-  final emotionBefore = _emotionWithIntensity(
-    meal.emotionBefore,
-    meal.emotionalIntensityBefore,
+  final beforeAfterLines = _beforeAfterPriorityLines(
+    emotionBefore: meal.emotionBefore,
+    intensityBefore: meal.emotionalIntensityBefore,
+    thoughtBefore: meal.thoughtBefore,
+    emotionAfter: meal.emotionAfter,
+    intensityAfter: meal.emotionalIntensityAfter,
+    thoughtAfter: meal.thoughtAfter,
   );
 
-  final emotionAfter = _emotionWithIntensity(
-    meal.emotionAfter,
-    meal.emotionalIntensityAfter,
-  );
-
-  if (emotionBefore != null || emotionAfter != null) {
-    return [
-      if (emotionBefore != null) _CompactLine('PRIMA', emotionBefore),
-      if (emotionAfter != null) _CompactLine('DOPO', emotionAfter),
-    ];
+  if (beforeAfterLines.isNotEmpty) {
+    return beforeAfterLines;
   }
 
   final food = cleanDiaryValueOrNull(meal.whatEaten);
@@ -336,31 +310,17 @@ List<_CompactLine> _mealSummaryLines(Meal meal) {
 }
 
 List<_CompactLine> _exerciseSummaryLines(Exercise exercise) {
-  final thoughtBefore = cleanDiaryValueOrNull(exercise.thoughtBefore);
-  final thoughtAfter = cleanDiaryValueOrNull(exercise.thoughtAfter);
-
-  if (thoughtBefore != null || thoughtAfter != null) {
-    return [
-      if (thoughtBefore != null) _CompactLine('PRIMA', '“$thoughtBefore”'),
-      if (thoughtAfter != null) _CompactLine('DOPO', '“$thoughtAfter”'),
-    ];
-  }
-
-  final emotionBefore = _emotionWithIntensity(
-    exercise.emotionBefore,
-    exercise.emotionalIntensityBefore,
+  final beforeAfterLines = _beforeAfterPriorityLines(
+    emotionBefore: exercise.emotionBefore,
+    intensityBefore: exercise.emotionalIntensityBefore,
+    thoughtBefore: exercise.thoughtBefore,
+    emotionAfter: exercise.emotionAfter,
+    intensityAfter: exercise.emotionalIntensityAfter,
+    thoughtAfter: exercise.thoughtAfter,
   );
 
-  final emotionAfter = _emotionWithIntensity(
-    exercise.emotionAfter,
-    exercise.emotionalIntensityAfter,
-  );
-
-  if (emotionBefore != null || emotionAfter != null) {
-    return [
-      if (emotionBefore != null) _CompactLine('PRIMA', emotionBefore),
-      if (emotionAfter != null) _CompactLine('DOPO', emotionAfter),
-    ];
+  if (beforeAfterLines.isNotEmpty) {
+    return beforeAfterLines;
   }
 
   final type = cleanDiaryValueOrNull(exercise.exerciseType);
@@ -399,15 +359,64 @@ List<_CompactLine> _exerciseSummaryLines(Exercise exercise) {
   ];
 }
 
-String? _emotionWithIntensity(String? emotion, int? intensity) {
+List<_CompactLine> _beforeAfterPriorityLines({
+  required String? emotionBefore,
+  required int? intensityBefore,
+  required String? thoughtBefore,
+  required String? emotionAfter,
+  required int? intensityAfter,
+  required String? thoughtAfter,
+}) {
+  final before = _emotionOrThoughtValue(
+    emotion: emotionBefore,
+    intensity: intensityBefore,
+    thought: thoughtBefore,
+  );
+
+  final after = _emotionOrThoughtValue(
+    emotion: emotionAfter,
+    intensity: intensityAfter,
+    thought: thoughtAfter,
+  );
+
+  return [
+    if (before != null) _CompactLine('PRIMA', before),
+    if (after != null) _CompactLine('DOPO', after),
+  ];
+}
+
+String? _emotionOrThoughtValue({
+  required String? emotion,
+  required int? intensity,
+  required String? thought,
+}) {
   final cleanEmotion = cleanDiaryValueOrNull(emotion);
+
+  if (cleanEmotion != null) {
+    return _emotionWithIntensity(cleanEmotion, intensity);
+  }
+
+  final cleanThought = cleanDiaryValueOrNull(thought);
+
+  if (cleanThought != null) {
+    return '“$cleanThought”';
+  }
+
+  final hasOnlyIntensity = intensity != null && intensity > 0;
+
+  if (hasOnlyIntensity) {
+    return '$intensity/10';
+  }
+
+  return null;
+}
+
+String _emotionWithIntensity(String emotion, int? intensity) {
   final hasIntensity = intensity != null && intensity > 0;
 
-  if (cleanEmotion == null && !hasIntensity) return null;
-  if (cleanEmotion == null) return '$intensity/10';
-  if (!hasIntensity) return cleanEmotion;
+  if (!hasIntensity) return emotion;
 
-  return '$cleanEmotion · $intensity/10';
+  return '$emotion · $intensity/10';
 }
 
 String _title(DiaryEntry entry) {

@@ -6,9 +6,9 @@ import '../repository/diary_repository.dart';
 import '../services/pdf_diary_export.dart';
 import '../widgets/app_icon_mark.dart';
 import '../widgets/common_buttons.dart';
-import '../widgets/diary_meal_card.dart';
-import '../widgets/diary_exercise_card.dart';
-import '../widgets/week_expansion_card.dart';
+import '../widgets/diary/diary_meal_card.dart';
+import '../widgets/diary/diary_exercise_card.dart';
+import '../widgets/diary/week_expansion_card.dart';
 
 class DiaryPage extends StatefulWidget {
   const DiaryPage({super.key});
@@ -53,7 +53,6 @@ class _DiaryPageState extends State<DiaryPage> {
                     ),
                   ),
                 ),
-
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: const [
@@ -77,9 +76,7 @@ class _DiaryPageState extends State<DiaryPage> {
               ],
             ),
           ),
-
           const SizedBox(height: 18),
-
           const Text(
             'Diario',
             textAlign: TextAlign.center,
@@ -90,9 +87,7 @@ class _DiaryPageState extends State<DiaryPage> {
               color: _greenDark,
             ),
           ),
-
           const SizedBox(height: 8),
-
           const Text(
             'Rileggi i tuoi momenti con calma',
             textAlign: TextAlign.center,
@@ -120,7 +115,7 @@ class _DiaryPageState extends State<DiaryPage> {
             borderRadius: BorderRadius.circular(30),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.045),
+                color: Colors.black.withValues(alpha: 0.045),
                 blurRadius: 24,
                 offset: const Offset(0, 10),
               ),
@@ -234,8 +229,7 @@ class _DiaryPageState extends State<DiaryPage> {
 
       await Printing.sharePdf(
         bytes: bytes,
-        filename:
-        'diario_${group.monday.year}_${twoDigit(group.monday.month)}_${twoDigit(group.monday.day)}.pdf',
+        filename: 'diario_${group.monday.year}_${twoDigit(group.monday.month)}_${twoDigit(group.monday.day)}.pdf',
       );
     } catch (_) {
       if (!mounted) return;
@@ -257,7 +251,7 @@ class _DiaryPageState extends State<DiaryPage> {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      barrierColor: Colors.black.withOpacity(0.42),
+      barrierColor: Colors.black.withValues(alpha: 0.42),
       builder: (context) {
         return DraggableScrollableSheet(
           expand: false,
@@ -283,13 +277,11 @@ class _DiaryPageState extends State<DiaryPage> {
                         width: 44,
                         height: 5,
                         decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.14),
+                          color: Colors.black.withValues(alpha: 0.14),
                           borderRadius: BorderRadius.circular(99),
                         ),
                       ),
-
                       const SizedBox(height: 18),
-
                       const Text(
                         'Dettaglio evento',
                         style: TextStyle(
@@ -298,9 +290,7 @@ class _DiaryPageState extends State<DiaryPage> {
                           color: _greenDark,
                         ),
                       ),
-
                       const SizedBox(height: 6),
-
                       const Text(
                         'Qui trovi tutte le informazioni salvate',
                         textAlign: TextAlign.center,
@@ -310,15 +300,10 @@ class _DiaryPageState extends State<DiaryPage> {
                           color: _textMuted,
                         ),
                       ),
-
                       const SizedBox(height: 14),
-
                       switch (entry) {
-                        MealDiaryEntry(meal: final meal) =>
-                            DiaryMealCard(meal: meal),
-
-                        ExerciseDiaryEntry(exercise: final exercise) =>
-                            DiaryExerciseCard(exercise: exercise),
+                        MealDiaryEntry(meal: final meal) => DiaryMealCard(meal: meal),
+                        ExerciseDiaryEntry(exercise: final exercise) => DiaryExerciseCard(exercise: exercise),
                       },
                     ],
                   ),
@@ -345,52 +330,45 @@ class _DiaryPageState extends State<DiaryPage> {
             Positioned(
               top: 90,
               right: -34,
-              child: Opacity(
-                opacity: 0.10,
-                child: Icon(
-                  Icons.menu_book_rounded,
-                  size: 120,
-                  color: _green
-                )
-              ),
+              child: Opacity(opacity: 0.10, child: Icon(Icons.menu_book_rounded, size: 120, color: _green)),
             ),
-
             Column(
               children: [
                 _topHeader(),
-
                 Expanded(
                   child: _isLoading
                       ? _loadingState()
                       : _weekGroups.isEmpty
-                      ? Transform.translate(offset: const Offset(0, -70), child: _emptyState(),)
-                      : RefreshIndicator(
-                    color: _green,
-                    backgroundColor: Colors.white,
-                    onRefresh: _loadData,
-                    child: ListView.separated(
-                      padding: EdgeInsets.fromLTRB(
-                        horizontalPadding,
-                        8,
-                        horizontalPadding,
-                        28,
-                      ),
-                      itemCount: _weekGroups.length,
-                      separatorBuilder: (_, __) =>
-                      const SizedBox(height: 14),
-                      itemBuilder: (context, index) {
-                        final group = _weekGroups[index];
+                          ? Transform.translate(
+                              offset: const Offset(0, -70),
+                              child: _emptyState(),
+                            )
+                          : RefreshIndicator(
+                              color: _green,
+                              backgroundColor: Colors.white,
+                              onRefresh: _loadData,
+                              child: ListView.separated(
+                                padding: EdgeInsets.fromLTRB(
+                                  horizontalPadding,
+                                  8,
+                                  horizontalPadding,
+                                  28,
+                                ),
+                                itemCount: _weekGroups.length,
+                                separatorBuilder: (_, __) => const SizedBox(height: 14),
+                                itemBuilder: (context, index) {
+                                  final group = _weekGroups[index];
 
-                        return WeekExpansionCard(
-                          group: group,
-                          initiallyExpanded: index == 0,
-                          isSharing: _sharingWeek == group.monday,
-                          onShare: () => _shareWeek(group),
-                          onEntryTap: _openEntryDetail,
-                        );
-                      },
-                    ),
-                  ),
+                                  return WeekExpansionCard(
+                                    group: group,
+                                    initiallyExpanded: index == 0,
+                                    isSharing: _sharingWeek == group.monday,
+                                    onShare: () => _shareWeek(group),
+                                    onEntryTap: _openEntryDetail,
+                                  );
+                                },
+                              ),
+                            ),
                 ),
               ],
             ),

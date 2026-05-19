@@ -55,8 +55,8 @@ class DiaryRepository {
 
   Future<List<DiaryEntry>> getDiaryEntries() async {
     final (meals, exercises) = await (
-    _db.getAllMeals(),
-    _db.getAllExercises(),
+      _db.getAllMeals(),
+      _db.getAllExercises(),
     ).wait;
 
     final entries = <DiaryEntry>[
@@ -93,8 +93,7 @@ List<DiaryWeekGroup> buildDiaryWeekGroups(List<DiaryEntry> entries) {
     }
 
     final dayGroups = byDay.entries.map((dayEntry) {
-      final dayEntries = dayEntry.value
-        ..sort((a, b) => a.dateTime.compareTo(b.dateTime));
+      final dayEntries = dayEntry.value..sort((a, b) => a.dateTime.compareTo(b.dateTime));
 
       return DiaryDayGroup(
         day: dayEntry.key,

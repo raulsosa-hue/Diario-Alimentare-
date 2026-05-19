@@ -1,15 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AndroidLayouts">
+    <shared>
+      <config />
+    </shared>
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a2aed5bb-00c0-45eb-b106-a38f6d0e0abe" name="Changes" comment="Nuovo aggiornamento: emozioni riorganizzate con una nuova classificazione, sistemato un bug di overflow e di sintassi. Rimossi i numeri dagli step in pasto ed esercizio.">
+    <list default="true" id="a2aed5bb-00c0-45eb-b106-a38f6d0e0abe" name="Changes" comment="Sistemazione colori nel diario e riorganizzazione codice">
+      <change afterPath="$PROJECT_DIR$/android/app/src/main/kotlin/it/raul/diarioalimentare/MainActivity.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/integration_test/app_smoke_test.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/integration_test/database_test.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/integration_test/pdf_export_test.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/utils/test_utils.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/widgets/diary/diary_form_common.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/widgets/exercise/exercise_choice_tile.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/widgets/exercise/exercise_duration_button.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/widgets/exercise/exercise_guided_panel.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/widgets/exercise/exercise_info_box.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/widgets/exercise/exercise_selector_tile.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/widgets/exercise/exercise_slider_card.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/widgets/exercise/exercise_soft_text_field.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/unit_test/database_helper_test.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/unit_test/diary_formatters_test.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/unit_test/diary_repository_test.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/unit_test/exercise_model_test.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/unit_test/meal_model_test.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/unit_test/weekly_diary_pdf_test.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/widget_test/add_exercise_page_test.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/widget_test/add_meal_page_test.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/widget_test/app_icon_mark_test.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/widget_test/diary_compact_event_card_test.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/widget_test/diary_page_test.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/widget_test/week_expansion_card_test.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/android/local.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/diario_alimentare.iml" beforeDir="false" afterPath="$PROJECT_DIR$/diario_alimentare.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Flutter/AppFrameworkInfo.plist" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Flutter/AppFrameworkInfo.plist" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Podfile" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Podfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/models/labeled_emoji.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/models/labeled_emoji.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/models/models.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/models/models.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/pages/add_exercise_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pages/add_exercise_page.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/pages/add_meal_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pages/add_meal_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/pages/diary_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pages/diary_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/pages/home_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pages/home_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/pages/splash_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pages/splash_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/repository/diary_repository.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/repository/diary_repository.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/services/pdf_diary_export.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/services/pdf_diary_export.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/utils/diary_formatters.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/utils/diary_formatters.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/widgets/diary_compact_event_card.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/widgets/diary_compact_event_card.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/widgets/app_icon_mark.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/widgets/app_icon_mark.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/widgets/day_expansion_card.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/widgets/diary/day_expansion_card.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/widgets/diary_card_helpers.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/widgets/diary/diary_card_helpers.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/widgets/diary_compact_event_card.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/widgets/diary/diary_compact_event_card.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/widgets/diary_exercise_card.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/widgets/diary/diary_exercise_card.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/widgets/diary_meal_card.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/widgets/diary/diary_meal_card.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/widgets/emotion_picker.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/widgets/emotion_picker.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/widgets/week_expansion_card.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/widgets/diary/week_expansion_card.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/linux/flutter/generated_plugins.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/linux/flutter/generated_plugins.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/macos/Flutter/GeneratedPluginRegistrant.swift" beforeDir="false" afterPath="$PROJECT_DIR$/macos/Flutter/GeneratedPluginRegistrant.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/macos/Flutter/ephemeral/Flutter-Generated.xcconfig" beforeDir="false" afterPath="$PROJECT_DIR$/macos/Flutter/ephemeral/Flutter-Generated.xcconfig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/macos/Flutter/ephemeral/flutter_export_environment.sh" beforeDir="false" afterPath="$PROJECT_DIR$/macos/Flutter/ephemeral/flutter_export_environment.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -92,7 +148,15 @@
       <recent name="C:\Users\UTENTE\Documents\GitHub\Diario-Alimentare-\lib\models" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\UTENTE\Documents\GitHub\Diario-Alimentare-\integration_test" />
+      <recent name="C:\Users\UTENTE\Documents\GitHub\Diario-Alimentare-\test\widget_test" />
+      <recent name="C:\Users\UTENTE\Documents\GitHub\Diario-Alimentare-\lib\widgets\diary" />
+      <recent name="C:\Users\UTENTE\Documents\GitHub\Diario-Alimentare-\lib\widgets\exercise" />
       <recent name="C:\Users\UTENTE\Documents\GitHub\Diario-Alimentare-\assets\icons" />
+    </key>
+    <key name="K2MoveDeclarationsDialog.RECENT_PACKAGE_KEY">
+      <recent name="it.raul.diarioalimentare" />
+      <recent name="com.example.diarioalimentare" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -136,7 +200,15 @@
       <option name="project" value="LOCAL" />
       <updated>1778681883715</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Sistemazione colori nel diario e riorganizzazione codice">
+      <option name="closed" value="true" />
+      <created>1778753130603</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1778753130603</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -151,6 +223,7 @@
     <MESSAGE value="Nuova release: aggiornamento struttura diario, con nuova schermata grafica, nuove card compatte ed estendibili per settimane, giorni ed eventi. I dettagli degli eventi, con emozioni annesse, sono visibili tramite tendina. Sistemazione di alcuni dettagli grafici." />
     <MESSAGE value="Nuova release: aggiornamento struttura diario, con nuova schermata grafica, nuove card compatte ed estendibili per settimane, giorni ed eventi. I dettagli degli eventi, con emozioni annesse, sono visibili tramite tendina. Sistemazione di alcuni dettagli grafici. Maggiore suddivisione delle responsabilità, con un repository che si occupa di recuperare i dati ed interagire con il database." />
     <MESSAGE value="Nuovo aggiornamento: emozioni riorganizzate con una nuova classificazione, sistemato un bug di overflow e di sintassi. Rimossi i numeri dagli step in pasto ed esercizio." />
-    <option name="LAST_COMMIT_MESSAGE" value="Nuovo aggiornamento: emozioni riorganizzate con una nuova classificazione, sistemato un bug di overflow e di sintassi. Rimossi i numeri dagli step in pasto ed esercizio." />
+    <MESSAGE value="Sistemazione colori nel diario e riorganizzazione codice" />
+    <option name="LAST_COMMIT_MESSAGE" value="Sistemazione colori nel diario e riorganizzazione codice" />
   </component>
 </project>
