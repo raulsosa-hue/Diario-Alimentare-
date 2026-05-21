@@ -9,11 +9,8 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a2aed5bb-00c0-45eb-b106-a38f6d0e0abe" name="Changes" comment="Sistemazione colori nel diario e riorganizzazione codice">
-      <change afterPath="$PROJECT_DIR$/docs/privacy-policy.html" afterDir="false" />
+    <list default="true" id="a2aed5bb-00c0-45eb-b106-a38f6d0e0abe" name="Changes" comment="Aggiunta file di policy">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/android/local.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -165,7 +162,15 @@
       <option name="project" value="LOCAL" />
       <updated>1779210088325</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Aggiunta file di policy">
+      <option name="closed" value="true" />
+      <created>1779366366923</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1779366366923</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -181,6 +186,7 @@
     <MESSAGE value="Nuova release: aggiornamento struttura diario, con nuova schermata grafica, nuove card compatte ed estendibili per settimane, giorni ed eventi. I dettagli degli eventi, con emozioni annesse, sono visibili tramite tendina. Sistemazione di alcuni dettagli grafici. Maggiore suddivisione delle responsabilità, con un repository che si occupa di recuperare i dati ed interagire con il database." />
     <MESSAGE value="Nuovo aggiornamento: emozioni riorganizzate con una nuova classificazione, sistemato un bug di overflow e di sintassi. Rimossi i numeri dagli step in pasto ed esercizio." />
     <MESSAGE value="Sistemazione colori nel diario e riorganizzazione codice" />
-    <option name="LAST_COMMIT_MESSAGE" value="Sistemazione colori nel diario e riorganizzazione codice" />
+    <MESSAGE value="Aggiunta file di policy" />
+    <option name="LAST_COMMIT_MESSAGE" value="Aggiunta file di policy" />
   </component>
 </project>

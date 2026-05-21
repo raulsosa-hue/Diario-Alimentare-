@@ -1,78 +1,266 @@
-Privacy Policy – Mi Ascolto
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Privacy Policy – Mi Ascolto</title>
+    <style>
+        :root {
+          --bg: #fcfaf5;
+          --card: #ffffff;
+          --text: #1f2933;
+          --muted: #667085;
+          --accent: #2f7d57;
+          --accent-light: #e8f3ed;
+          --border: #e5e7eb;
+        }
 
-Ultimo aggiornamento: 21 maggio 2026
+        * {
+          box-sizing: border-box;
+        }
 
-Mi Ascolto è un’app pensata per aiutare l’utente a registrare pasti, attività fisica, emozioni, sensazioni, pensieri e note personali in un diario digitale.
+        body {
+          margin: 0;
+          font-family: Arial, Helvetica, sans-serif;
+          line-height: 1.65;
+          color: var(--text);
+          background:
+            radial-gradient(circle at top left, rgba(47, 125, 87, 0.10), transparent 34%),
+            var(--bg);
+        }
 
-1. Titolare / referente: Raùl Antonio Sosa Velez
+        main {
+          max-width: 920px;
+          margin: 0 auto;
+          padding: 44px 20px;
+        }
 
-Per qualsiasi domanda relativa alla privacy è possibile contattare il referente dell’app al seguente indirizzo email: raulsosa@hotmail.it
+        .card {
+          background: var(--card);
+          border: 1px solid var(--border);
+          border-radius: 22px;
+          padding: 40px;
+          box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+        }
 
-2. Dati inseriti dall’utente
+        .badge {
+          display: inline-block;
+          margin-bottom: 16px;
+          padding: 7px 12px;
+          border-radius: 999px;
+          background: var(--accent-light);
+          color: var(--accent);
+          font-size: 0.9rem;
+          font-weight: 700;
+        }
 
-L’app consente all’utente di inserire volontariamente alcune informazioni personali, tra cui:
+        h1 {
+          margin: 0 0 8px;
+          color: var(--accent);
+          font-size: 2.15rem;
+          line-height: 1.2;
+          letter-spacing: -0.02em;
+        }
 
-- pasti e informazioni legate all’alimentazione;
-- attività fisiche o esercizi;
-- emozioni, sensazioni e stati d’animo;
-- pensieri, note e altri contenuti testuali;
-- data e ora degli eventi registrati.
+        .updated {
+          margin: 0 0 28px;
+          color: var(--muted);
+          font-size: 0.96rem;
+        }
 
-Questi dati vengono inseriti direttamente dall’utente e servono esclusivamente per permettere il funzionamento del diario personale all’interno dell’app.
+        .intro {
+          font-size: 1.05rem;
+          margin-bottom: 26px;
+        }
 
-3. Conservazione dei dati
+        h2 {
+          margin: 30px 0 10px;
+          color: var(--accent);
+          font-size: 1.23rem;
+          line-height: 1.3;
+        }
 
-I dati inseriti vengono salvati localmente sul dispositivo dell’utente.
+        p {
+          margin: 0 0 14px;
+        }
 
-Mi Ascolto non invia i dati a server esterni, non utilizza un sistema di account online e non sincronizza automaticamente i contenuti con servizi cloud propri.
+        ul {
+          margin: 8px 0 16px 22px;
+          padding: 0;
+        }
 
-I dati locali potrebbero essere inclusi nei backup del dispositivo, ad esempio tramite le funzioni di backup di iOS o Android, in base alle impostazioni scelte dall’utente sul proprio dispositivo.
+        li {
+          margin-bottom: 8px;
+        }
 
-4. Account e registrazione
+        a {
+          color: var(--accent);
+          font-weight: 700;
+          text-decoration: none;
+        }
 
-L’app non richiede la creazione di un account e non prevede login o registrazione.
+        a:hover {
+          text-decoration: underline;
+        }
 
-5. Condivisione dei dati con terze parti
+        .note {
+          margin-top: 28px;
+          padding: 16px 18px;
+          border-radius: 14px;
+          background: var(--accent-light);
+          border: 1px solid rgba(47, 125, 87, 0.18);
+        }
 
-Mi Ascolto non vende, non condivide e non comunica i dati dell’utente a terze parti.
+        .footer {
+          margin-top: 34px;
+          padding-top: 20px;
+          border-top: 1px solid var(--border);
+          color: var(--muted);
+          font-size: 0.95rem;
+        }
 
-I dati restano sul dispositivo dell’utente, salvo eventuali azioni volontarie dell’utente stesso, ad esempio esportazione, condivisione o invio manuale di file generati dall’app.
+        @media (max-width: 640px) {
+          main {
+            padding: 24px 14px;
+          }
 
-6. Esportazione dei dati
+          .card {
+            padding: 24px 18px;
+            border-radius: 16px;
+          }
 
-Se l’app permette di esportare dati, ad esempio tramite file PDF, CSV o altri formati, l’esportazione avviene solo su richiesta dell’utente.
+          h1 {
+            font-size: 1.65rem;
+          }
 
-L’utente è responsabile della gestione, conservazione e condivisione dei file esportati.
+          .intro {
+            font-size: 1rem;
+          }
+        }
+    </style>
+</head>
 
-7. Permessi del dispositivo
+<body>
+<main>
+    <article class="card">
+        <span class="badge">Mi Ascolto</span>
 
-L’app utilizza solo i permessi necessari al proprio funzionamento.
+        <h1>Privacy Policy</h1>
+        <p class="updated">Ultimo aggiornamento: 21 maggio 2026</p>
 
-Nel caso in cui vengano richiesti permessi specifici, questi saranno utilizzati esclusivamente per la funzione indicata all’interno dell’app.
+        <p class="intro">
+            Mi Ascolto è un’app pensata per aiutare l’utente a registrare pasti,
+            attività fisica, emozioni, sensazioni, pensieri e note personali in un diario digitale.
+        </p>
 
-8. Cancellazione dei dati
+        <h2>1. Titolare e referente</h2>
+        <p>
+            Il referente dell’app è <strong>Raúl Antonio Sosa Vélez</strong>.
+            Per qualsiasi domanda relativa alla privacy è possibile contattare il referente
+            all’indirizzo email:
+            <a href="mailto:raulsosa@hotmail.it">raulsosa@hotmail.it</a>.
+        </p>
 
-L’utente può eliminare i dati direttamente dall’app, se la funzione è disponibile.
+        <h2>2. Dati inseriti dall’utente</h2>
+        <p>
+            L’app consente all’utente di inserire volontariamente alcune informazioni personali, tra cui:
+        </p>
+        <ul>
+            <li>pasti e informazioni legate all’alimentazione;</li>
+            <li>attività fisiche o esercizi;</li>
+            <li>emozioni, sensazioni e stati d’animo;</li>
+            <li>pensieri, note e altri contenuti testuali;</li>
+            <li>data e ora degli eventi registrati.</li>
+        </ul>
+        <p>
+            Questi dati vengono inseriti direttamente dall’utente e servono esclusivamente
+            per permettere il funzionamento del diario personale all’interno dell’app.
+        </p>
 
-In alternativa, l’utente può rimuovere l’app dal dispositivo per cancellare i dati locali associati all’app, secondo il normale funzionamento del sistema operativo.
+        <h2>3. Conservazione dei dati</h2>
+        <p>
+            I dati inseriti vengono salvati localmente sul dispositivo dell’utente.
+            Mi Ascolto non invia i dati a server esterni, non utilizza un sistema di account online
+            e non sincronizza automaticamente i contenuti con servizi cloud propri.
+        </p>
+        <p>
+            I dati locali potrebbero essere inclusi nei backup del dispositivo,
+            ad esempio tramite le funzioni di backup di iOS o Android, in base alle impostazioni
+            scelte dall’utente sul proprio dispositivo.
+        </p>
 
-9. Minori
+        <h2>4. Account e registrazione</h2>
+        <p>
+            L’app non richiede la creazione di un account e non prevede login o registrazione.
+        </p>
 
-L’app non è destinata specificamente a bambini di età inferiore a 13 anni.
+        <h2>5. Condivisione dei dati con terze parti</h2>
+        <p>
+            Mi Ascolto non vende, non condivide e non comunica i dati dell’utente a terze parti.
+            I dati restano sul dispositivo dell’utente, salvo eventuali azioni volontarie dell’utente stesso,
+            come esportazione, condivisione o invio manuale di file generati dall’app.
+        </p>
 
-10. Finalità dell’app
+        <h2>6. Esportazione dei dati</h2>
+        <p>
+            Se l’app permette di esportare dati, ad esempio tramite file PDF, CSV o altri formati,
+            l’esportazione avviene solo su richiesta dell’utente. L’utente è responsabile della gestione,
+            conservazione e condivisione dei file esportati.
+        </p>
 
-Mi Ascolto è un diario personale pensato per aiutare l’utente a fermarsi un momento, ascoltare come si sente e registrare esperienze quotidiane legate a emozioni, pensieri, benessere, attività e momenti legati al cibo.
+        <h2>7. Permessi del dispositivo</h2>
+        <p>
+            L’app utilizza solo i permessi necessari al proprio funzionamento. Nel caso in cui vengano
+            richiesti permessi specifici, questi saranno utilizzati esclusivamente per la funzione indicata
+            all’interno dell’app.
+        </p>
 
-L’app ha finalità esclusivamente personali e di consapevolezza individuale.
+        <h2>8. Cancellazione dei dati</h2>
+        <p>
+            L’utente può eliminare i dati direttamente dall’app, se la funzione è disponibile.
+            In alternativa, l’utente può rimuovere l’app dal dispositivo per cancellare i dati locali
+            associati all’app, secondo il normale funzionamento del sistema operativo.
+        </p>
 
-Mi Ascolto non sostituisce professionisti sanitari, percorsi terapeutici o consulenze mediche.
+        <h2>9. Minori</h2>
+        <p>
+            L’app non è destinata specificamente a bambini di età inferiore a 13 anni.
+        </p>
 
-11. Modifiche alla presente Privacy Policy
+        <h2>10. Finalità dell’app</h2>
+        <p>
+            Mi Ascolto è un diario personale pensato per aiutare l’utente a fermarsi un momento,
+            ascoltare come si sente e registrare esperienze quotidiane legate a emozioni, pensieri,
+            attività e momenti personali.
+        </p>
+        <p>
+            L’app ha finalità esclusivamente personali e di consapevolezza individuale.
+            Mi Ascolto non sostituisce professionisti sanitari, percorsi terapeutici o consulenze mediche.
+        </p>
 
-La presente Privacy Policy potrà essere aggiornata in futuro. In caso di modifiche, verrà aggiornata la data indicata all’inizio del documento.
+        <h2>11. Modifiche alla presente Privacy Policy</h2>
+        <p>
+            La presente Privacy Policy potrà essere aggiornata in futuro. In caso di modifiche,
+            verrà aggiornata la data indicata all’inizio del documento.
+        </p>
 
-12. Contatti
+        <div class="note">
+            <strong>Contatti privacy:</strong>
+            per domande relative alla privacy è possibile scrivere a
+            <a href="mailto:raulsosa@hotmail.it">raulsosa@hotmail.it</a>.
+        </div>
 
-Per domande relative alla privacy è possibile contattare: raulsosa@hotmail.it
+        <p class="footer">
+            © 2026 Mi Ascolto. Tutti i diritti riservati.
+        </p>
+    </article>
+</main>
+</body>
+</html>
+"""
+
+path = Path("/mnt/data/privacy-policy.html")
+path.write_text(html, encoding="utf-8")
+path.as_posix()
+
 
