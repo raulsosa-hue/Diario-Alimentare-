@@ -724,7 +724,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
             ),
           const SizedBox(height: 10),
           EntrySliderCard(
-            label: 'Intensità emotiva 0–10',
+            label: 'Quanto è forte quest\u2019emozione',
             value: _intensityBefore,
             accentColor: _stepAccent,
             textDark: EntryFormColors.textDark,
@@ -823,7 +823,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
           ),
           const SizedBox(height: 18),
           EntrySliderCard(
-            label: 'Intensità emotiva 0–10',
+            label: 'Quanto è forte quest\u2019emozione',
             value: _intensityAfter,
             accentColor: _stepAccent,
             textDark: EntryFormColors.textDark,

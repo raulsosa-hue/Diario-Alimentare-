@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mi_ascolto/widgets/app_icon_mark.dart';
 
 import '../styles.dart';
+import '../widgets/mindfulness_reminder_button.dart';
 import 'add_exercise_page.dart';
 import 'add_meal_page.dart';
 import 'diary_page.dart';
@@ -129,27 +130,39 @@ class _HomeHeader extends StatelessWidget {
     return Column(
       children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              'Mi Ascolto',
-              textAlign: TextAlign.center,
-              style: DS.pageTitle.copyWith(
-                fontSize: titleSize,
-                fontStyle: FontStyle.italic,
-                fontWeight: FontWeight.w800,
-                color: HomePage._greenDark,
-                letterSpacing: 0.2,
+            const SizedBox(width: 48),
+
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Mi Ascolto',
+                    textAlign: TextAlign.center,
+                    style: DS.pageTitle.copyWith(
+                      fontSize: titleSize,
+                      fontStyle: FontStyle.italic,
+                      fontWeight: FontWeight.w800,
+                      color: HomePage._greenDark,
+                      letterSpacing: 0.2,
+                    ),
+                  ),
+                  const SizedBox(width: 2),
+                  AppIconMark(
+                    size: 40,
+                    color: HomePage._greenDark,
+                  ),
+                ],
               ),
             ),
-            const SizedBox(width: 2),
-            AppIconMark(
-              size: 40,
-              color: HomePage._greenDark,
-            )
+
+            const MindfulnessReminderButton(),
           ],
         ),
+
         const SizedBox(height: 32),
+
         Text(
           'Ascolta il tuo corpo,\nsegui le tue emozioni',
           textAlign: TextAlign.center,

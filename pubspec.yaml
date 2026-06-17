@@ -1,7 +1,7 @@
 name: mi_ascolto
 description: Diario alimentare ed esercizio.
 publish_to: "none"
-version: 1.0.0+3
+version: 1.0.0+4
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
@@ -18,6 +18,10 @@ dependencies:
     sdk: flutter
   shared_preferences: ^2.5.5
   path_provider: ^2.1.5
+  flutter_local_notifications: ^22.0.0
+  timezone: ^0.11.0
+  flutter_timezone: ^5.1.0
+  permission_handler: ^12.0.3
 
 dev_dependencies:
   flutter_lints: ^6.0.0

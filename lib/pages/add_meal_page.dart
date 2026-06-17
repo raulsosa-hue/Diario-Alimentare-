@@ -567,7 +567,7 @@ class _AddMealPageState extends State<AddMealPage> {
           ),
           const SizedBox(height: 18),
           EntrySliderCard(
-            label: 'Intensità emotiva 0–10',
+            label: 'Quanto è forte quest\u2019emozione',
             value: _intensityBefore,
             accentColor: _stepAccent,
             textDark: EntryFormColors.textDark,
@@ -679,7 +679,7 @@ class _AddMealPageState extends State<AddMealPage> {
           ),
           const SizedBox(height: 18),
           EntrySliderCard(
-            label: 'Intensità emotiva 0–10',
+            label: 'Quanto è forte quest\u2019emozione',
             value: _intensityAfter,
             accentColor: _stepAccent,
             textDark: EntryFormColors.textDark,

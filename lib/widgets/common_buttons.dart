@@ -23,7 +23,7 @@ void showSaveError(BuildContext context, Object error) {
 
 /// Formats a [DateTime] as "dd/MM/yyyy  HH:mm" for display.
 String formatDateTime(DateTime dt) {
-  return '${twoDigit(dt.day)}/${twoDigit(dt.month)}/${dt.year}  ${twoDigit(dt.hour)}:${twoDigit(dt.minute)}';
+  return '${twoDigit(dt.day)}/${twoDigit(dt.month)}/${dt.year}\n${twoDigit(dt.hour)}:${twoDigit(dt.minute)}';
 }
 
 /// Shared AppBar style used across all pages.

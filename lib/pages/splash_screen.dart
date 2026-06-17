@@ -31,7 +31,6 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
 
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
         statusBarIconBrightness: Brightness.dark,
         systemNavigationBarColor: _background,
         systemNavigationBarIconBrightness: Brightness.dark,

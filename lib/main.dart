@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:mi_ascolto/pages/splash_screen.dart';
+import 'package:mi_ascolto/services/mindfulness_notification_service.dart';
 
 import 'data/database_helper.dart';
 import 'pages/home_page.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  DatabaseHelper.instance.database;
+  await DatabaseHelper.instance.database;
+  await MindfulnessNotificationService.instance.init();
+  await MindfulnessNotificationService.instance.ensureScheduledIfEnabled();
   runApp(const DiarioApp());
 }
 
@@ -51,6 +54,12 @@ class DiarioApp extends StatelessWidget {
       supportedLocales: const [
         Locale('it', 'IT'),
         Locale('en', 'US'),
+        Locale('de', 'DE'),
+        Locale('es', 'ES'),
+        Locale('fr', 'FR'),
+        Locale('pt', 'PT'),
+        Locale('ru', 'RU'),
+        Locale('zh', 'CN'),
       ],
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,

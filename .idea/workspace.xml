@@ -9,8 +9,28 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a2aed5bb-00c0-45eb-b106-a38f6d0e0abe" name="Changes" comment="Aggiunta file di policy">
+    <list default="true" id="a2aed5bb-00c0-45eb-b106-a38f6d0e0abe" name="Changes" comment="L'aggiornamento introduce il sistema Notifiche, piccole rifiniture di UI e correzioni grammaticali.">
+      <change afterPath="$PROJECT_DIR$/lib/services/mindfulness_notification_service.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/widgets/mindfulness_reminder_button.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/widgets/mindfulness_reminder_switch.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/diario_alimentare_android.iml" beforeDir="false" afterPath="$PROJECT_DIR$/android/diario_alimentare_android.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/android/local.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/diario_alimentare.iml" beforeDir="false" afterPath="$PROJECT_DIR$/diario_alimentare.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Runner/AppDelegate.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Runner/AppDelegate.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/models/mindfulness_suggestions.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/models/mindfulness_suggestions.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/pages/add_exercise_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pages/add_exercise_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/pages/add_meal_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pages/add_meal_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/pages/home_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pages/home_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/pages/splash_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pages/splash_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/widgets/common_buttons.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/widgets/common_buttons.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/linux/flutter/generated_plugin_registrant.cc" beforeDir="false" afterPath="$PROJECT_DIR$/linux/flutter/generated_plugin_registrant.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/linux/flutter/generated_plugins.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/linux/flutter/generated_plugins.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/macos/Flutter/GeneratedPluginRegistrant.swift" beforeDir="false" afterPath="$PROJECT_DIR$/macos/Flutter/GeneratedPluginRegistrant.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,6 +75,9 @@
     &quot;accountId&quot;: &quot;d0374b3c-5bc2-4ea4-aa6a-d47819fb7c7c&quot;
   }
 }</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
 }</component>
@@ -84,7 +107,10 @@
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;io.flutter.reload.alreadyRun&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/UTENTE/Documents/GitHub/Diario-Alimentare-/assets&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;AndroidSdkUpdater&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.general&quot;,
     &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;
   }
 }</component>
@@ -170,7 +196,15 @@
       <option name="project" value="LOCAL" />
       <updated>1779366366923</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Aggiunta file di policy">
+      <option name="closed" value="true" />
+      <created>1779384580677</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1779384580678</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -187,6 +221,7 @@
     <MESSAGE value="Nuovo aggiornamento: emozioni riorganizzate con una nuova classificazione, sistemato un bug di overflow e di sintassi. Rimossi i numeri dagli step in pasto ed esercizio." />
     <MESSAGE value="Sistemazione colori nel diario e riorganizzazione codice" />
     <MESSAGE value="Aggiunta file di policy" />
-    <option name="LAST_COMMIT_MESSAGE" value="Aggiunta file di policy" />
+    <MESSAGE value="L'aggiornamento introduce il sistema Notifiche, piccole rifiniture di UI e correzioni grammaticali." />
+    <option name="LAST_COMMIT_MESSAGE" value="L'aggiornamento introduce il sistema Notifiche, piccole rifiniture di UI e correzioni grammaticali." />
   </component>
 </project>
