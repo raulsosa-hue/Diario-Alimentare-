@@ -21,21 +21,21 @@ class DiaryExerciseCard extends StatelessWidget {
       ],
       primaFields: [
         diaryFieldRow('Perché', exercise.intention),
+        diaryFieldRow('Emozione', exercise.emotionBefore),
         diaryFieldRow(
           'Intensità emotiva',
           '${exercise.emotionalIntensityBefore}/10',
         ),
-        diaryFieldRow('Emozione', exercise.emotionBefore),
         diaryFieldRow('Pensiero', exercise.thoughtBefore),
       ],
       dopoFields: [
         diaryFieldRow('Esito', exercise.outcome),
         diaryFieldRow('Sensazioni', exercise.bodySensationsAfter),
+        diaryFieldRow('Emozione', exercise.emotionAfter),
         diaryFieldRow(
           'Intensità emotiva',
           '${exercise.emotionalIntensityAfter}/10',
         ),
-        diaryFieldRow('Emozione', exercise.emotionAfter),
         diaryFieldRow('Pensiero', exercise.thoughtAfter),
       ],
     );

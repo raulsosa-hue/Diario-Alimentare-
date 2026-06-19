@@ -10,27 +10,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a2aed5bb-00c0-45eb-b106-a38f6d0e0abe" name="Changes" comment="L'aggiornamento introduce il sistema Notifiche, piccole rifiniture di UI e correzioni grammaticali.">
-      <change afterPath="$PROJECT_DIR$/lib/services/mindfulness_notification_service.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/widgets/mindfulness_reminder_button.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/widgets/mindfulness_reminder_switch.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/diario_alimentare_android.iml" beforeDir="false" afterPath="$PROJECT_DIR$/android/diario_alimentare_android.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/android/local.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/diario_alimentare.iml" beforeDir="false" afterPath="$PROJECT_DIR$/diario_alimentare.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/AppDelegate.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Runner/AppDelegate.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/models/mindfulness_suggestions.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/models/mindfulness_suggestions.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/pages/add_exercise_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pages/add_exercise_page.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/pages/add_meal_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pages/add_meal_page.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/pages/home_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pages/home_page.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/pages/splash_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pages/splash_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/widgets/common_buttons.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/widgets/common_buttons.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/linux/flutter/generated_plugin_registrant.cc" beforeDir="false" afterPath="$PROJECT_DIR$/linux/flutter/generated_plugin_registrant.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/linux/flutter/generated_plugins.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/linux/flutter/generated_plugins.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/macos/Flutter/GeneratedPluginRegistrant.swift" beforeDir="false" afterPath="$PROJECT_DIR$/macos/Flutter/GeneratedPluginRegistrant.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/widgets/diary/diary_exercise_card.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/widgets/diary/diary_exercise_card.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -204,7 +188,15 @@
       <option name="project" value="LOCAL" />
       <updated>1779384580678</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="L'aggiornamento introduce il sistema Notifiche, piccole rifiniture di UI e correzioni grammaticali.">
+      <option name="closed" value="true" />
+      <created>1781707103297</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1781707103297</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="ToolWindowManager">

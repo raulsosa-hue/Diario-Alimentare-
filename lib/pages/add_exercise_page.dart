@@ -736,7 +736,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
               Expanded(
                 child: EntrySelectorTile(
                   icon: Icons.mood_rounded,
-                  title: 'Emozioni',
+                  title: 'Emozione',
                   value: _emotionsBefore,
                   accentColor: _stepAccent,
                   textDark: EntryFormColors.textDark,
@@ -835,7 +835,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
               Expanded(
                 child: EntrySelectorTile(
                   icon: Icons.mood_rounded,
-                  title: 'Emozioni',
+                  title: 'Emozione',
                   value: _emotionsAfter,
                   accentColor: _stepAccent,
                   textDark: EntryFormColors.textDark,
