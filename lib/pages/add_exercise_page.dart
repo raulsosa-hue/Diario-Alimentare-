@@ -708,6 +708,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
         children: [
           const EntrySmallLabel('Intenzione'),
           const SizedBox(height: 10),
+
           for (final it in _intentionOptions)
             Padding(
               padding: const EdgeInsets.only(bottom: 10),
@@ -722,7 +723,27 @@ class _AddExercisePageState extends State<AddExercisePage> {
                 },
               ),
             ),
+
+          const SizedBox(height: 12),
+
+          const EntrySmallLabel('Emozione'),
           const SizedBox(height: 10),
+
+          EntrySelectorTile(
+            icon: Icons.mood_rounded,
+            title: 'Che emozione sento?',
+            value: _emotionsBefore,
+            accentColor: _stepAccent,
+            textDark: EntryFormColors.textDark,
+            onTap: () => _openEmotionSheet(
+              title: 'Emozioni prima',
+              selected: _emotionsBefore,
+              onChanged: (v) => setState(() => _emotionsBefore = v),
+            ),
+          ),
+
+          const SizedBox(height: 18),
+
           EntrySliderCard(
             label: 'Quanto è forte quest\u2019emozione',
             value: _intensityBefore,
@@ -730,33 +751,17 @@ class _AddExercisePageState extends State<AddExercisePage> {
             textDark: EntryFormColors.textDark,
             onChanged: (v) => setState(() => _intensityBefore = v),
           ),
-          const SizedBox(height: 16),
-          Row(
-            children: [
-              Expanded(
-                child: EntrySelectorTile(
-                  icon: Icons.mood_rounded,
-                  title: 'Emozione',
-                  value: _emotionsBefore,
-                  accentColor: _stepAccent,
-                  textDark: EntryFormColors.textDark,
-                  onTap: () => _openEmotionSheet(
-                    title: 'Emozioni prima',
-                    selected: _emotionsBefore,
-                    onChanged: (v) => setState(() => _emotionsBefore = v),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: EntrySoftTextField(
-                  controller: _thoughtBeforeCtrl,
-                  hint: 'Pensiero',
-                  icon: Icons.chat_bubble_outline_rounded,
-                  accentColor: _stepAccent,
-                ),
-              ),
-            ],
+
+          const SizedBox(height: 18),
+
+          const EntrySmallLabel('Pensiero'),
+          const SizedBox(height: 10),
+
+          EntrySoftTextField(
+            controller: _thoughtBeforeCtrl,
+            hint: 'Che pensiero passa in questo momento?',
+            icon: Icons.chat_bubble_outline_rounded,
+            accentColor: _stepAccent,
           ),
         ],
       ),
@@ -798,6 +803,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
         children: [
           const EntrySmallLabel('Esito'),
           const SizedBox(height: 10),
+
           for (final o in _outcomeOptions)
             Padding(
               padding: const EdgeInsets.only(bottom: 10),
@@ -812,16 +818,39 @@ class _AddExercisePageState extends State<AddExercisePage> {
                 },
               ),
             ),
-          const SizedBox(height: 10),
+
+          const SizedBox(height: 12),
+
           const EntrySmallLabel('Corpo'),
           const SizedBox(height: 10),
+
           EntrySoftTextField(
             controller: _bodyAfterCtrl,
             hint: 'Che sensazioni fisiche noto?',
             icon: Icons.accessibility_new_rounded,
             accentColor: _stepAccent,
           ),
+
           const SizedBox(height: 18),
+
+          const EntrySmallLabel('Emozione'),
+          const SizedBox(height: 10),
+
+          EntrySelectorTile(
+            icon: Icons.mood_rounded,
+            title: 'Che emozione sento adesso?',
+            value: _emotionsAfter,
+            accentColor: _stepAccent,
+            textDark: EntryFormColors.textDark,
+            onTap: () => _openEmotionSheet(
+              title: 'Emozioni dopo',
+              selected: _emotionsAfter,
+              onChanged: (v) => setState(() => _emotionsAfter = v),
+            ),
+          ),
+
+          const SizedBox(height: 18),
+
           EntrySliderCard(
             label: 'Quanto è forte quest\u2019emozione',
             value: _intensityAfter,
@@ -829,33 +858,17 @@ class _AddExercisePageState extends State<AddExercisePage> {
             textDark: EntryFormColors.textDark,
             onChanged: (v) => setState(() => _intensityAfter = v),
           ),
-          const SizedBox(height: 16),
-          Row(
-            children: [
-              Expanded(
-                child: EntrySelectorTile(
-                  icon: Icons.mood_rounded,
-                  title: 'Emozione',
-                  value: _emotionsAfter,
-                  accentColor: _stepAccent,
-                  textDark: EntryFormColors.textDark,
-                  onTap: () => _openEmotionSheet(
-                    title: 'Emozioni dopo',
-                    selected: _emotionsAfter,
-                    onChanged: (v) => setState(() => _emotionsAfter = v),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: EntrySoftTextField(
-                  controller: _thoughtAfterCtrl,
-                  hint: 'Pensiero',
-                  icon: Icons.chat_bubble_outline_rounded,
-                  accentColor: _stepAccent,
-                ),
-              ),
-            ],
+
+          const SizedBox(height: 18),
+
+          const EntrySmallLabel('Pensiero'),
+          const SizedBox(height: 10),
+
+          EntrySoftTextField(
+            controller: _thoughtAfterCtrl,
+            hint: 'Che pensiero rimane dopo il movimento?',
+            icon: Icons.chat_bubble_outline_rounded,
+            accentColor: _stepAccent,
           ),
         ],
       ),
